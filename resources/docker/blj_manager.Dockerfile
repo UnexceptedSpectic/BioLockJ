@@ -1,40 +1,36 @@
-# Deployment path: $DOCKER_FILE_PATH/blj_manager.Dockerfile
+# Dockerfile to build a BioLockJ jar file
+# From git repo root:
+# docker build -t test/blj_builder . -f resources/docker/blj_builder.Dockerfile 
 
-FROM biolockj/blj_basic_java
+ARG DOCKER_HUB_USER=biolockj
+FROM java:8 AS builder
 
-#1.) Install Docker Client
-ARG DOCKER_CLIENT
-ENV DOCKER_URL="https://download.docker.com/linux/static/stable/x86_64"
-RUN cd /usr/local/bin && \
-	wget -qO- $DOCKER_URL/${DOCKER_CLIENT}.tgz | bsdtar -xzf- && \
-	mv docker tempDocker && \
-	mv tempDocker/* . && \
-	rm -rf tempDocker
+COPY . /blj
+ENV ANT_DIST=apache-ant-1.9.14
+RUN wget http://apache.mirrors.lucidnetworks.net//ant/binaries/$ANT_DIST-bin.tar.bz2
+RUN tar xfj $ANT_DIST-bin.tar.bz2
+RUN $ANT_DIST/bin/ant -buildfile blj/resources/build.xml build-jar
 
-#2.) Install BioLockJ
-ARG BLJ_DATE
-ARG VER
-ENV BLJ_TAR=biolockj_${VER}.tgz
-ENV WGET_URL="$BLJ_URL/${VER}/$BLJ_TAR"
-RUN echo ${BLJ_DATE} && \
-	mkdir $BLJ && \
-	cd $BLJ && \
-	wget -qO- $WGET_URL | bsdtar -xzf- && \
-	rm -rf $BLJ/[bilw]* && rm -rf $BLJ/resources/[bdil]* && rm -rf $BLJ/docs && rm -rf $BLJ/src && \
-	cp $BLJ/script/* /usr/local/bin
-	
-#3.) Cleanup
-RUN	apt-get clean && \
-	rm -rf /tmp/* && \
-	rm -rf /usr/share/* && \
-	rm -rf /var/cache/* && \
-	rm -rf /var/lib/apt/lists/* && \
-	rm -rf /var/log/*
+FROM $DOCKER_HUB_USER/blj_basic_java
+ENV BLJ_MOD_LIB=/modules
+RUN mkdir -p $BLJ/dist && \
+	mkdir -p $BLJ_PROJ && \
+	mkdir -p $BLJ_MOD_LIB
+COPY --from=builder /blj/dist/BioLockJ.jar $BLJ/dist/.
+COPY --from=builder /blj/script $BLJ/script
+COPY --from=builder /blj/resources $BLJ/resources
+COPY --from=builder /blj/.version /blj/install $BLJ/
 
-#4.) Update  ~/.bashrc
-RUN echo '[ -x "$BLJ/script/blj_config" ] && . $BLJ/script/blj_config' >> ~/.bashrc && \
-	echo 'export BLJ_PROJ=/pipelines' >> ~/.bashrc && \
-	echo 'alias goblj=blj_go' >> ~/.bashrc
-	
-#5.) Set Default Command
-CMD java -jar $BLJ/dist/BioLockJ.jar $BLJ_OPTIONS
+RUN $BLJ/install
+
+#CMD java -jar $BLJ/dist/BioLockJ.jar $BLJ_OPTIONS
+CMD java -cp $BLJ_MOD_LIB:$BLJ/dist/BioLockJ.jar biolockj.BioLockJ $BLJ_OPTIONS
+
+# docker run \
+#	-e BLJ_OPTIONS="-b <host output dir> -C <host config dir> -c <config file> -i <host input dir>" \
+#	-v /var/run/docker.sock:/var/run/docker.sock 
+#	-v <host input dir>:/input 
+#	-v <host output dir>:/pipelines:delegated 
+#	-v <host config dir>:/config 
+#	[-v <host module library>:/modules]
+#	biolockj/blj_builder
