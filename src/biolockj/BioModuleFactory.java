@@ -126,7 +126,9 @@ public class BioModuleFactory {
 				for( final String mod: getPreRequisites( module ) )
 				if( !branchModules.contains( mod ) ) branchModules.add( addModule( mod ) );
 
-			if( !branchModules.contains( className ) ) branchModules.add( addModule( className ) );
+			if( !branchModules.contains( className ) || className.equals("validation.Validator")) {
+				branchModules.add( addModule( className ) );
+			}
 
 			this.safteyCheck = SAFE_MAX;
 			if( !module.getPostRequisiteModules().isEmpty() ) for( final String mod: getPostRequisites( module ) )
