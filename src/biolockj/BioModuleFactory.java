@@ -13,6 +13,7 @@ package biolockj;
 
 import java.util.*;
 import biolockj.module.BioModule;
+import biolockj.module.Repeatable;
 import biolockj.module.implicit.ImportMetadata;
 import biolockj.module.implicit.RegisterNumReads;
 import biolockj.module.seq.*;
@@ -126,7 +127,7 @@ public class BioModuleFactory {
 				for( final String mod: getPreRequisites( module ) )
 				if( !branchModules.contains( mod ) ) branchModules.add( addModule( mod ) );
 
-			if( !branchModules.contains( className ) || className.equals("validation.Validator")) {
+			if( !branchModules.contains( className ) || module instanceof Repeatable ) {
 				branchModules.add( addModule( className ) );
 			}
 
