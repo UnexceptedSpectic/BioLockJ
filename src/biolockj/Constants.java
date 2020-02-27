@@ -32,7 +32,6 @@ public class Constants {
 		Properties.registerProp( DETACH_JAVA_MODULES, Properties.BOOLEAN_TYPE, DETACH_JAVA_MODULES_DESC );
 		Properties.registerProp( DISABLE_ADD_IMPLICIT_MODULES, Properties.BOOLEAN_TYPE, DISABLE_ADD_IMPLICIT_MODULES_DESC );
 		Properties.registerProp( DISABLE_PRE_REQ_MODULES, Properties.BOOLEAN_TYPE, DISABLE_PRE_REQ_MODULES_DESC );
-		Properties.registerProp( DOCKER_CONTAINER_NAME, Properties.STRING_TYPE, DOCKER_CONTAINER_NAME_DESC );
 		Properties.registerProp( EXE_AWK, Properties.EXE_PATH, "" );
 		Properties.registerProp( EXE_DOCKER, Properties.EXE_PATH, "" );
 		Properties.registerProp( EXE_GZIP, Properties.EXE_PATH, "" );
@@ -224,13 +223,6 @@ public class Constants {
 	 * Default path for an additional configuration file used for any pipeline run in docker.
 	 */
 	public static final String DOCKER_CONFIG_PATH = "${BLJ}/resources/config/default/docker.properties";
-
-	/**
-	 * {@link biolockj.Config} {@value biolockj.Properties#STRING_TYPE} property: {@value #DOCKER_CONTAINER_NAME}
-	 * {@value #DOCKER_CONTAINER_NAME_DESC}
-	 */
-	public static final String DOCKER_CONTAINER_NAME = "genMod.dockerContainerName";
-	private static final String DOCKER_CONTAINER_NAME_DESC = "Name of the docker container to use when executing an instance of the GenMod module.";
 
 	/**
 	 * {@link biolockj.Config} option for {@value #REPORT_TAXONOMY_LEVELS}: {@value #DOMAIN}

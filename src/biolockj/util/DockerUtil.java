@@ -19,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import org.apache.commons.lang.math.NumberUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import biolockj.*;
@@ -27,11 +26,6 @@ import biolockj.Properties;
 import biolockj.api.API_Exception;
 import biolockj.exception.*;
 import biolockj.module.*;
-import biolockj.module.classifier.r16s.RdpClassifier;
-import biolockj.module.diy.GenMod;
-import biolockj.module.implicit.qiime.*;
-import biolockj.module.report.r.R_Module;
-import biolockj.module.seq.*;
 
 /**
  * DockerUtil for Docker integration.
@@ -64,7 +58,7 @@ public class DockerUtil {
 		lines.add( LOG_VAR + "=" + tempDir + "/${" + SCRIPT_ID_VAR + "}.log" );
 		lines.add(  ID_VAR + "=$(" + Config.getExe( module, Constants.EXE_DOCKER ) + " run " + DOCKER_DETACHED_FLAG + " "+ rmFlag( module ) + WRAP_LINE );
 		lines.addAll(  getDockerVolumes( module )); 
-		lines.add(  getDockerImage( module ) + WRAP_LINE );
+		lines.add( " " + getDockerImage( module ) + WRAP_LINE );
 		lines.add( "/bin/bash -c \"$1 &> $" + LOG_VAR + "\" )" );
 		lines.add( "echo \"Launched docker image: " + getDockerImage( module ) + "\"" );
 		lines.add( "echo \"To execute module: " + module.getClass().getSimpleName() + "\"" );
@@ -149,29 +143,6 @@ public class DockerUtil {
 	}
 
 	/**
-	 * Get the Docker container database found under the DockerDB directory or one of it's sub-directories.
-	 * 
-	 * @param module DatabaseModule
-	 * @param dbPath Database file or sub-directory under the main Docker $BLJ_DB directory.
-	 * @return Container database directory
-	 * @throws ConfigPathException if DB property not found
-	 * @throws ConfigNotFoundException if path is defined but is not an existing directory
-	 * @throws DockerVolCreationException 
-	 */
-	public static File getDockerDB( final DatabaseModule module, final String dbPath )
-		throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException {
-		if( hasCustomDockerDB( module ) ) {
-			if( dbPath == null ) return new File( DOCKER_DB_DIR );
-			if( inAwsEnv() ) return new File( dbPath );
-			return new File( dbPath.replace( getDbDirPath( module ), DockerUtil.DOCKER_DB_DIR ) );
-		}
-
-		if( dbPath == null || module.getDB() == null ) return new File( DOCKER_DEFAULT_DB_DIR );
-		if( inAwsEnv() ) return new File( dbPath );
-		return new File( dbPath.replace( getDbDirPath( module ), DockerUtil.DOCKER_DEFAULT_DB_DIR ) );
-	}
-
-	/**
 	 * Return the name of the Docker image needed for the given module.
 	 * 
 	 * @param module BioModule
@@ -179,8 +150,7 @@ public class DockerUtil {
 	 * @throws ConfigNotFoundException if Docker image version is undefined
 	 */
 	public static String getDockerImage( final BioModule module ) throws ConfigNotFoundException {
-		return " " + getDockerUser( module ) + "/" + getImageName( module ) + ":" +
-			Config.requireString( module, DockerUtil.DOCKER_IMG_VERSION );
+		return getDockerUser( module ) + "/" + getImageName( module ) + ":" + getImageTag(module);
 	}
 
 	/**
@@ -190,8 +160,8 @@ public class DockerUtil {
 	 * @return Docker Hub User ID
 	 */
 	public static String getDockerUser( final BioModule module ) {
-		final String user = Config.getString( module, DOCKER_HUB_USER );
-		if( user == null ) return DEFAULT_DOCKER_HUB_USER;
+		String user = module.getDockerImageOwner();
+		if (Config.getString( module, DOCKER_HUB_USER ) != null) user = Config.getString( module, DOCKER_HUB_USER );
 		return user;
 	}
 
@@ -208,86 +178,22 @@ public class DockerUtil {
 	}
 
 	/**
-	 * Return the Docker Image name for the given class name.<br>
-	 * Return blj_bash for simple bash script modules that don't rely on special software<br>
-	 * Class names contain no spaces, words are separated via CamelCaseConvension.<br>
-	 * Docker image names cannot contain upper case letters, so this method substitutes "_" before the lower-case
-	 * version of each capital letter.<br>
-	 * <br>
-	 * Example: JavaModule becomes java_module
+	 * Return the Docker Image name for the given module.<br>
+	 * This information should come from the module, but config properties can be used to override the info in the module.
 	 * 
 	 * @param module BioModule
-	 * @return Docker Image Name
-	 * @throws ConfigNotFoundException if Docker container is undefiend for GenMod
+	 * @return Docker Image Name in the form <owner>/<image>:<tag>
 	 */
-	public static String getImageName( final BioModule module ) throws ConfigNotFoundException {
-		final String className = module.getClass().getName();
-		final String simpleName = getDockerClassName( module );
-		String imageName = simpleName.substring( 0, 1 ).toLowerCase();
-		if( useBasicBashImg( module ) ) imageName = BLJ_BASH;
-		else if (module instanceof JavaModule ) imageName = "biolockj_controller"; //TODO: this whole process should be replaced with Config and Module methods.
-		else if( module instanceof GenMod ) imageName = Config.requireString( module, Constants.DOCKER_CONTAINER_NAME );
-		else {
-			for( int i = 2; i < simpleName.length() + 1; i++ ) {
-				final int len = imageName.toString().length();
-				final String prevChar = imageName.toString().substring( len - 1, len );
-				final String val = simpleName.substring( i - 1, i );
-				if( !prevChar.equals( IMAGE_NAME_DELIM ) && !val.equals( IMAGE_NAME_DELIM ) &&
-					val.equals( val.toUpperCase() ) && !NumberUtils.isNumber( val ) )
-					imageName += IMAGE_NAME_DELIM + val.toLowerCase();
-				else if( !prevChar.equals( IMAGE_NAME_DELIM ) ||
-					prevChar.equals( IMAGE_NAME_DELIM ) && !val.equals( IMAGE_NAME_DELIM ) ) imageName += val.toLowerCase();
-			}
-
-			if( hasCustomDockerDB( module ) && ( className.toLowerCase().contains( "knead_data" ) ||
-				className.toLowerCase().contains( "kraken" ) ) ) imageName += DB_FREE;
-		}
-		
-		Log.info( DockerUtil.class, "Map: Class [" + className + "] <--> Docker Image [ " + imageName + " ]" );
-		return imageName;
+	public static String getImageName( final BioModule module ) {
+		String name = module.getDockerImageName();
+		if (Config.getString( module, DOCKER_IMG ) != null) name=Config.getString( module, DOCKER_IMG );
+		return name;
 	}
-
-	/**
-	 * TODO: see if this should be updated for new docker volume system.
-	 * Function used to determine if an alternate database has been defined (other than /mnt/db).
-	 * 
-	 * @param module BioModule
-	 * @return TRUE if module has a custom DB defined runtime env
-	 */
-	public static boolean hasCustomDockerDB( final BioModule module ) {
-		try {
-			Log.info( DockerUtil.class, Constants.LOG_SPACER );
-			Log.info( DockerUtil.class, "Check for Custom Docker DB" );
-			Log.info( DockerUtil.class, Constants.LOG_SPACER );
-			if( inDockerEnv() ) 
-				Log.info( DockerUtil.class, "Verified BLJ is running INSIDE the Docker biolockj_controller Container" );
-			else {
-				Log.info( DockerUtil.class, "LOOKS LIKE BLJ is <<< NOT >>> running INSIDE the Docker biolockj_controller Container - run extra tests!" );
-				final File testFile = new File( "/.dockerenv" );
-				if( testFile.isFile() )
-					Log.info( DockerUtil.class, "testFile.isFile() == TRUE! --> WHY FAIL ON INIT ATTEMPT?  BLJ is running INSIDE the Docker biolockj_controller Container" );
-				else if( testFile.exists() )
-					Log.info( DockerUtil.class, "testFile.exists() == TRUE! --> WHY FAIL ON INIT ATTEMPT?  BLJ is running INSIDE the Docker biolockj_controller Container" );
-			}
-			
-			if( module instanceof DatabaseModule )
-				Log.info( DockerUtil.class, module.getClass().getSimpleName() + " is a DB Module!" );
-			else
-				Log.info( DockerUtil.class, module.getClass().getSimpleName() + " is NOT DB Module!" );
-			
-			Log.info( DockerUtil.class, Constants.LOG_SPACER );
-				
-			if( inDockerEnv() && module instanceof DatabaseModule ) {
-				final File db = ( (DatabaseModule) module ).getDB();
-				if( db == null ) Log.info( DockerUtil.class, module.getClass().getSimpleName() + " db ==> NULL " );
-				if( db != null ) Log.info( DockerUtil.class, module.getClass().getSimpleName() + " db ==> " + db.getAbsolutePath() );
-				if( db != null ) return !db.getAbsolutePath().startsWith( DOCKER_DEFAULT_DB_DIR );
-			}
-		} catch( ConfigPathException | ConfigNotFoundException | DockerVolCreationException ex ) {
-			Log.error( DockerUtil.class,
-				"Error occurred checking database path of module: " + module.getClass().getName(), ex );
-		} 
-		return false;
+	
+	private static String getImageTag(final BioModule module) {
+		String tag = module.getDockerImageTag();
+		if (Config.getString( module, DOCKER_IMG_VERSION ) != null) tag = Config.getString( module, DOCKER_IMG_VERSION );
+		return tag;
 	}
 
 	/**
@@ -306,22 +212,6 @@ public class DockerUtil {
 	 */
 	public static boolean inDockerEnv() {
 		return DOCKER_ENV_FLAG_FILE.isFile();
-	}
-
-	private static String getDbDirPath( final DatabaseModule module )
-		throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException {
-		if( module.getDB() == null ) return null;
-		if( module instanceof RdpClassifier ) return module.getDB().getParentFile().getAbsolutePath();
-		return module.getDB().getAbsolutePath();
-	}
-
-	private static String getDockerClassName( final BioModule module ) {
-		final String className = module.getClass().getSimpleName();
-		final boolean isQiime = module instanceof BuildQiimeMapping || module instanceof MergeQiimeOtuTables ||
-			module instanceof QiimeClassifier;
-
-		return isQiime ? QiimeClassifier.class.getSimpleName(): module instanceof R_Module ?
-			R_Module.class.getSimpleName(): module instanceof JavaModule ? JavaModule.class.getSimpleName(): className;
 	}
 
 	private static TreeMap<String, String> volumeMap;	
@@ -360,8 +250,6 @@ public class DockerUtil {
 		File infoFile = getInfoFile();
 		Log.info(DockerUtil.class, "Creating " + infoFile.getName() + " file.");
 		final BufferedWriter writer = new BufferedWriter( new FileWriter( infoFile ) );
-		//TODO: it must be possible to do this with a simple redirect
-		//final Process p = Runtime.getRuntime().exec( getDockerInforCmd() + " > " + infoFile.getAbsolutePath() );
 		final Process p = Runtime.getRuntime().exec( getDockerInforCmd() );
 		final BufferedReader br = new BufferedReader( new InputStreamReader( p.getInputStream() ) );
 		StringBuilder sb = new StringBuilder();
@@ -464,10 +352,6 @@ public class DockerUtil {
 	private static final String rmFlag( final BioModule module ) throws ConfigFormatException {
 		return Config.getBoolean( module, SAVE_CONTAINER_ON_EXIT ) ? "": DOCK_RM_FLAG;
 	}
-
-	private static boolean useBasicBashImg( final BioModule module ) {
-		return module instanceof PearMergeReads || module instanceof AwkFastaConverter || module instanceof Gunzipper;
-	}
 	
 	public static void checkDependencies( BioModule module ) throws ConfigNotFoundException, IOException, InterruptedException {
 		if ( inDockerEnv() ) {
@@ -486,18 +370,20 @@ public class DockerUtil {
 	 * @throws API_Exception 
 	 */
 	public static void registerProps() throws API_Exception {
+		Properties.registerProp( DOCKER_HUB_USER, Properties.STRING_TYPE, DOCKER_HUB_USER_DESC );
+		Properties.registerProp( DOCKER_IMG, Properties.STRING_TYPE, DOCKER_IMG_DESC );
 		Properties.registerProp( DOCKER_IMG_VERSION, Properties.STRING_TYPE, DOCKER_IMG_VERSION_DESC );
 		Properties.registerProp( SAVE_CONTAINER_ON_EXIT, Properties.BOOLEAN_TYPE, SAVE_CONTAINER_ON_EXIT_DESC );
-		Properties.registerProp( DOCKER_HUB_USER, Properties.STRING_TYPE, DOCKER_HUB_USER_DESC );
 	}
 	/**
 	 * Let modules see property names.
 	 */
 	public static ArrayList<String> listProps(){
 		ArrayList<String> props = new ArrayList<>();
+		props.add( DOCKER_HUB_USER );
+		props.add( DOCKER_IMG );
 		props.add( DOCKER_IMG_VERSION );
 		props.add( SAVE_CONTAINER_ON_EXIT );
-		props.add( DOCKER_HUB_USER );
 		return props;
 	}
 	
@@ -546,7 +432,7 @@ public class DockerUtil {
 	 * {@link biolockj.Config} String property: {@value #DOCKER_IMG_VERSION}
 	 * {@value #DOCKER_IMG_VERSION_DESC}
 	 */
-	static final String DOCKER_IMG_VERSION = "docker.imgVersion";
+	static final String DOCKER_IMG_VERSION = "docker.imageTag";
 	private static final String DOCKER_IMG_VERSION_DESC = "indicate specific version of Docker images";
 
 	/**
@@ -562,23 +448,26 @@ public class DockerUtil {
 	static final String SPAWN_DOCKER_CONTAINER = "spawnDockerContainer";
 
 	/**
+	 * {@link biolockj.Config} String property: {@value #DOCKER_IMG}
+	 * {@value #DOCKER_IMG_DESC}
+	 */
+	private static final String DOCKER_IMG = "docker.imageName";
+	private static final String DOCKER_IMG_DESC = "The name of a docker image to override whatever a module says to use.";
+	
+	/**
 	 * {@link biolockj.Config} String property: {@value #DOCKER_HUB_USER}<br>
 	 * {@value #DOCKER_HUB_USER_DESC}<br>
 	 * Docker Hub URL: <a href="https://hub.docker.com" target="_top">https://hub.docker.com</a><br>
 	 * By default the "biolockj" user is used to pull the standard modules, but advanced users can deploy their own
 	 * versions of these modules and add new modules in their own Docker Hub account.
 	 */
-	protected static final String DOCKER_HUB_USER = "docker.user";
-	private static final String DOCKER_HUB_USER_DESC = "name of the Docker Hub user for getting docker containers";
+	protected static final String DOCKER_HUB_USER = "docker.imgOwner";
+	private static final String DOCKER_HUB_USER_DESC = "name of the Docker Hub user that owns the docker containers";
 
-	private static final String BLJ_BASH = "blj_bash";
-	private static final String DB_FREE = "_dbfree";
-	private static final String DEFAULT_DOCKER_HUB_USER = "biolockj";
 	private static final String DOCK_RM_FLAG = "--rm";
 	private static final File DOCKER_ENV_FLAG_FILE = new File( "/.dockerenv" );
 	private static final String DOCKER_SOCKET = "/var/run/docker.sock";
 	private static final Set<String[]> downloadDbCmdRegister = new HashSet<>();
-	private static final String IMAGE_NAME_DELIM = "_";
 	private static final String WRAP_LINE = " \\";
 	private static final String DOCKER_DETACHED_FLAG = "--detach";
 	private static final String ID_VAR = "containerId";
