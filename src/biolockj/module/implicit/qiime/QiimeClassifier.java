@@ -316,7 +316,7 @@ public class QiimeClassifier extends ClassifierModuleImpl {
 	@Override
 	public List<String> getWorkerScriptFunctions() throws Exception {
 		final List<String> lines = super.getWorkerScriptFunctions();
-		if( DockerUtil.hasCustomDockerDB( this ) ) lines.addAll( buildQiimeDockerConfigLines() );
+		if( DockerUtil.inDockerEnv() ) lines.addAll( buildQiimeDockerConfigLines() );
 		return lines;
 	}
 
@@ -342,17 +342,17 @@ public class QiimeClassifier extends ClassifierModuleImpl {
 	protected List<String> buildQiimeDockerConfigLines() throws Exception {
 		final List<String> lines = new ArrayList<>();
 		lines.add( "echo '" + QIIME_CONFIG_SEQ_REF + " " +
-			DockerUtil.getDockerDB( this, Config.requireString( this, QIIME_REF_SEQ_DB ) ).getAbsolutePath() + "' > " +
-			QIIME_DOCKER_CONFIG );
+			Config.requireExistingDir( this, QIIME_REF_SEQ_DB ).getAbsolutePath() 
+			+ "' > " + QIIME_DOCKER_CONFIG );
 		lines.add( "echo '" + QIIME_CONFIG_PYNAST_ALIGN_REF + " " +
-			DockerUtil.getDockerDB( this, Config.requireString( this, QIIME_PYNAST_ALIGN_DB ) ).getAbsolutePath() +
-			"' >> " + QIIME_DOCKER_CONFIG );
+			Config.requireExistingDir( this, QIIME_PYNAST_ALIGN_DB ).getAbsolutePath() 
+			+ "' >> " + QIIME_DOCKER_CONFIG );
 		lines.add( "echo '" + QIIME_CONFIG_TAXA_SEQ_REF + " " +
-			DockerUtil.getDockerDB( this, Config.requireString( this, QIIME_REF_SEQ_DB ) ).getAbsolutePath() + "' >> " +
-			QIIME_DOCKER_CONFIG );
+			Config.requireExistingDir( this, QIIME_REF_SEQ_DB ).getAbsolutePath() 
+			+ "' >> " + QIIME_DOCKER_CONFIG );
 		lines.add( "echo '" + QIIME_CONFIG_TAXA_ID_REF + " " +
-			DockerUtil.getDockerDB( this, Config.requireString( this, QIIME_TAXA_DB ) ).getAbsolutePath() + "' >> " +
-			QIIME_DOCKER_CONFIG );
+			Config.requireExistingDir( this, QIIME_TAXA_DB ).getAbsolutePath() 
+			+ "' >> " + QIIME_DOCKER_CONFIG );
 		lines.add( "" );
 		return lines;
 	}
@@ -479,6 +479,11 @@ public class QiimeClassifier extends ClassifierModuleImpl {
 		throw new ConfigViolationException(
 			"Should not be possible to reach this error, value based on required field: " +
 				Constants.REPORT_TAXONOMY_LEVELS );
+	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "qimme_classifier";
 	}
 
 	private String switches = null;

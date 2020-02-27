@@ -69,6 +69,11 @@ public class Gunzipper extends SeqModuleImpl implements ApiModule {
 			File.separator + SeqUtil.getSampleId( file.getName() ) + SeqUtil.getReadDirectionSuffix( file ) + "." +
 			Config.requireString( this, Constants.INTERNAL_SEQ_TYPE );
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "blj_bash";
+	}
 
 	/**
 	 * Name of the bash function used to decompress gzipped files: {@value #FUNCTION_GUNZIP}

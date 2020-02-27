@@ -69,24 +69,7 @@ public class KneadData extends SeqModuleImpl implements DatabaseModule, ApiModul
 
 	@Override
 	public File getDB() throws ConfigPathException, ConfigNotFoundException {
-		if( dbCache != null ) return dbCache;
-		final List<File> dbs = new ArrayList<>();
-		for( final String path: Config.requireList( this, KNEAD_DBS ) ) {
-			final File db = new File( path );
-			dbs.add( db );
-			if( dbCache == null ) dbCache = db;
-			else dbCache = BioLockJUtil.getCommonParent( dbCache, db );
-		}
-
-		final String errMsg = "Docker implementation requires all databases exist under a common parent directory";
-		if( dbCache == null ) throw new ConfigPathException( KNEAD_DBS, errMsg );
-
-		for( final File db: dbs )
-			if( !db.getAbsolutePath().contains( dbCache.getAbsolutePath() ) )
-				throw new ConfigPathException( KNEAD_DBS, errMsg );
-
-		Log.info( getClass(), "Found common database dir: " + dbCache.getAbsolutePath() );
-		return dbCache;
+		return new File(""); //TODO: modify the role of the DatabaseModule interface.
 	}
 
 	@Override
@@ -164,8 +147,9 @@ public class KneadData extends SeqModuleImpl implements DatabaseModule, ApiModul
 
 	private String getDBs() throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException {
 		String dbs = "";
-		if( DockerUtil.inDockerEnv() ) for( final String path: Config.requireList( this, KNEAD_DBS ) )
-			dbs += DB_PARAM + " " + DockerUtil.getDockerDB( this, path ).getAbsolutePath() + " ";
+		if( DockerUtil.inDockerEnv() && Config.getString( this, KNEAD_DBS ) == null) {
+				dbs += DB_PARAM + " " + DEFAULT_DB_IN_DOCKER + " ";
+		}
 		else for( final File db: Config.requireExistingDirs( this, KNEAD_DBS ) )
 			dbs += DB_PARAM + " " + db.getAbsolutePath() + " ";
 		return dbs;
@@ -186,6 +170,14 @@ public class KneadData extends SeqModuleImpl implements DatabaseModule, ApiModul
 	private static String sanatize( final File seqFile, final File rvRead ) throws Exception {
 		return FUNCTION_SANATIZE + " " + SeqUtil.getSampleId( seqFile.getName() ) + " " + seqFile.getAbsolutePath() +
 			( rvRead == null ? "": " " + rvRead.getAbsolutePath() );
+	}
+	
+	@Override
+	public String getDockerImageName() {
+		if (Config.getString( this, KNEAD_DBS ) != null )
+			return "knead_data_dbfree";
+		else
+			return "kraken_classifier";
 	}
 
 	/**
@@ -208,10 +200,11 @@ public class KneadData extends SeqModuleImpl implements DatabaseModule, ApiModul
 	 * {@link biolockj.Config} required property to the contaminent databases {@value #KNEAD_DBS}:
 	 */
 	protected static final String KNEAD_DBS = "kneaddata.dbs";
+	
+	private static final String DEFAULT_DB_IN_DOCKER = "/mnt/efs/db";
 
 	private static final String BYPASS_TRIM_PARAM = "--bypass-trim";
 	private static final String DB_PARAM = "-db";
-	private static File dbCache = null;
 	private static final String DOCKER_TRIM_PARAM = "--trimmomatic /app/Trimmomatic-0.38";
 	private static final String FW_OUTPUT_SUFFIX = "_paired_1";
 	private static final String INPUT_PARAM = "-i";

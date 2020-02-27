@@ -80,6 +80,11 @@ public class MergeQiimeOtuTables extends ScriptModuleImpl {
 	public boolean isValidInputModule( final BioModule module ) {
 		return module instanceof QiimeClosedRefClassifier;
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "qimme_classifier";
+	}
 
 	/**
 	 * QIIME script to merge multiple OTU tables in biom format.

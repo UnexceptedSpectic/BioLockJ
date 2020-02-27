@@ -92,7 +92,14 @@ public class GenMod extends ScriptModuleImpl implements ApiModule {
 		copy.setExecutable( true, false );
 		Log.debug( GenMod.class, "Users script saved to: " + copy.getAbsolutePath() );
 		return copy.getAbsolutePath();
-
+	}
+	
+	/**
+	 * To run the GenMod in docker, the user must supply a docker image name.
+	 */
+	@Override
+	public String getDockerImageName() {
+		return "blj_bash";
 	}
 	
 	@Override
