@@ -253,7 +253,7 @@ public class Email extends BioModuleImpl implements ApiModule {
 	
 	@Override
 	public String getDockerImageName() {
-		return "biolockj_controller";
+		return Constants.MAIN_DOCKER_IMAGE;
 	}
 
 	@Override

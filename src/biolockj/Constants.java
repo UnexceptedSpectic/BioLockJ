@@ -513,6 +513,11 @@ public class Constants {
 	public static final String LOG_SPACER = "========================================================================";
 
 	/**
+	 * Docker image used for the BioLockJ head node.  Also used as a simple default for some modules.
+	 */
+	public static final String MAIN_DOCKER_IMAGE = "biolockj_controller";
+	
+	/**
 	 * Prefix added to the master Config file: {@value #MASTER_PREFIX}
 	 */
 	public static final String MASTER_PREFIX = "MASTER_";

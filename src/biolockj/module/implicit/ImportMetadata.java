@@ -346,7 +346,7 @@ public class ImportMetadata extends BioModuleImpl {
 	
 	@Override
 	public String getDockerImageName() {
-		return "biolockj_controller";
+		return Constants.MAIN_DOCKER_IMAGE;
 	}
 
 	private final List<String> colNames = new ArrayList<>();

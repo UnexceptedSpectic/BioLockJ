@@ -143,7 +143,7 @@ public abstract class JavaModuleImpl extends ScriptModuleImpl implements JavaMod
 	}
 	
 	public String getDockerImageName() {
-		return "biolockj_controller";
+		return Constants.MAIN_DOCKER_IMAGE;
 	}
 
 	/**
