@@ -64,6 +64,7 @@ public class DockerUtil {
 		lines.add( "echo \"To execute module: " + module.getClass().getSimpleName() + "\"" );
 		lines.add( "echo \"Docker container id: $" + ID_VAR + "\"" );
 		lines.add( "echo \"${" + SCRIPT_ID_VAR + "}:" + DOCKER_KEY + ":${" + ID_VAR + "}\" >> " + startedFlag );
+		lines.add( "docker inspect ${" + ID_VAR + "}" );
 		lines.add( "}" + Constants.RETURN );
 		return lines;
 	}
