@@ -410,7 +410,7 @@ public abstract class BioModuleImpl implements BioModule, Comparable<BioModule> 
 	}
 	
 	public String getDockerImageOwner() {
-		return "biolockj";
+		return "biolockjdevteam";
 	}
 
 	public String getDockerImageTag() {

@@ -4,16 +4,15 @@
 # docker build --build-arg DOCKER_HUB_USER=biolockjdevteam -t biolockjdevteam/${name} . -f resources/docker/${name}.Dockerfile 
 
 ARG BUILDER_IMG=biolockjdevteam/build_with_ant:1.9.14
-ARG DOCKER_HUB_USER=biolockj
+ARG DOCKER_HUB_USER=biolockjdevteam
 FROM ${BUILDER_IMG} AS builder
 
 COPY . /blj
 RUN ls /blj
 RUN $ANT_DIST/bin/ant -buildfile blj/resources/build.xml build-jar
 
-ARG DOCKER_HUB_USER
-ARG FROM_VERSION=v1.2.7
-FROM ${DOCKER_HUB_USER}/blj_basic_py2:${FROM_VERSION}
+ARG DOCKER_HUB_USER=biolockjdevteam
+FROM ${DOCKER_HUB_USER}/blj_basic_py2:v1.2.7
 ARG DEBIAN_FRONTEND=noninteractive
 
 #1.) Install Ubuntu Software
