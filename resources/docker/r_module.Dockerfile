@@ -1,21 +1,13 @@
 # suggested build command:
 # name=r_module
 # cd ${BLJ}
-# docker build --build-arg DOCKER_HUB_USER=biolockjdevteam -t biolockjdevteam/${name} . -f resources/docker/${name}.Dockerfile 
+# docker build -t biolockjdevteam/${name} . -f resources/docker/${name}.Dockerfile 
 
-ARG DOCKER_HUB_USER=biolockjdevteam
-ARG FROM_VERSION=v1.2.7
-FROM ${DOCKER_HUB_USER}/blj_basic:${FROM_VERSION}
+FROM r-base
 ARG DEBIAN_FRONTEND=noninteractive
 
-#1.) Install Ubuntu Software 
-RUN apt-get install -y software-properties-common libcurl4-openssl-dev libssl-dev && \
-	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-	add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/' && \
-	apt update && \
-	apt install -y r-base-dev
 
-#2.) Install R Packages
+#1.) Install R Packages
 ENV REPO="http://cran.us.r-project.org"
 RUN Rscript -e "install.packages('Kendall', dependencies=TRUE, repos='$REPO')" && \
 	Rscript -e "install.packages('coin', dependencies=TRUE, repos='$REPO')" && \
@@ -24,6 +16,27 @@ RUN Rscript -e "install.packages('Kendall', dependencies=TRUE, repos='$REPO')" &
 	Rscript -e "install.packages('properties', dependencies=TRUE, repos='$REPO')" && \
 	Rscript -e "install.packages('htmltools', dependencies=TRUE, repos='$REPO')" && \
 	Rscript -e "install.packages('stringr', dependencies=TRUE, repos='$REPO')"
+
+#2.) Setup Standard Dirs and Build Standard Directories 
+SHELL ["/bin/bash", "-c"]
+ENV APP="/app"
+ENV APP_BIN="${APP}/bin"
+ENV BIN="/usr/local/bin"
+ENV BLJ="${APP}/biolockj"
+ENV BLJ_MODS="${APP}/external_modules"
+ENV EFS="/mnt/efs"
+ENV BLJ_CONFIG="${EFS}/config"
+ENV BLJ_HOST_HOME="/home/ec2-user"
+ENV BLJ_PROJ="${EFS}/pipelines"
+ENV BLJ_SCRIPT="${BLJ}/script"
+ENV PATH="$PATH:${BLJ_HOST_HOME}/miniconda/bin:${APP_BIN}"
+RUN mkdir -p "${BLJ}"              && \
+	mkdir -p "${BLJ_PROJ}"         && \
+	mkdir "${BLJ_CONFIG}"          && \
+	mkdir "${BLJ_SCRIPT}"          && \
+	mkdir -p "${BLJ_HOST_HOME}"    && \
+	mkdir "${BLJ_MODS}"
+	
 
 #3.) Cleanup
 RUN	apt-get clean && \
