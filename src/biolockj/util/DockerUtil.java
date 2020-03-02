@@ -159,7 +159,7 @@ public class DockerUtil {
 	 * @param module BioModule
 	 * @return Docker Hub User ID
 	 */
-	public static String getDockerUser( final BioModule module ) {
+	private static String getDockerUser( final BioModule module ) {
 		String user = module.getDockerImageOwner();
 		if (Config.getString( module, DOCKER_HUB_USER ) != null) user = Config.getString( module, DOCKER_HUB_USER );
 		return user;
@@ -184,7 +184,7 @@ public class DockerUtil {
 	 * @param module BioModule
 	 * @return Docker Image Name in the form <owner>/<image>:<tag>
 	 */
-	public static String getImageName( final BioModule module ) {
+	private static String getImageName( final BioModule module ) {
 		String name = module.getDockerImageName();
 		if (Config.getString( module, DOCKER_IMG ) != null) name=Config.getString( module, DOCKER_IMG );
 		return name;

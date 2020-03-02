@@ -337,8 +337,7 @@ public class NextflowUtil {
 	}
 
 	private static String getDockerImageLabel( final BioModule module ) throws ConfigNotFoundException {
-		return "'" + IMAGE + "_" + DockerUtil.getDockerUser( module ) + "_" + DockerUtil.getImageName( module ) + "_" +
-			Config.requireString( module, DockerUtil.DOCKER_IMG_VERSION ) + "'";
+		return "'" + IMAGE + "_" + DockerUtil.getDockerImage(module).replaceAll("/", "_").replaceAll(":", "_");
 	}
 
 	private static ScriptModule getModule( final String className ) {
