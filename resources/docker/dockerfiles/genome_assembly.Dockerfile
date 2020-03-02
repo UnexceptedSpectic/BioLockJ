@@ -1,10 +1,10 @@
 # suggested build command:
 # name=genome_assembly
 # cd ${BLJ}
-# docker build --build-arg DOCKER_HUB_USER=biolockjdevteam -t biolockjdevteam/${name} . -f resources/docker/${name}.Dockerfile 
+# docker build -t biolockjdevteam/${name} . -f resources/docker/dockerfiles/${name}.Dockerfile 
 
 ARG DOCKER_HUB_USER=biolockjdevteam
-ARG FROM_VERSION=v1.2.7
+ARG FROM_VERSION=v1.2.9
 FROM ${DOCKER_HUB_USER}/blj_basic_py2:${FROM_VERSION}
 ARG DEBIAN_FRONTEND=noninteractive
 

@@ -485,6 +485,11 @@ public class QiimeClassifier extends ClassifierModuleImpl {
 	public String getDockerImageName() {
 		return "qimme_classifier";
 	}
+	
+	@Override
+	public String getDockerImageTag() {
+		return "v1.1";
+	}
 
 	private String switches = null;
 	

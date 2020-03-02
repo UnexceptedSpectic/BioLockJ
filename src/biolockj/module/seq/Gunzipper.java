@@ -72,7 +72,7 @@ public class Gunzipper extends SeqModuleImpl implements ApiModule {
 	
 	@Override
 	public String getDockerImageName() {
-		return "blj_bash";
+		return "blj_basic";
 	}
 
 	/**

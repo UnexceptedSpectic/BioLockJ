@@ -99,7 +99,7 @@ public class GenMod extends ScriptModuleImpl implements ApiModule {
 	 */
 	@Override
 	public String getDockerImageName() {
-		return "blj_bash";
+		return "blj_basic";
 	}
 	
 	@Override

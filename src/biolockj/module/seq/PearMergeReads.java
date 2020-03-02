@@ -154,7 +154,7 @@ public class PearMergeReads extends SeqModuleImpl implements ApiModule {
 	
 	@Override
 	public String getDockerImageName() {
-		return "blj_bash";
+		return "pear";
 	}
 
 	private String otuColName = null;

@@ -235,7 +235,7 @@ public class Kraken2Classifier extends ClassifierModuleImpl implements ApiModule
 	
 	protected static final String KRAKEN2_PARAMS = "kraken2.kraken2Params";
 	
-	private static final String DEFAULT_DB_IN_DOCKER = "/mnt/eft/db";
+	private static final String DEFAULT_DB_IN_DOCKER = "/mnt/db";
 
 	/**
 	 * File suffix added by BioLockJ to kraken output files (before translation): {@value #KRAKEN_FILE}

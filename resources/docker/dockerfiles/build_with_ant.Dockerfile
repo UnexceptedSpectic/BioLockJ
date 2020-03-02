@@ -1,7 +1,7 @@
 # suggested build command:
 # name=build_with_ant
 # cd ${BLJ}
-# docker build -t biolockjdevteam/${name}:1.9.14 . -f resources/docker/${name}.Dockerfile 
+# docker build -t biolockjdevteam/${name}:1.9.14 . -f resources/docker/dockerfiles/${name}.Dockerfile 
 
 FROM java:8
 
