@@ -125,9 +125,17 @@ public class SraDownload extends ScriptModuleImpl implements ApiModule {
 
 	@Override
 	public String getCitationString() {
-		return ("Module developed by Philip Badzuh" + System.lineSeparator() + "BioLockj " + BioLockJUtil.getVersion());
+		return ("[sra-tools](https://github.com/ncbi/sra-tools)" + System.lineSeparator() 
+		+ "Module developed by Philip Badzuh" + System.lineSeparator() 
+		+ "BioLockj " + BioLockJUtil.getVersion());
+	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "";//TODO: actually supply docker image name; this just avoids compile errors.
 	}
 
 	private static final String METADATA_SRA_ID_COL_NAME = "sraDownload.metadataSraIdColumnName";
 	private static final String EXE_FASTERQ = "exe.fasterq-dump";
+
 }
