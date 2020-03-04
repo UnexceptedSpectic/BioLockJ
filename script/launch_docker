@@ -167,7 +167,12 @@ args_for_gui(){
 }
 
 get_docker_img() {
-	echo "${DOCKER_ID}/biolockj_controller"
+	local VER=$(cat ${BLJ}/.version)
+	local TAG=${VER//-*}
+	if [ ${#TAG} -eq 0 ]; then
+		local TAG=latest
+	fi
+	echo "${DOCKER_ID}/biolockj_controller:${TAG}"
 }
 
 cmd_for_gui(){
