@@ -77,6 +77,7 @@ cache_blj_props() {
 		line="$(echo ${line} | xargs)" && [ ${#line} -eq 0 ] || [ "${line:0:1}" == "#" ] && continue
 		IFS=$'=' && tokens=( ${line} ) && reset_IFS && set_blj_prop "${tokens[0]}" "$(eval echo ${tokens[1]})"
 	done < "${1}"
+	local TMP=".${AWS_CONF}~"
 	sort -d "${AWS_CONF}" > "${TMP}" && mv "${TMP}" "${AWS_CONF}"
 }
 
@@ -137,6 +138,7 @@ init_aws_config() {
 	set_blj_prop "internal.config" "${1}"
  	export AWS_DEFAULT_PROFILE="$(aws_profile)" && console_log "User AWS profile: $(aws_profile)" 
 	verify_config
+	local TMP=".${AWS_CONF}~"
 	console_log "MASTER AWS Config properties saved to --> ${AWS_CONF}" && sort -d "${AWS_CONF}" > "${TMP}" && mv "${TMP}" "${AWS_CONF}"
 }
 

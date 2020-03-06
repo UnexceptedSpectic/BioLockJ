@@ -9,6 +9,9 @@ main(){
 	take_standard_biolockj_args "$@"
 	assign_main_arg
 	
+	export EC2_USER="ec2-user"
+	export EC2_HOME="/home/${EC2_USER}"
+	
 	if ifArgUsed $PRECHECK ; then 
 		exit_with_message "argument \"--$PRECHECK\" is not currently support when running on AWS"
 	fi
