@@ -25,8 +25,8 @@ main(){
     fi
 }
 
-. ${BLJ_SCRIPT}/blj_functions
-. ${BLJ_SCRIPT}/blj_user_arg_lib # note that several functions are over-written
+. ${BLJ}/script/blj_functions
+. ${BLJ}/script/blj_user_arg_lib # note that several functions are over-written
 
 # Optionally print a message, then show help, then exit with status 1
 # over-witten from blj_functions

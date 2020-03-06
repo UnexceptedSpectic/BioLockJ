@@ -101,7 +101,7 @@ stage_blj_config() {
 	console_log "Starting --> [ stage_blj_config  ]: Upload Pipeline Config --> EFS: $(basename $(get_config ec2))"
 	upload_to_efs "$(local_nf_conf)" "${EC2_HOME}/.nextflow/config"
 	upload_to_efs "${BLJ}/resources/aws/ec2_head_node_profile"
-	upload_to_efs "${BLJ_SCRIPT}" "${EFS}"
+	upload_to_efs "${BLJ}/script" "${EFS}"
 	upload_to_efs "$(get_config local)" "${BLJ_CONFIG}"
 	exe_remote_cmd 'mv ~/.bash_profile ~/.bash_profile~; mv ~/ec2_head_node_profile ~/.bash_profile'
 	localS3=$(get_property $(get_config local) aws.s3)

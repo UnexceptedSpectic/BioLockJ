@@ -25,7 +25,7 @@ main(){
 	fi
 }
 
-. ${BLJ_SCRIPT}/blj_user_arg_lib
-. ${BLJ_SCRIPT}/aws_functions
+. ${BLJ}/script/blj_user_arg_lib
+. ${BLJ}/script/aws_functions
 
 main $@

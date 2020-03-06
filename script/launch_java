@@ -25,8 +25,8 @@ main(){
 	after_java_start
 }
 
-. ${BLJ_SCRIPT}/blj_functions
-. ${BLJ_SCRIPT}/blj_user_arg_lib
+. ${BLJ}/script/blj_functions
+. ${BLJ}/script/blj_user_arg_lib
 
 # Make sure required variables exist and are valid
 check_env_vars(){
