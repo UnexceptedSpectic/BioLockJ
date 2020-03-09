@@ -37,7 +37,7 @@ fi
 echo 'export BLJ='"$BLJ" >> $user_profile
 
 if [ ${#BLJ_PROJ} -gt 0 ] && [ -d ${BLJ_PROJ} ]; then
-	echo "Found existing "'$BLJ_PROJ: '"$BLJ_PROJ"
+	echo "    Found existing "'$BLJ_PROJ: '"$BLJ_PROJ"
 	echo "export BLJ_PROJ=$BLJ_PROJ" >> $user_profile
 else
 	echo 'Setting default BLJ_PROJ=$BLJ/pipelines'
@@ -45,6 +45,7 @@ else
 fi
 
 echo 'export PATH=$PATH:$BLJ/script' >> $user_profile
+echo "alias cd-blj='cd \$(last-pipeline) && echo Moved to most recent pipeline: \`pwd\` && ls'" >> $user_profile
 
 echo "    Saved profile:  $user_profile"
 echo "BioLockJ installation complete!"
