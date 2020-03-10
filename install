@@ -45,7 +45,12 @@ else
 fi
 
 echo 'export PATH=$PATH:$BLJ/script' >> $user_profile
-echo "alias cd-blj='cd \$(last-pipeline) && echo Moved to most recent pipeline: \`pwd\` && ls'" >> $user_profile
+# the backticks have to be preserved to appear in the profile
+# The result of last-pipeline should be in double quotes in case of file names with spaces.
+# The whole string after the = needs to be in double quotes as well.
+echo 'alias cd-blj="cd \"`last-pipeline`\"; quick_pipeline_view"' >> $user_profile
+# should appear in the profile as:
+# alias cd-blj="cd \"`last-pipeline`\"; quick_pipeline_view"
 
 echo "    Saved profile:  $user_profile"
 echo "BioLockJ installation complete!"
