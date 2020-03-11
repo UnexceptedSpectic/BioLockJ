@@ -25,6 +25,8 @@ if [ ${#user_profile} -eq 0 ]; then
 	fi
 fi
 
+echo "Appending lines to user profile: $user_profile"
+
 # If the profile already exists, back it up.
 if [ ! -f "$user_profile" ]; then
 	printf '%s\n' '#BioLockJ generated profile' > $user_profile
@@ -34,13 +36,17 @@ elif [ ! -x "$user_profile" ]; then
 	echo "    Saved backup:  $user_profile~"
 fi
 
+echo "" >> $user_profile
+echo "# installing BioLockJ" >> $user_profile
+
 echo 'export BLJ='"$BLJ" >> $user_profile
+echo "    Setting BLJ=$BLJ"
 
 if [ ${#BLJ_PROJ} -gt 0 ] && [ -d ${BLJ_PROJ} ]; then
-	echo "    Found existing "'$BLJ_PROJ: '"$BLJ_PROJ"
+	echo '    Found existing $BLJ_PROJ: '"$BLJ_PROJ"
 	echo "export BLJ_PROJ=$BLJ_PROJ" >> $user_profile
 else
-	echo 'Setting default BLJ_PROJ=$BLJ/pipelines'
+	echo '    Setting default BLJ_PROJ=$BLJ/pipelines'
 	echo 'export BLJ_PROJ=$BLJ/pipelines' >> $user_profile
 fi
 
@@ -52,5 +58,22 @@ echo 'alias cd-blj="cd \"`last-pipeline`\"; quick_pipeline_view"' >> $user_profi
 # should appear in the profile as:
 # alias cd-blj="cd \"`last-pipeline`\"; quick_pipeline_view"
 
-echo "    Saved profile:  $user_profile"
-echo "BioLockJ installation complete!"
+echo ""
+
+VER=$(. $user_profile; biolockj -v) # this line must run BEFORE exporting $BLJ
+export BLJ
+export BLJ_PROJ=$BLJ/pipelines
+CUR=`$BLJ/script/biolockj -v`
+
+if [ ${#CUR} -gt 0 ] && [ ${#VER} -gt 0 ] && [ $CUR == $VER ]; then
+	echo "Successfully installed BioLockJ version $VER"
+	echo ""
+	echo 'Start a new session and run "biolockj --help" to see options.'
+else
+	echo "Installation process complete."
+	echo 'To verify installation, open a new session and type "biolockj --help"'
+fi
+
+echo 'Then run a small pipeline:'
+echo '"biolockj $BLJ/templates/myFirstPipeline/myFirstPipeline.properties" '
+echo ""
