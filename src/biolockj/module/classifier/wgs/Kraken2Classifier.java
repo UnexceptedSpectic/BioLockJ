@@ -120,7 +120,13 @@ public class Kraken2Classifier extends ClassifierModuleImpl implements ApiModule
 
 	@Override
 	public File getDB() throws ConfigNotFoundException, ConfigPathException, DockerVolCreationException {
-		if( DockerUtil.inDockerEnv() ) return new File( Config.requireString( this, KRAKEN_DATABASE ) );
+		if( DockerUtil.inDockerEnv() ) {
+			if (Config.getString( this, KRAKEN_DATABASE ) == null) {
+				return new File( DEFAULT_DB_IN_DOCKER );
+			}else {
+				return Config.requireExistingDir( this, KRAKEN_DATABASE );
+			}
+		}
 		return Config.requireExistingDir( this, KRAKEN_DATABASE );
 	}
 
@@ -137,11 +143,6 @@ public class Kraken2Classifier extends ClassifierModuleImpl implements ApiModule
 		lines.add( "}" + RETURN );
 
 		return lines;
-	}
-
-	private File getKrakenDB() throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException {
-		if( DockerUtil.inDockerEnv() ) return DockerUtil.getDockerDB( this, getDB().getAbsolutePath() );
-		return getDB();
 	}
 
 	private String getParams() throws Exception {
@@ -174,7 +175,7 @@ public class Kraken2Classifier extends ClassifierModuleImpl implements ApiModule
 					"). BioLockJ hard codes this value based on Sample IDs found in: " + Constants.INPUT_DIRS );
 
 			this.defaultSwitches = getRuntimeParams( classifierParams, NUM_THREADS_PARAM ) + DB_PARAM +
-				getKrakenDB().getAbsolutePath() + " " + USE_NAMES_PARAM + USE_MPA_PARAM;
+				getDB().getAbsolutePath() + " " + USE_NAMES_PARAM + USE_MPA_PARAM;
 		}
 
 		return this.defaultSwitches;
@@ -195,6 +196,14 @@ public class Kraken2Classifier extends ClassifierModuleImpl implements ApiModule
 	}
 
 	private String defaultSwitches = null;
+	
+	@Override
+	public String getDockerImageName() {
+		if (Config.getString( this, KRAKEN_DATABASE ) != null )
+			return "kraken2_classifier_dbfree";
+		else
+			return "kraken2_classifier";
+	}
 	
 	@Override
 	public String getDescription() {
@@ -225,6 +234,8 @@ public class Kraken2Classifier extends ClassifierModuleImpl implements ApiModule
 	protected static final String KRAKEN_DATABASE = "kraken2.db";
 	
 	protected static final String KRAKEN2_PARAMS = "kraken2.kraken2Params";
+	
+	private static final String DEFAULT_DB_IN_DOCKER = "/mnt/db";
 
 	/**
 	 * File suffix added by BioLockJ to kraken output files (before translation): {@value #KRAKEN_FILE}

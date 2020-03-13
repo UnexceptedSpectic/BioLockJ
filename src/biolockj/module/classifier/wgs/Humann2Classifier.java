@@ -441,6 +441,10 @@ public class Humann2Classifier extends ClassifierModuleImpl implements ApiModule
 		return !dlHn2DBs.isEmpty();
 	}
 	
+	@Override
+	public String getDockerImageName() {
+		return "humann2_classifier";
+	}
 
 	@Override
 	public String getTitle() {

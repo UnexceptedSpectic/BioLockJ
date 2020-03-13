@@ -151,6 +151,11 @@ public class PearMergeReads extends SeqModuleImpl implements ApiModule {
 		if( this.otuColName == null ) this.otuColName = MetaUtil.getSystemMetaCol( this, NUM_MERGED_READS );
 		return this.otuColName;
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "pear";
+	}
 
 	private String otuColName = null;
 	private Map<String, String> readsPerSample = new HashMap<>();

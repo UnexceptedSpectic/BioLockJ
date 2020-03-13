@@ -205,6 +205,8 @@ public class BashScriptBuilder {
 		lines.add( "# BioLockJ " + BioLockJUtil.getVersion() + ": " + mainScriptPath + RETURN );
 		lines.addAll( pathVariableVals(module) );
 		lines.add( "touch \"" + startedFlag + "\"" + RETURN );
+		lines.add( "exec 1>${tempDir}/MAIN.log" );
+		lines.add( "exec 2>&1" );
 		lines.add( "cd " + module.getScriptDir().getAbsolutePath() + RETURN );
 		if( DockerUtil.inDockerEnv() ) {
 			lines.addAll( DockerUtil.buildSpawnDockerContainerFunction( module, startedFlag ) );
@@ -287,6 +289,8 @@ public class BashScriptBuilder {
 	 */
 	protected static List<String> initWorkerScript( final ScriptModule module, final String scriptPath )
 		throws Exception {
+		File script = new File(scriptPath);
+		File log = new File(module.getTempDir(), script.getName().replaceAll( Constants.SH_EXT + "$", Constants.LOG_EXT ));
 		final List<String> lines = new ArrayList<>();
 		final String header = Config.getString( module, SCRIPT_JOB_HEADER );
 		final String defaultHeader = Config.getString( module, Constants.SCRIPT_DEFAULT_HEADER );
@@ -297,6 +301,9 @@ public class BashScriptBuilder {
 		lines.add( "" );
 		lines.addAll( pathVariableVals(module) );
 		lines.add( "touch \"" + scriptPath + "_" + Constants.SCRIPT_STARTED  + "\"");
+		lines.add( "" );
+		lines.add( "exec 1>" + log.getAbsolutePath() );
+		lines.add( "exec 2>&1" );
 		lines.add( "" );
 		lines.add( "cd " + module.getScriptDir().getAbsolutePath());
 		lines.add( "" );

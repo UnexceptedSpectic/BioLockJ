@@ -111,9 +111,10 @@ public class Metaphlan2Classifier extends ClassifierModuleImpl implements ApiMod
 
 	/**
 	 * Obtain the metaphlan2 runtime params
+	 * @throws DockerVolCreationException 
 	 */
 	@Override
-	public List<String> getClassifierParams() throws ConfigException {
+	public List<String> getClassifierParams() throws ConfigException, DockerVolCreationException {
 		final List<String> params = Config.getList( this, EXE_METAPHLAN_PARAMS );
 		if( getMpaDB() != null ) params.add( ALT_DB_PARAM + " " + getMpaDB().getAbsolutePath() );
 		return params;
@@ -121,9 +122,9 @@ public class Metaphlan2Classifier extends ClassifierModuleImpl implements ApiMod
 
 	@Override
 	public File getDB() throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException {
-		final String path = Config.getString( this, METAPHLAN2_DB );
-		if( path == null ) return null;
-		if( DockerUtil.inDockerEnv() ) return new File( path );
+		if ( DockerUtil.inDockerEnv() && Config.getString( this, METAPHLAN2_DB ) == null) {
+			return new File( DEFAULT_DB_IN_DOCKER );
+		}
 		return Config.requireExistingDir( this, METAPHLAN2_DB );
 	}
 
@@ -181,21 +182,14 @@ public class Metaphlan2Classifier extends ClassifierModuleImpl implements ApiMod
 		return this.defaultSwitches;
 	}
 
-	private File getMpaDB() throws ConfigPathException, ConfigNotFoundException {
-		File db = null;
-		try { 
-			db = getDB();
-			if( DockerUtil.inDockerEnv() ) return DockerUtil.getDockerDB( this, null );
-			}catch( DockerVolCreationException ex ) {
-				Log.info(this.getClass(), "A DockerVolCreationException occurred while trying to getDB(). ");
-			}
-		return db;
+	private File getMpaDB() throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException {
+		return getDB();
 	}
 
 	private File getMpaPkl() throws Exception {
 		final String path = Config.getString( this, METAPHLAN2_MPA_PKL );
 		if( path == null ) return null;
-		if( DockerUtil.inDockerEnv() ) return DockerUtil.getDockerDB( this, path );
+		if( DockerUtil.inDockerEnv() ) return getDB();
 		return Config.requireExistingFile( this, METAPHLAN2_MPA_PKL );
 	}
 
@@ -218,6 +212,14 @@ public class Metaphlan2Classifier extends ClassifierModuleImpl implements ApiMod
 	}
 	
 	@Override
+	public String getDockerImageName() {
+		if (Config.getString( this, METAPHLAN2_DB ) != null )
+			return "metaphlan2_classifier_dbfree";
+		else
+			return "metaphlan2_classifier";
+	}
+	
+	@Override
 	public String getDescription() {
 		return "Classify WGS samples with [MetaPhlAn2](http://bitbucket.org/biobakery/metaphlan2).";
 	}
@@ -226,6 +228,8 @@ public class Metaphlan2Classifier extends ClassifierModuleImpl implements ApiMod
 	public String getCitationString() {
 		return "MetaPhlAn2 for enhanced metagenomic taxonomic profiling. Duy Tin Truong, Eric A Franzosa, Timothy L Tickle, Matthias Scholz, George Weingart, Edoardo Pasolli, Adrian Tett, Curtis Huttenhower & Nicola Segata. Nature Methods 12, 902-903 (2015)";
 	}
+	
+	private static final String DEFAULT_DB_IN_DOCKER = "/mnt/efs/db";
 	
 	/**
 	 * {@link biolockj.Config} exe property used to obtain the metaphlan2 executable

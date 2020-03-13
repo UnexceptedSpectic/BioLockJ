@@ -366,6 +366,11 @@ public abstract class R_Module extends ScriptModuleImpl {
 
 		return rFile;
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "r_module";
+	}
 
 	private static final String FUNCTION_RUN_R = "runScript";
 	private static final String INDENT = "   ";

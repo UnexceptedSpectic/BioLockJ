@@ -125,7 +125,13 @@ public class KrakenClassifier extends ClassifierModuleImpl implements ApiModule 
 
 	@Override
 	public File getDB() throws ConfigNotFoundException, ConfigPathException, DockerVolCreationException {
-		if( DockerUtil.inDockerEnv() ) return new File( Config.requireString( this, KRAKEN_DATABASE ) );
+		if( DockerUtil.inDockerEnv() ) {
+			if (Config.getString( this, KRAKEN_DATABASE ) == null) {
+				return new File( DEFAULT_DB_IN_DOCKER );
+			}else {
+				return Config.requireExistingDir( this, KRAKEN_DATABASE );
+			}
+		}
 		return Config.requireExistingDir( this, KRAKEN_DATABASE );
 	}
 
@@ -141,14 +147,9 @@ public class KrakenClassifier extends ClassifierModuleImpl implements ApiModule 
 		lines.add( "}" + RETURN );
 		lines.add( "function " + FUNCTION_TRANSLATE + "() {" );
 		lines.add(
-			getClassifierExe() + "-translate " + DB_PARAM + getKrakenDB().getAbsolutePath() + " --mpa-format $1 > $2" );
+			getClassifierExe() + "-translate " + DB_PARAM + getDB().getAbsolutePath() + " --mpa-format $1 > $2" );
 		lines.add( "}" + RETURN );
 		return lines;
-	}
-
-	private File getKrakenDB() throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException {
-		if( DockerUtil.inDockerEnv() ) return DockerUtil.getDockerDB( this, getDB().getAbsolutePath() );
-		return getDB();
 	}
 
 	private String getParams() throws Exception {
@@ -188,7 +189,7 @@ public class KrakenClassifier extends ClassifierModuleImpl implements ApiModule 
 		if( !getInputFiles().isEmpty() && SeqUtil.isGzipped( getInputFiles().get( 0 ).getName() ) )
 			params += GZIP_PARAM;
 
-		params += DB_PARAM + getKrakenDB().getAbsolutePath() + " " + getInputSwitch();
+		params += DB_PARAM + getDB().getAbsolutePath() + " " + getInputSwitch();
 		if( SeqUtil.hasPairedReads() ) params += PAIRED_PARAM;
 
 		if( !getInputFiles().isEmpty() && SeqUtil.isGzipped( getInputFiles().get( 0 ).getName() ) )
@@ -216,12 +217,22 @@ public class KrakenClassifier extends ClassifierModuleImpl implements ApiModule 
 	private String defaultSwitches = null;
 	
 	@Override
+	public String getDockerImageName() {
+		if (Config.getString( this, KRAKEN_DATABASE ) != null )
+			return "kraken_classifier_dbfree";
+		else
+			return "kraken_classifier";
+	}
+	
+	@Override
 	public String getDescription() {
 		return "Classify WGS samples with KRAKEN.";
 	}
 	
 	public String getDetails() {
-		return "Classify WGS samples with [KRAKEN](http://ccb.jhu.edu/software/kraken/).";
+		return "Classify WGS samples with [KRAKEN](http://ccb.jhu.edu/software/kraken/). " + System.lineSeparator() 
+						+ "If running in docker, the default docker container contains a kmer " 
+						+ "database which will be used if no database is supplied through the `" + KRAKEN_DATABASE + "` property.";
 	}
 
 	@Override
@@ -251,6 +262,8 @@ public class KrakenClassifier extends ClassifierModuleImpl implements ApiModule 
 	protected static final String KRAKEN_DATABASE = "kraken.db";
 	
 	protected static final String KRAKEN_PARAMS = "kraken.krakenParams";
+	
+	private static final String DEFAULT_DB_IN_DOCKER = "/mnt/db";
 
 	/**
 	 * File suffix added by BioLockJ to kraken output files (before translation): {@value #KRAKEN_FILE}

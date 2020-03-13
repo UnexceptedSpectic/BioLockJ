@@ -250,6 +250,11 @@ public class Email extends BioModuleImpl implements ApiModule {
 		multipart.addBodyPart( mimeMsg );
 		return multipart;
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return Constants.MAIN_DOCKER_IMAGE;
+	}
 
 	@Override
 	public String getDescription() {

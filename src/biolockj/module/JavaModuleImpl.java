@@ -141,6 +141,10 @@ public abstract class JavaModuleImpl extends ScriptModuleImpl implements JavaMod
 		Log.debug( getClass(), "BioLockJ Java source code for java command: " + javaString );
 		return javaString;
 	}
+	
+	public String getDockerImageName() {
+		return Constants.MAIN_DOCKER_IMAGE;
+	}
 
 	/**
 	 * Docker environment variable holding the Docker program switches: {@value #BLJ_OPTIONS}

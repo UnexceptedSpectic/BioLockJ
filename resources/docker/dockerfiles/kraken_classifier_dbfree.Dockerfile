@@ -1,19 +1,24 @@
 # suggested build command:
 # name=kraken_classifier_dbfree
 # cd ${BLJ}
-# docker build --build-arg DOCKER_HUB_USER=biolockjdevteam -t biolockjdevteam/${name} . -f resources/docker/${name}.Dockerfile 
+# docker build -t biolockjdevteam/${name} . -f resources/docker/dockerfiles/${name}.Dockerfile 
 
-ARG DOCKER_HUB_USER=biolockj
-ARG FROM_VERSION=v1.2.7
+ARG DOCKER_HUB_USER=biolockjdevteam
+ARG FROM_VERSION=v1.2.9
 FROM ${DOCKER_HUB_USER}/blj_basic:${FROM_VERSION}
 
 #1.) Install Kraken
-ENV KRAKEN_VER=0.10.5-beta
-ENV BASE_URL="https://github.com/DerrickWood/kraken/archive/v"
-ENV KRAKEN_URL=${BASE_URL}${KRAKEN_VER}.tar.gz
-ENV KRAKEN=kraken-${KRAKEN_VER}
-RUN cd $BIN && wget -qO- $KRAKEN_URL | bsdtar -xf- && \
-	chmod o+x -R $KRAKEN && cd $KRAKEN && ./install_kraken.sh $BIN && \
+ENV BIN=/usr/bin
+ENV PATH=${BIN}:${PATH}
+RUN KRAKEN_VER=0.10.5-beta && \
+	BASE_URL="https://github.com/DerrickWood/kraken/archive/v" && \
+	KRAKEN_URL=${BASE_URL}${KRAKEN_VER}.tar.gz && \
+	KRAKEN=kraken-${KRAKEN_VER} && \
+	cd $BIN && \
+	wget -qO- $KRAKEN_URL | bsdtar -xf- && \
+	chmod o+x -R $KRAKEN && \
+	cd $KRAKEN && \
+	./install_kraken.sh $BIN && \
 	chmod o+x -R $BIN && rm -rf $KRAKEN
 
 #2.) Cleanup

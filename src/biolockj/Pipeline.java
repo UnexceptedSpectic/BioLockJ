@@ -257,6 +257,7 @@ public class Pipeline {
 	protected static boolean poll( final ScriptModule module ) throws Exception {
 		final Collection<File> scriptFiles = getWorkerScripts( module );
 		final File mainStarted = getMainStartedFlag(module);
+		final File mainFailed = getMainFailedFlag( module );
 		final int numScripts = scriptFiles.size();
 		int numSuccess = 0;
 		int numStarted = 0;
@@ -290,7 +291,7 @@ public class Pipeline {
 			Log.info( Pipeline.class, logMsg );
 		} else if( ++pollCount % 10 == 0 ) Log.info( Pipeline.class, logMsg );
 
-		if( numFailed > 0 ) {
+		if( numFailed > 0 | mainFailed.exists() ) {
 			String scriptMsgs = BioLockJUtil.getCollectionAsString( module.getScriptErrors() );
 			if (scriptMsgs != null && !scriptMsgs.isEmpty()) {
 				throw new DirectModuleException( "SCRIPT FAILED: " + scriptMsgs );
@@ -348,6 +349,14 @@ public class Pipeline {
 			mainScriptStarted = new File(module.getMainScript().getAbsolutePath() + "_" + Constants.SCRIPT_STARTED);
 		}
 		if ( mainScriptStarted != null && mainScriptStarted.exists()) return mainScriptStarted;
+		return null;
+	}
+	private static File getMainFailedFlag ( final ScriptModule module ) throws Exception {
+		File mainScriptFailed = null;
+		if ( module.getMainScript() != null ) {
+			mainScriptFailed = new File(module.getMainScript().getAbsolutePath() + "_" + Constants.SCRIPT_FAILURES);
+		}
+		if ( mainScriptFailed != null ) return mainScriptFailed;
 		return null;
 	}
 

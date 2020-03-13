@@ -408,6 +408,14 @@ public abstract class BioModuleImpl implements BioModule, Comparable<BioModule> 
 	public String getDetails() throws API_Exception {
 		return "";
 	}
+	
+	public String getDockerImageOwner() {
+		return "biolockjdevteam";
+	}
+
+	public String getDockerImageTag() {
+		return BioLockJUtil.getVersion().substring( 0, BioLockJUtil.getVersion().indexOf( "-" ) );
+	}
 
 	/**
 	 * BioLockJ gzip file extension constant: {@value #GZIP_EXT}

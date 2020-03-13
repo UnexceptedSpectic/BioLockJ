@@ -1,19 +1,18 @@
 # suggested build command:
 # name=biolockj_controller
 # cd ${BLJ}
-# docker build --build-arg DOCKER_HUB_USER=biolockjdevteam -t biolockjdevteam/${name} . -f resources/docker/${name}.Dockerfile 
+# docker build -t biolockjdevteam/${name} . -f resources/docker/dockerfiles/${name}.Dockerfile 
 
 ARG BUILDER_IMG=biolockjdevteam/build_with_ant:1.9.14
-ARG DOCKER_HUB_USER=biolockj
+ARG DOCKER_HUB_USER=biolockjdevteam
 FROM ${BUILDER_IMG} AS builder
 
 COPY . /blj
 RUN ls /blj
 RUN $ANT_DIST/bin/ant -buildfile blj/resources/build.xml build-jar
 
-ARG DOCKER_HUB_USER
-ARG FROM_VERSION=v1.2.7
-FROM ${DOCKER_HUB_USER}/blj_basic_py2:${FROM_VERSION}
+ARG DOCKER_HUB_USER=biolockjdevteam
+FROM ${DOCKER_HUB_USER}/blj_basic_py2:v1.2.9
 ARG DEBIAN_FRONTEND=noninteractive
 
 #1.) Install Ubuntu Software
@@ -26,17 +25,22 @@ RUN apt-get update && \
 
 #2.) Install Nextflow Client
 #NF_URL="https://get.nextflow.io"
-ENV NF_URL="https://github.com/nextflow-io/nextflow/releases/download/v19.04.0/nextflow"
-RUN cd $BIN && wget -qO- $NF_URL | bash
+ENV BIN=/usr/bin
+RUN NF_URL="https://github.com/nextflow-io/nextflow/releases/download/v19.04.0/nextflow" && \
+	cd $BIN && wget -qO- $NF_URL | bash
 
 #3.) Install Docker Client
 ARG DOCKER_CLIENT=docker-18.09.2
-ENV DOCK_URL="https://download.docker.com/linux/static/stable/x86_64/${DOCKER_CLIENT}.tgz"
-RUN cd $BIN && \
+RUN DOCK_URL="https://download.docker.com/linux/static/stable/x86_64/${DOCKER_CLIENT}.tgz" && \
+	cd $BIN && \
 	wget -qO- $DOCK_URL  | bsdtar -xzf- && \
 	mv docker tempDocker && mv tempDocker/* . && rm -rf tempDocker
 
 #4.) Install BioLockJ
+ENV BLJ="/app/biolockj" 
+ENV BLJ_MODS="/app/external_modules"
+RUN mkdir -p "${BLJ}" && \
+	mkdir -p "${BLJ_MODS}"
 COPY --from=builder /blj/dist/BioLockJ.jar $BLJ/dist/BioLockJ.jar
 COPY --from=builder /blj/resources $BLJ/resources
 COPY --from=builder /blj/script $BLJ/script

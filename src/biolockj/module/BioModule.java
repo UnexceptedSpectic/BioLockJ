@@ -187,6 +187,28 @@ public interface BioModule {
 	 * @return boolean TRUE if the previousModule output is acceptable input for the current BioModule
 	 */
 	public boolean isValidInputModule( BioModule previousModule );
+	
+	/**
+	 * Get the name of the docker hub user that owns the image to use for this module.
+	 * Docker images from docker hub are specified using this syntax: <owner>/<image>:<tag>
+	 * @return
+	 */
+	public String getDockerImageOwner();
+	
+	/**
+	 * Get the docker image to use for this module.  
+	 * The owner and version/tag are specificed separately; this is just the image name.
+	 * Docker images from docker hub are specified using this syntax: <owner>/<image>:<tag>
+	 * @return
+	 */
+	public String getDockerImageName();
+	
+	/**
+	 * Get the version / tag to use for the docker image.
+	 * Docker images from docker hub are specified using this syntax: <owner>/<image>:<tag>
+	 * @return
+	 */
+	public String getDockerImageTag();
 
 	/**
 	 * Script prefix appended to start of file name to indicate the main script in the script directory.<br>

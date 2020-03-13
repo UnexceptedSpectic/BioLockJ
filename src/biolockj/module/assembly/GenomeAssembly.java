@@ -134,6 +134,16 @@ public class GenomeAssembly extends SeqModuleImpl {
 			else if( module.equals( getClass().getName() ) ) break;
 		return SeqUtil.hasPairedReads();
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "genome_assembly";
+	}
+	
+	@Override
+	public String getDockerImageTag() {
+		return "v1.2.0";
+	}
 
 	/**
 	 * {@link biolockj.Config} exe property for checkm executable: {@value #EXE_CHECKM}

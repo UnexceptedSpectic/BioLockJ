@@ -270,6 +270,11 @@ public class BuildQiimeMapping extends SeqModuleImpl {
 
 		return cols;
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "qimme_classifier";
+	}
 
 	private File initMetaFile = null;
 	private List<String> metaColumns = null;

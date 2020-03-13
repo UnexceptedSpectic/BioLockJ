@@ -13,6 +13,7 @@ package biolockj.module.classifier;
 
 import java.util.List;
 import biolockj.exception.ConfigException;
+import biolockj.exception.DockerVolCreationException;
 import biolockj.module.SeqModule;
 
 /**
@@ -35,6 +36,7 @@ public interface ClassifierModule extends SeqModule {
 	 *
 	 * @return Runtime parameters
 	 * @throws ConfigException if Configuration errors are thrown
+	 * @throws DockerVolCreationException 
 	 */
-	public List<String> getClassifierParams() throws ConfigException;
+	public List<String> getClassifierParams() throws ConfigException, DockerVolCreationException;
 }

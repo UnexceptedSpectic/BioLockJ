@@ -48,7 +48,7 @@ public abstract class ClassifierModuleImpl extends SeqModuleImpl implements Clas
 	public abstract String getClassifierExe() throws ConfigException;
 
 	@Override
-	public abstract List<String> getClassifierParams() throws ConfigException;
+	public abstract List<String> getClassifierParams() throws ConfigException, DockerVolCreationException;
 
 	@Override
 	public abstract File getDB() throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException;

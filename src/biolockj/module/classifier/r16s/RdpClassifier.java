@@ -123,11 +123,7 @@ public class RdpClassifier extends ClassifierModuleImpl implements ApiModule {
 
 	private String getDbParam() throws ConfigPathException, ConfigNotFoundException, DockerVolCreationException {
 		if( getDB() == null ) return "";
-		return DB_PARAM + " " +
-			( DockerUtil.inDockerEnv() ?
-				DockerUtil.getDockerDB( this, Config.requireString( this, RDP_DB ) ).getAbsolutePath():
-				Config.requireExistingFile( this, RDP_DB ).getAbsolutePath() ) +
-			" ";
+		return DB_PARAM + " " + Config.requireExistingFile( this, RDP_DB ).getAbsolutePath() + " ";
 	}
 
 	private String getJar() throws Exception {
@@ -136,6 +132,11 @@ public class RdpClassifier extends ClassifierModuleImpl implements ApiModule {
 
 	private String getJavaParams() throws Exception {
 		return Config.getExeParams( this, JAVA_PARAMS );
+	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "rdp_classifier";
 	}
 
 	/**
@@ -175,4 +176,5 @@ public class RdpClassifier extends ClassifierModuleImpl implements ApiModule {
 	public String getCitationString() {
 		return "Module developed by Mike Sioda" + System.lineSeparator() + "BioLockj " + BioLockJUtil.getVersion();
 	}
+
 }

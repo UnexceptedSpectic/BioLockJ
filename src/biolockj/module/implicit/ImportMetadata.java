@@ -343,10 +343,16 @@ public class ImportMetadata extends BioModuleImpl {
 			if( module instanceof R_Module ) return true;
 		return false;
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return Constants.MAIN_DOCKER_IMAGE;
+	}
 
 	private final List<String> colNames = new ArrayList<>();
 	private File configMeta = null;
 	private String quotedText = "";
 	private int rowNum = 0;
 	private static String inputDelim = null;
+
 }

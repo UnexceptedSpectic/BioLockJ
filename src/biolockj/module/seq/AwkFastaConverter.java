@@ -145,6 +145,11 @@ public class AwkFastaConverter extends SeqModuleImpl implements ApiModule {
 	private static String convert454( final String filePath, final String fileId, final String outDir ) {
 		return FUNCTION_CONVERT_454 + " " + filePath + " " + outDir + fileId + "." + Constants.FASTA;
 	}
+	
+	@Override
+	public String getDockerImageName() {
+		return "blj_basic";
+	}
 
 	/**
 	 * Name of the bash function used to conver 454 format to BioLockJ friendly Illumina format:
