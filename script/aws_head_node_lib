@@ -145,7 +145,7 @@ launch_ec2_head_node() {
 	[ ${keyFound} -gt 0 ] && ssh-keygen -f ~/.ssh/known_hosts -R $(get_ec2_public_ip)
 	stage_pipeline && console_log "Exectue Remote CMD [  nohup ${EC2_HOME}/start-$(get_config_root).sh >/dev/null 2>&1 &  ]"
 	exe_remote_cmd "nohup bash ${EC2_HOME}/start-$(get_config_root).sh >/dev/null 2>&1 &"
-	console_log "Exectue CMD [  connect_head --> type \"blj_go\" to navigate to the EC2 pipeline output directory  ]"
+	console_log "Exectue CMD [  connect_head --> type \"cd-blj\" to navigate to the EC2 pipeline output directory  ]"
 	connect_head
 }
 

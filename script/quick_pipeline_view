@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# This is used as part of the alias added to the user profile.
+# Having code here ensures that it runs in a bash shell, 
+# thus minimizing that commands/syntax that have to be included in the alias
+
+echo "Moved to most recent pipeline: `pwd`"
+ls

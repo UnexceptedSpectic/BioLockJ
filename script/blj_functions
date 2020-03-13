@@ -108,14 +108,18 @@ console_log() {
 
 # Check for a default profile in the $USER $HOME dir
 get_default_profile() {
-	user_profile="${HOME}"/.bash_profile
-	[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.bashrc
-	[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.profile
-	[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.bash_login
-	[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.zshenv
-	[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.zprofile
-	[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.zshrc
-	[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.zlogin
+	if [ ${SHELL} == "/bin/bash" ]; then
+		user_profile="${HOME}"/.bash_profile
+		[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.bashrc
+		[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.profile
+		[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.bash_login
+	elif [ ${SHELL} == "/bin/zsh" ]; then
+		user_profile="${HOME}"/.zshrc
+		[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.zshenv
+		[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.zprofile
+		[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.profile
+		[ ! -f "${user_profile}" ] && user_profile="${HOME}"/.zlogin
+	fi
 	[ -f "${user_profile}" ] && echo "${user_profile}"
 }
 
@@ -190,6 +194,7 @@ get_property() {
 # Param 1 - Config file
 # Param 2 - prop name 
 rm_property() {
+	local TMP="${HOME}/.temp_config.txt"
 	[ ! -f "${1}" ] && exit_script "Error [ blj_functions.rm_property() ]: Config file ${1} does not exist"
 	[ ${#2} -eq 0 ] && exit_script "Error [ blj_functions.rm_property() ]: Config property name is required"
 	[ -f "${TMP}" ] && rm "${TMP}" && touch "${TMP}" && chmod 770 "${TMP}"

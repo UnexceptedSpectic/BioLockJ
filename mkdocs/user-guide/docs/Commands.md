@@ -8,9 +8,10 @@ There are also several helper scripts for small specific tasks, these are all fo
 
 | Command | Description |
 | :-- | :-- |
-| **[blj_go](https://github.com/msioda/BioLockJ/blob/master/script/blj_go?raw=true)** | Go to most recent [$BLJ_PROJ](https://github.com/msioda/BioLockJ/blob/master/script/blj_config?raw=true) pipeline & list contents. |
-| **[blj_log](https://github.com/msioda/BioLockJ/blob/master/script/blj_log?raw=true)** | Tail last 1K lines from current or most recent [$BLJ_PROJ](https://github.com/msioda/BioLockJ/blob/master/script/blj_config?raw=true) pipeline log file. |
-| **[blj_summary](https://github.com/msioda/BioLockJ/blob/master/script/blj_summary?raw=true)** | Print current or most recent [$BLJ_PROJ](https://github.com/msioda/BioLockJ/blob/master/script/blj_config?raw=true) pipeline summary. |
-| **[blj_complete](https://github.com/msioda/BioLockJ/blob/master/script/blj_complete?raw=true)** | Manually completes the current module and pipeline status. |
-| **[blj_reset](https://github.com/msioda/BioLockJ/blob/master/script/blj_reset?raw=true)** | Reset pipeline status to incomplete.<br>If restarted, execution will start with the current module.  |
-| **[blj_downlaod](https://github.com/msioda/BioLockJ/blob/master/script/blj_download?raw=true)** | If on cluster, print command syntax to download current or most recent [$BLJ_PROJ](https://github.com/msioda/BioLockJ/blob/master/script/blj_config?raw=true) pipeline analysis to your local workstation directory: *pipeline.downloadDir*. |
+| **[last-pipeline](https://github.com/BioLockJ-Dev-Team/BioLockJ/blob/master/script/last-pipeline)** | Get the path to the most recent pipeline. |
+| **cd-blj** | Go to most recent pipeline & list contents. |
+| **[blj_log](https://github.com/BioLockJ-Dev-Team/BioLockJ/blob/master/script/blj_log)** | Tail last 1K lines from current or most recent pipeline log file. |
+| **[blj_summary](https://github.com/BioLockJ-Dev-Team/BioLockJ/blob/master/script/blj_summary)** | Print current or most recent pipeline summary. |
+| **[blj_complete](https://github.com/BioLockJ-Dev-Team/BioLockJ/blob/master/script/blj_complete)** | Manually completes the current module and pipeline status. |
+| **[blj_reset](https://github.com/BioLockJ-Dev-Team/BioLockJ/blob/master/script/blj_reset)** | Reset pipeline status to incomplete.<br>If restarted, execution will start with the current module.  |
+| **[blj_downlaod](https://github.com/BioLockJ-Dev-Team/BioLockJ/blob/master/script/blj_download)** | If on cluster, print command syntax to download current or most recent pipeline results to your local workstation directory: *pipeline.downloadDir*. |

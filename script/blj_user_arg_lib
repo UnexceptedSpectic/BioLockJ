@@ -9,7 +9,7 @@
 ##                                                               ##
 ###################################################################
 
-. ${BLJ_SCRIPT}/blj_functions
+. ${BLJ}/script/blj_functions
 
 # example: take_standard_biolockj_args "$@"
 take_standard_biolockj_args(){
@@ -212,9 +212,9 @@ get_arg_value(){
 
 ### These functions are used to give info to the user
 
-# Tell the use how to examine the pipeline they just launched
+# Tell the user how to examine the pipeline they just launched
 print_action_options(){
-	echo "blj_go       -> Move to pipeline output directory"
+	echo "cd-blj       -> Move to pipeline output directory"
 	echo "blj_log      -> Tail pipeline log (accepts tail runtime parameters)"
 	echo "blj_summary  -> View module execution summary"
 }

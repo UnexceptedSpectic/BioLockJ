@@ -52,8 +52,8 @@ main(){
 	ifArgUsed $GUI_ARG && startBrowser # if the gui has its own docker container, this CMD would be defined there
 }
 
-. ${BLJ_SCRIPT}/blj_user_arg_lib
-. ${BLJ_SCRIPT}/docker_config
+. ${BLJ}/script/blj_user_arg_lib
+. ${BLJ}/script/docker_config
 
 # Read script args and bash env vars
 # Param 1 - Array of launch_docker script args
