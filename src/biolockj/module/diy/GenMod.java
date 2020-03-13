@@ -11,11 +11,8 @@
  */
 package biolockj.module.diy;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
@@ -42,7 +39,6 @@ public class GenMod extends ScriptModuleImpl implements ApiModule {
 		addNewProperty( LAUNCHER, Properties.STRING_TYPE, LAUNCHER_DESC );
 		addNewProperty( PARAM, Properties.STRING_TYPE, PARAM_DESC );
 		addNewProperty( SCRIPT, Properties.FILE_PATH, SCRIPT_DESC );
-		addGeneralProperty( Constants.DOCKER_CONTAINER_NAME );
 	}
 
 	@Override
