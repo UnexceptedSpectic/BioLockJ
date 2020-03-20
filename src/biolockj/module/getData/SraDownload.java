@@ -132,7 +132,7 @@ public class SraDownload extends ScriptModuleImpl implements ApiModule {
 	
 	@Override
 	public String getDockerImageName() {
-		return "";//TODO: actually supply docker image name; this just avoids compile errors.
+		return "sra_download";
 	}
 
 	private static final String METADATA_SRA_ID_COL_NAME = "sraDownload.metadataSraIdColumnName";
