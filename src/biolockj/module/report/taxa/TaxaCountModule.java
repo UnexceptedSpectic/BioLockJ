@@ -16,6 +16,7 @@ import java.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
 import biolockj.Log;
+import biolockj.api.API_Exception;
 import biolockj.module.BioModule;
 import biolockj.module.JavaModuleImpl;
 import biolockj.util.BioLockJUtil;
@@ -44,11 +45,20 @@ public abstract class TaxaCountModule extends JavaModuleImpl {
 	 */
 	@Override
 	public List<String> getPreRequisiteModules() throws Exception {
-		final List<String> preReqs = new ArrayList<>();
+		final List<String> preReqs = super.getPreRequisiteModules();
 		if( !BioLockJUtil.pipelineInputType( BioLockJUtil.PIPELINE_TAXA_COUNT_TABLE_INPUT_TYPE ) )
 			preReqs.add( BuildTaxaTables.class.getName() );
-		preReqs.addAll( super.getPreRequisiteModules() );
 		return preReqs;
+	}
+	
+	/**
+	 * All child classes from this class have this pre-req.
+	 * @throws API_Exception 
+	 */
+	@Override
+	public String getDetails() throws API_Exception {
+		return super.getDetails() + "*If the pipeline input does not include at least one taxa table, then the BuildTaxaTables class is added by this module as a pre-requisite.*" 
+						+ System.lineSeparator();
 	}
 
 	/**
