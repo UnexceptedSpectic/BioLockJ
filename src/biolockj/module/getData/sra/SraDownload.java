@@ -225,7 +225,7 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 	public String getCitationString() {
 		return ("[sra-tools](https://github.com/ncbi/sra-tools)" + System.lineSeparator() 
 		+ "Module developed by Philip Badzuh" + System.lineSeparator() 
-		+ "BioLockj " + BioLockJUtil.getVersion());
+		+ "BioLockJ " + BioLockJUtil.getVersion());
 	}
 	
 	@Override

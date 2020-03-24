@@ -87,6 +87,6 @@ public class Gunzipper extends SeqModuleImpl implements ApiModule {
 
 	@Override
 	public String getCitationString() {
-		return "BioLockj " + BioLockJUtil.getVersion() + System.lineSeparator() + "Module developed by Mike Sioda";
+		return "BioLockJ " + BioLockJUtil.getVersion() + System.lineSeparator() + "Module developed by Mike Sioda";
 	}
 }

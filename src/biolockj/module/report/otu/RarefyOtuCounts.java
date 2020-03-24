@@ -287,7 +287,7 @@ public class RarefyOtuCounts extends OtuCountModule implements ApiModule {
 
 	@Override
 	public String getCitationString() {
-		return "Module developed by Mike Sioda" + System.lineSeparator() + "BioLockj " + BioLockJUtil.getVersion();
+		return "Module developed by Mike Sioda" + System.lineSeparator() + "BioLockJ " + BioLockJUtil.getVersion();
 	}
 	
 	/**
