@@ -15,9 +15,11 @@ import java.io.File;
 import java.util.*;
 import biolockj.Config;
 import biolockj.Constants;
+import biolockj.api.ApiModule;
 import biolockj.exception.*;
 import biolockj.module.SeqModuleImpl;
 import biolockj.module.seq.PearMergeReads;
+import biolockj.util.BioLockJUtil;
 import biolockj.util.SeqUtil;
 
 /**
@@ -26,7 +28,7 @@ import biolockj.util.SeqUtil;
  *
  * @blj.web_desc Genome Assembly
  */
-public class GenomeAssembly extends SeqModuleImpl {
+public class GenomeAssembly extends SeqModuleImpl implements ApiModule {
 
 	@Override
 	public List<List<String>> buildScript( final List<File> files ) throws Exception {
@@ -204,4 +206,23 @@ public class GenomeAssembly extends SeqModuleImpl {
 	private static final String OUTPUT_PARAM = "-o";
 	private static final String SCG_DIR = File.separator + "SCG";
 	private static final String TEMP_DIR_PARAM = "--tmp-dir";
+	
+	@Override
+	public String getDescription() {
+		return "Assemble WGS sequences with MetaSPAdes, bin contigs with Metabat2 and check quality with checkM.";
+	}
+
+	@Override
+	public String getCitationString() {
+		return ( "checkM database" + System.lineSeparator() + "https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz" + System.lineSeparator() +
+			"HMMER" + System.lineSeparator() + "http://eddylab.org/software/hmmer/hmmer.tar.gz" + System.lineSeparator() +
+			"MASH" + System.lineSeparator() + "https://github.com/marbl/Mash/releases/download/v2.2/mash-Linux64-v2.2.tar" + System.lineSeparator() +
+			"Metabat2" + System.lineSeparator() + "https://bitbucket.org/berkeleylab/metabat/downloads/metabat-static-binary-linux-x64_v2.12.1.tar.gz" + System.lineSeparator() +
+			"MetaSPAdes" + System.lineSeparator() + "https://github.com/ablab/spades/releases/download/v3.13.0/SPAdes-3.13.0-Linux.tar.gz" + System.lineSeparator() + 
+			"PPLACER" + System.lineSeparator() + "https://github.com/matsen/pplacer/releases/download/v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip" + System.lineSeparator() +
+			"PRODIGAL" + System.lineSeparator() + "https://github.com/hyattpd/Prodigal/releases/download/v2.6.3/prodigal.linux" + System.lineSeparator() +
+			System.lineSeparator() +
+			"Module developed by Shan Sun" + System.lineSeparator() +
+			"BioLockJ " + BioLockJUtil.getVersion() );
+	}
 }
