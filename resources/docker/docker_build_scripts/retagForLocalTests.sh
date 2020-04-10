@@ -10,5 +10,5 @@ for f in $FILES; do
 	name=${f//.Dockerfile}
 	echo "============================"
 	echo $name
-	docker tag biolockjdevteam/${name}:${$1} biolockjdevteam/${name}:${$2}
+	docker tag biolockjdevteam/${name}:$1 biolockjdevteam/${name}:$2
 done

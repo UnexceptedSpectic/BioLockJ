@@ -49,6 +49,8 @@ COPY --from=builder /blj/.version /blj/install $BLJ/
 
 RUN $BLJ/install
 
+ENV PATH="${BLJ}/script:$PATH"
+
 #5.) Cleanup
 RUN	apt-get clean && \
 	rm -rf /tmp/* && \
@@ -60,10 +62,6 @@ RUN	apt-get clean && \
 RUN	mv /usr/share/ca-certificates* ~ && mv /usr/share/npm ~ && \
 	rm -rf /usr/share/* && \
 	mv ~/npm /usr/share && mv ~/ca-certificates* /usr/share
-
-#7.) configure active session without relying on user profile
-RUN . $BLJ/script/blj_config
-ENV PATH="${BLJ}/script:$PATH"
 		
-#8.) Setup environment and assign default command
+#7.) Setup environment and assign default command
 CMD java -cp $BLJ/dist/BioLockJ.jar:$BLJ_MODS/* biolockj.BioLockJ $BLJ_OPTIONS
