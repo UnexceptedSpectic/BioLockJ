@@ -169,7 +169,7 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 	
 	@Override
 	public String getDockerImageName() {
-		return "";//TODO: actually supply docker image name; this just avoids compile errors.
+		return "sratoolkit";
 	}
 	
 	@Override
