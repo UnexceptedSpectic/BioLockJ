@@ -462,7 +462,7 @@ public class DockerUtil {
 	 * {@value #SAVE_CONTAINER_ON_EXIT_DESC}
 	 */
 	static final String SAVE_CONTAINER_ON_EXIT = "docker.saveContainerOnExit";
-	private static final String SAVE_CONTAINER_ON_EXIT_DESC = "if ture, docker run command will NOT include the --rm flag";
+	private static final String SAVE_CONTAINER_ON_EXIT_DESC = "If Y, docker run command will NOT include the --rm flag";
 
 	/**
 	 * Name of the bash script function used to generate a new Docker container: {@value #SPAWN_DOCKER_CONTAINER}
