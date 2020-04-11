@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import org.apache.commons.io.FileUtils;
 import biolockj.api.ApiModule;
 import biolockj.exception.ConfigNotFoundException;
 import biolockj.exception.ConfigPathException;
@@ -114,6 +115,7 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 		}else {
 			Log.info(SraDownload.class, "Cannot get accessions from column \"" + Config.getString(this, METADATA_SRA_ID_COL_NAME) + "\" in metadata.");
 			File accList = Config.requireExistingFile( this, SRA_ACC_LIST );
+			FileUtils.copyFileToDirectory( accList, getTempDir() );
 			BufferedReader reader = new BufferedReader( new FileReader( accList ) );
 			try {
 				for( String line = reader.readLine(); line != null; line = reader.readLine() ) {

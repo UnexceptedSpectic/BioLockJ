@@ -52,6 +52,6 @@ public abstract class SequenceReadArchive extends ScriptModuleImpl {
 	protected static final String SRA_ACC_LIST = "sra.sraAccList";
 	protected static final String SRA_ACC_LIST_DESC = "A file that has one SRA accession per line and nothing else.";
 	
-	protected static final String SRP = "sra.SraProjectId";
+	protected static final String SRP = "sra.sraProjectId";
 	protected static final String SRP_DESC = "The project id(s) referencesing a project in the NCBI SRA. example: SRP009633, ERP016051";
 }
