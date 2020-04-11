@@ -267,8 +267,8 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 	
 	private String dataSource = "";
 
-	private static final String METADATA_SRA_ID_COL_NAME = "sraDownload.metadataSraIdColumnName";
-	private static final String DEST_DIR = "sraDownload.destinationDir";
+	private static final String METADATA_SRA_ID_COL_NAME = "sra.accessionIdColumn";
+	private static final String DEST_DIR = "sra.destinationDir";
 	private static final String EXE_FASTERQ = "exe.fasterq-dump";
 
 }

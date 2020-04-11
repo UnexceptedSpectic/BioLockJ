@@ -142,7 +142,7 @@ public class SraMetaDB extends SequenceReadArchive implements ApiModule, WritesO
 	 * {@link biolockj.Config} property: {@value #DO_UPDATE}<br>
 	 * {@value #DO_UPDATE_DESC}
 	 */
-	private final String DO_UPDATE = "sraMetaData.forceUpdate";
+	private final String DO_UPDATE = "sra.forceDbUpdate";
 	private final String DO_UPDATE_DESC = "Y/N: download a newer verionsion if available.";
 	
 	private final String EXE_WGET = "exe.wget";
