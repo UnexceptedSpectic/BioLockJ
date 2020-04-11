@@ -24,6 +24,7 @@ public class SraMetaDB extends SequenceReadArchive implements ApiModule, WritesO
 	public SraMetaDB() {
 		super();
 		addNewProperty( DO_UPDATE, Properties.BOOLEAN_TYPE, DO_UPDATE_DESC, "N");
+		addNewProperty( DB_DIR, Properties.FILE_PATH, DB_DIR_DESC);
 		addGeneralProperty( EXE_GUNZIP );
 		addGeneralProperty( EXE_WGET );
 	}
@@ -48,17 +49,6 @@ public class SraMetaDB extends SequenceReadArchive implements ApiModule, WritesO
 	        	Config.getBoolean( this, DO_UPDATE );
 	            isValid = true;
 	            break;
-	        case DB_DIR:
-	        	File dbFolder = Config.requireExistingDir( this, DB_DIR );
-	    		File dbFile = new File(dbFolder, DB_NAME);
-	    		if ( dbFile.exists() && ! dbFile.canRead() ) {
-	    			throw new ConfigException(DB_DIR, "The database [" + dbFile.getAbsolutePath() + "] exists, but is not readable.");
-	    		}
-	    		if ( ! DockerUtil.inDockerEnv() && ! dbFile.exists() && ! dbFolder.canWrite() ) {
-	    			throw new ConfigException(DB_DIR, "The database [" + dbFile.getAbsolutePath() + "] does not exist, and this folder is not writable.");
-	    		}
-	        	isValid = true;
-	        	break;
 	    }
 	    return isValid;
 	}

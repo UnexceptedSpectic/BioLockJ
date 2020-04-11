@@ -11,13 +11,17 @@
  */
 package biolockj.module.getData.sra;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import biolockj.api.ApiModule;
+import biolockj.exception.ConfigNotFoundException;
 import biolockj.exception.ConfigPathException;
 import biolockj.exception.DockerVolCreationException;
 import biolockj.exception.MetadataException;
@@ -37,10 +41,13 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 	public SraDownload() {
 		super();
 		addNewProperty(METADATA_SRA_ID_COL_NAME, Properties.STRING_TYPE,
-				"Specifies the metadata file column name containing SRA run ids", "sra");
+				"Specifies the metadata file column name containing SRA run ids");
 		addNewProperty(DEST_DIR, Properties.FILE_PATH, "Path to directory where downloaded files should be saved. If specified, it must exist.");
-		addNewProperty(EXE_FASTERQ, Properties.FILE_PATH, "Optional - specifies a path to fasterq-dump");
-		addGeneralProperty(Constants.EXE_GZIP, Properties.FILE_PATH, "Optional - specifies a path to gzip");
+		addNewProperty( SRP, Properties.LIST_TYPE, SRP_DESC);
+		addNewProperty( SRA_ACC_LIST, Properties.FILE_PATH, SRA_ACC_LIST_DESC );
+		addGeneralProperty(EXE_FASTERQ);
+		addGeneralProperty(Constants.EXE_GZIP);
+		addGeneralProperty( MetaUtil.META_FILE_PATH );
 	}
 
 	@Override
@@ -52,37 +59,34 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 	public List<List<String>> buildScript(List<File> files) throws Exception {
 
 		final String outputDir = getDestDir().getAbsolutePath();
-		String sraId = null;
+		
+		List<String> srrList = getSRRs();
 
 		final List<List<String>> data = new ArrayList<>();
 		dataSource = dataSource + Constants.RETURN + "Accessions: ";
-		for (final String sample : MetaUtil.getSampleIds()) {
+		for (final String srr : srrList) { 
 			final ArrayList<String> lines = new ArrayList<>();
-			try {
-				sraId = MetaUtil.getField(sample, Config.getString(this, METADATA_SRA_ID_COL_NAME));
-			} catch (MetadataException e) {
-				Log.error(this.getClass(), "Could not get SRA id from metadata column named "
-						+ Config.getString(this, METADATA_SRA_ID_COL_NAME) + " for sample " + sample + ".");
-				throw e;
-			}
-			String existingFile = existingFileInfo(sraId);
+			String existingFile = existingFileInfo(srr);
 			if (existingFile.length() > 0) {
-				dataSource = dataSource + Constants.RETURN + sraId + " - keeping prexisting file: " + existingFile;
-				Log.info(SraDownload.class, "Skipping " + sraId + " because [" + existingFile + "] already exists in destination [" + outputDir + "].");
+				dataSource = dataSource + Constants.RETURN + srr + " - keeping prexisting file: " + existingFile;
+				Log.info(SraDownload.class, "Skipping " + srr + " because [" + existingFile + "] already exists in destination [" + outputDir + "].");
 			}else {
-				dataSource = dataSource + Constants.RETURN + sraId + " (download)";
-				final String downloadLine = Config.getExe(this, EXE_FASTERQ) + " -O " + outputDir + " " + sraId;
+				dataSource = dataSource + Constants.RETURN + srr + " (download)";
+				final String downloadLine = Config.getExe(this, EXE_FASTERQ) + " -O " + outputDir + " " + srr;
 				final String compressLine = Config.getExe(this, Constants.EXE_GZIP) + " " + outputDir + File.separator
-						+ sraId + "*.fastq";
+						+ srr + "*.fastq";
 				lines.add(downloadLine);
 				lines.add(compressLine);
 				data.add(lines);
 			}
 		}
+		if ( data.isEmpty() ) {
+			final ArrayList<String> fallback_lines = new ArrayList<>();
+			fallback_lines.add( "ls -lh " + outputDir );
+			data.add( fallback_lines );
+		}
 
-		System.out.println(data);
 		return (data);
-
 	}
 	
 	private File getDestDir() throws ConfigPathException, DockerVolCreationException {
@@ -93,6 +97,52 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 			dest = getOutputDir();
 		}
 		return dest;
+	}
+	
+	private List<String> getSRRs() throws IOException, ConfigPathException, ConfigNotFoundException, DockerVolCreationException, MetadataException {
+		List<String> list = new ArrayList<>();
+		if ( useMetadataColumn() ) {
+			for (final String sample : MetaUtil.getSampleIds()) { 
+				try {
+					list.add( MetaUtil.getField(sample, Config.getString(this, METADATA_SRA_ID_COL_NAME)) );
+				} catch (MetadataException e) {
+					Log.error(this.getClass(), "Could not get SRA id from metadata column named "
+							+ Config.getString(this, METADATA_SRA_ID_COL_NAME) + " for sample " + sample + ".");
+					throw e;
+				}
+			}	
+		}else {
+			Log.info(SraDownload.class, "Cannot get accessions from column \"" + Config.getString(this, METADATA_SRA_ID_COL_NAME) + "\" in metadata.");
+			File accList = Config.requireExistingFile( this, SRA_ACC_LIST );
+			BufferedReader reader = new BufferedReader( new FileReader( accList ) );
+			try {
+				for( String line = reader.readLine(); line != null; line = reader.readLine() ) {
+					list.add( line );
+				}
+			} finally {
+				reader.close();
+			}
+		}
+		return list;
+	}
+	
+	private boolean useMetadataColumn() {
+		return Config.getString( this, METADATA_SRA_ID_COL_NAME ) != null ;
+	}
+	
+	@Override
+	public List<String> getPreRequisiteModules() throws Exception {
+		List<String> preReqs = super.getPreRequisiteModules();
+		if ( useMetadataColumn() ) {
+			Log.info(SraDownload.class, "Sequences will be downloaded for each accession given in the metadata under the column \"" 
+							+ Config.getString( this, METADATA_SRA_ID_COL_NAME ) + "\".");
+		}else if (Config.getExistingFile( this, SRA_ACC_LIST ) != null) {
+			Log.info(SraDownload.class, "Sequences will be downloaded for each accession given in the file [" 
+							+ Config.getString( this, SRA_ACC_LIST ) + "].");
+		}else if ( Config.getString( this, SRP ) != null && isValidProp( SRP )) {
+			preReqs.add( SrpSrrConverter.class.getName() );
+		}
+		return preReqs;
 	}
 	
 	private String existingFileInfo( String sraId ) throws ConfigPathException, DockerVolCreationException {
@@ -120,12 +170,15 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 	public Boolean isValidProp(String property) throws Exception {
 		Boolean isValid = super.isValidProp(property);
 		switch (property) {
-		case MetaUtil.META_FILE_PATH:
-			Config.requireExistingFile(this, MetaUtil.META_FILE_PATH);
-			isValid = true;
-			break;
 		case METADATA_SRA_ID_COL_NAME:
-			Config.requireString(this, METADATA_SRA_ID_COL_NAME);
+			if (Config.getString(this, METADATA_SRA_ID_COL_NAME) != null) {
+					Config.requireExistingFile( null, MetaUtil.META_FILE_PATH );
+					if( MetaUtil.getFieldValues( Config.getString( this, METADATA_SRA_ID_COL_NAME ), true )
+									.isEmpty() ) {
+						throw new MetadataException( "No accession IDs in metadata column \"" +
+							Config.getString( this, METADATA_SRA_ID_COL_NAME ) + "\"." );
+					}
+			}
 			isValid = true;
 			break;
 		case DEST_DIR:
@@ -138,9 +191,10 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 
 	@Override
 	public void checkDependencies() throws Exception {
-		isValidProp(MetaUtil.META_FILE_PATH);
+		Config.getExistingFile(null, MetaUtil.META_FILE_PATH);
 		isValidProp(METADATA_SRA_ID_COL_NAME);
 		isValidProp(DEST_DIR);
+		if (useMetadataColumn()) isValidProp(METADATA_SRA_ID_COL_NAME);
 	}
 
 	@Override
@@ -150,13 +204,18 @@ public class SraDownload extends SequenceReadArchive implements ApiModule, Input
 
 	@Override
 	public String getDetails() {
-		return ("Downloading and compressing files requires fasterq-dump and gzip. Your metadata file should "
-				+ "include a column that contains SRA run accessions, and the name of this column must be "
-				+ "specified in the configuration file, if named something other than 'sra'"
-				+ System.lineSeparator() + "If *" + DEST_DIR + "* is not specified, the files will be downlaoded to this modules output directory."
-				+ "It is recommended to use an external directory that can be shared across projects, and referenced in *"
-				+ Constants.INPUT_DIRS + "*, for example: " + Constants.INPUT_DIRS + " = ${" + DEST_DIR + "}"
-				+ System.lineSeparator() + "Typically, BioLockJ will automatically determine modules to add to the pipeline to process sequence data." 
+		return ("Downloading and compressing files requires fasterq-dump and gzip." 
+				+ "The accessions to download can be specified using any ONE of the following:<br>"
+				+ " 1. A metadata file (given by *" + MetaUtil.META_FILE_PATH + "* that has column *" + METADATA_SRA_ID_COL_NAME + "*.<br>"
+				+ " 2. *" + SRP + "*, OR <br>"
+				+ " 3. *" + SRA_ACC_LIST + "*<br>"
+				+ System.lineSeparator() 
+				+ "*" + DEST_DIR + "* gives an external directory that can be shared across pipelines. " 
+				+ "This is recommended. If it is not specified, the files will be downlaoded to this modules output directory. <br>"
+				+ System.lineSeparator() 
+				+ "Suggested: " + Constants.INPUT_DIRS + " = ${" + DEST_DIR + "}<br>"
+				+ System.lineSeparator() 
+				+ "Typically, BioLockJ will automatically determine modules to add to the pipeline to process sequence data. " 
 				+ "If the files are not present on the system when the pipeline starts, then it is up to the user to configure any and all sequence processing modules.");
 	}
 

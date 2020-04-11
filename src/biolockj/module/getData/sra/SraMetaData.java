@@ -19,7 +19,9 @@ public class SraMetaData extends SequenceReadArchive implements ApiModule, Input
 	
 	public SraMetaData() {
 		super();
-		addNewProperty( SRP, Properties.LIST_TYPE, "The project id(s) referencesing a project in the NCBI SRA. example: SRP009633, ERP016051");
+		addNewProperty( SRP, Properties.LIST_TYPE, SRP_DESC);
+		addNewProperty( DB_DIR, Properties.FILE_PATH, DB_DIR_DESC);
+		//addNewProperty( SRA_ACC_LIST, Properties.FILE_PATH, SRA_ACC_LIST_DESC );
 		addGeneralProperty( EXE_PYSRADB );
 	}
 
@@ -32,24 +34,6 @@ public class SraMetaData extends SequenceReadArchive implements ApiModule, Input
 	public void checkDependencies() throws Exception {
 		super.checkDependencies();
 		isValidProp(SRP);
-	}
-	
-	@Override
-	public Boolean isValidProp( String property ) throws Exception {
-	    Boolean isValid = super.isValidProp( property );
-	    switch(property) {
-	        case SRP:
-	        	List<String> ids = Config.getList( this, SRP );
-	        	for (String SRP_ID : ids) {
-	        		//check for SRP format, should be three letters followed by (I think) 6 numbers
-	    			if ( ! SRP_ID.startsWith( "P", 2 ) || SRP_ID.length() != 9) {
-	    				throw new ConfigFormatException( SRP, "SRA project id's are three letters followed by six numbers." );
-	    			}
-	    		}
-	            isValid = true;
-	            break;
-	    }
-	    return isValid;
 	}
 
 	@Override
@@ -123,8 +107,6 @@ public class SraMetaData extends SequenceReadArchive implements ApiModule, Input
 		types.add( "sra metadata" );
 		return types;
 	}
-
-	private static final String SRP = "sraMetaData.SraProjectId";
 	
 	private static final String FUNCTION_NAME = "main";
 
