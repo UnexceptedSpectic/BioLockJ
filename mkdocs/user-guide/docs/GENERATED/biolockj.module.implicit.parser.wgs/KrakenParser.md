@@ -22,7 +22,7 @@ Build OTU tables from [KRAKEN](http://ccb.jhu.edu/software/kraken/) mpa-format r
 | *docker.imageName* | _string_ <br>The name of a docker image to override whatever a module says to use.<br>*default:*  *null* |
 | *docker.imageTag* | _string_ <br>indicate specific version of Docker images<br>*default:*  *null* |
 | *docker.imgOwner* | _string_ <br>name of the Docker Hub user that owns the docker containers<br>*default:*  *null* |
-| *docker.saveContainerOnExit* | _boolean_ <br>if ture, docker run command will NOT include the --rm flag<br>*default:*  *null* |
+| *docker.saveContainerOnExit* | _boolean_ <br>If Y, docker run command will NOT include the --rm flag<br>*default:*  *null* |
 | *report.unclassifiedTaxa* | _boolean_ <br>report unclassified taxa<br>*default:*  Y |
 | *script.defaultHeader* | _string_ <br>Store default script header for MAIN script and locally run WORKER scripts.<br>*default:*  #!/bin/bash |
 | *script.numThreads* | _integer_ <br>Used to reserve cluster resources and passed to any external application call that accepts a numThreads parameter.<br>*default:*  8 |
@@ -41,5 +41,5 @@ Build OTU tables from [KRAKEN](http://ccb.jhu.edu/software/kraken/) mpa-format r
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockj v1.2.9-dev
+BioLockj v1.2.10-dev
 

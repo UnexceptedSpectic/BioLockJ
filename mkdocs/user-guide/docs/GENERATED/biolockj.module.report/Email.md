@@ -33,5 +33,5 @@ Send an email containing the pipeline summary when the pipeline either completes
 
 ## Citation 
 Module developed by Mike Sioda.                   
-BioLockJ v1.2.9-dev
+BioLockJ v1.2.10-dev
 

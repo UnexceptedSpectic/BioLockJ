@@ -1,22 +1,20 @@
-# HUMAnN2
+# SrpSrrConverter
 Add to module run order:                    
-`#BioModule biolockj.module.classifier.wgs.Humann2Classifier`
+`#BioModule biolockj.module.getData.sra.SrpSrrConverter`
 
 ## Description 
-Profile the presence/absence and abundance of microbial pathways in a community from metagenomic or metatranscriptomic sequencing data.
+Create an SraAccList.txt file from an SRA project identifier.
 
 ## Properties 
 *Properties are the `name=value` pairs in the [configuration](../../../Configuration#properties) file.*                   
 
-### HUMAnN2 properties: 
+### SrpSrrConverter properties: 
 | Property| Description |
 | :--- | :--- |
-| *exe.humann2* | _executable_ <br>Path for the "humann2" executable; if not supplied, any script that needs the humann2 command will assume it is on the PATH.<br>*default:*  *null* |
-| *humann2.humann2JoinTableParams* | _list_ <br>The parameters to be used with humann2_join_tables<br>*default:*  *null* |
-| *humann2.humann2Params* | _list_ <br>The humann2 executable params<br>*default:*  *null* |
-| *humann2.humann2RenormTableParams* | _list_ <br>The parameters to use with humann2_renorm_table<br>*default:*  *null* |
-| *humann2.nuclDB* | _file path_ <br>Directory containing the nucleotide database<br>*default:*  *null* |
-| *humann2.protDB* | _file path_ <br>Directory containing the protein nucleotide database<br>*default:*  *null* |
+| *exe.efetch* | _executable_ <br>Path for the "efetch" executable; if not supplied, any script that needs the efetch command will assume it is on the PATH.<br>*default:*  *null* |
+| *exe.esearch* | _executable_ <br>Path for the "esearch" executable; if not supplied, any script that needs the esearch command will assume it is on the PATH.<br>*default:*  *null* |
+| *exe.xtract* | _executable_ <br>Path for the "xtract" executable; if not supplied, any script that needs the xtract command will assume it is on the PATH.<br>*default:*  *null* |
+| *sra.sraProjectId* | _list_ <br>The project id(s) referencesing a project in the NCBI SRA. example: SRP009633, ERP016051<br>*default:*  *null* |
 
 ### General properties applicable to this module: 
 | Property| Description |
@@ -37,17 +35,16 @@ Profile the presence/absence and abundance of microbial pathways in a community 
 | *script.timeout* | _integer_ <br>Sets # of minutes before worker scripts times out.<br>*default:*  *null* |
 
 ## Details 
-*none*
+Typcially, this module is only added to the pipeline when SraDownload needs it.<br>
+This sets the value of *sra.sraAccList* to the SraAccList.txt file in this modules output directory
 
 ## Adds modules 
 **pre-requisite modules**                    
 *none found*                   
 **post-requisite modules**                    
-biolockj.module.implicit.parser.wgs.Humann2Parser                   
+*none found*                   
 
 ## Citation 
-Franzosa EA*, McIver LJ*, Rahnavard G, Thompson LR, Schirmer M, Weingart G, Schwarzberg Lipson K, Knight R, Caporaso JG, Segata N, Huttenhower C.                    
-Species-level functional profiling of metagenomes and metatranscriptomes. Nat Methods 15: 962-968 (2018).                   
-http://huttenhower.sph.harvard.edu/humann2                   
-BioLockJ module developed by Mike Siota
+Module developed by Malcolm Zapatas and Ivory Blakley                   
+BioLockJ v1.2.10-dev
 

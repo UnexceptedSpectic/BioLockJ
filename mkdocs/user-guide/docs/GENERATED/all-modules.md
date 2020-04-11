@@ -50,7 +50,8 @@
 [RemoveScarceOtuCounts](biolockj.module.report.otu/RemoveScarceOtuCounts.md)                   
 [RemoveScarcePathwayCounts](biolockj.module.report.humann2/RemoveScarcePathwayCounts.md)                   
 [SeqFileValidator](biolockj.module.seq/SeqFileValidator.md) - *This BioModule validates fasta/fastq file formats are valid and enforces min/max read lengths.*                   
-[SraDownload](biolockj.module.getData/SraDownload.md) - *SraDownload downloads and compresses short read archive (SRA) files to fastq.gz*                   
+[SraDownload](biolockj.module.getData.sra/SraDownload.md) - *SraDownload downloads and compresses short read archive (SRA) files to fastq.gz*                   
 [SraMetaDB](biolockj.module.getData.sra/SraMetaDB.md) - *Makes sure that the SRAmetadb exists, downloads if it does not already exist.*                   
 [SraMetaData](biolockj.module.getData.sra/SraMetaData.md) - *Extract metadata via pysradb from local copy of SRAmetadb.sqlite.*                   
+[SrpSrrConverter](biolockj.module.getData.sra/SrpSrrConverter.md) - *Create an SraAccList.txt file from an SRA project identifier.*                   
 [TrimPrimers](biolockj.module.seq/TrimPrimers.md) - *Remove primers from reads, option to discard reads unless primers are attached to both forward and reverse reads.*                   
