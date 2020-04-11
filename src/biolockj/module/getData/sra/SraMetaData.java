@@ -10,7 +10,6 @@ import biolockj.Constants;
 import biolockj.Log;
 import biolockj.Properties;
 import biolockj.api.ApiModule;
-import biolockj.exception.ConfigFormatException;
 import biolockj.module.getData.InputData;
 import biolockj.util.BioLockJUtil;
 import biolockj.util.DockerUtil;
