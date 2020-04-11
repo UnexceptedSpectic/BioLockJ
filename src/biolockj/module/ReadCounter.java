@@ -6,6 +6,6 @@ package biolockj.module;
  * @author ieclabau
  *
  */
-public interface CountsReads extends BioModule {
+public interface ReadCounter extends BioModule {
 
 }

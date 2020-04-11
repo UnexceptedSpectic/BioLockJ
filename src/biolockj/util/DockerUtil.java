@@ -126,8 +126,8 @@ public class DockerUtil {
 	}
 
 	private static boolean needsWritePermission(BioModule module, String key) throws DockerVolCreationException, ConfigPathException {
-		if (module instanceof WritesOutsidePipeline ) {
-			WritesOutsidePipeline wopMod = (WritesOutsidePipeline) module;
+		if (module instanceof OutsidePipelineWriter ) {
+			OutsidePipelineWriter wopMod = (OutsidePipelineWriter) module;
 			Set<String> wopDirs = wopMod.getWriteDirs();
 			if (wopDirs.contains( volumeMap.get( key ) )) {
 				Log.info(DockerUtil.class, "The module [" + ModuleUtil.displaySignature( module ) + "] is granted write access to the folder [" + key + "]");

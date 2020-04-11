@@ -10,11 +10,11 @@ import biolockj.Constants;
 import biolockj.Log;
 import biolockj.Properties;
 import biolockj.api.ApiModule;
-import biolockj.module.getData.InputData;
+import biolockj.module.getData.InputDataModule;
 import biolockj.util.BioLockJUtil;
 import biolockj.util.DockerUtil;
 
-public class SraMetaData extends SequenceReadArchive implements ApiModule, InputData {
+public class SraMetaData extends SequenceReadArchive implements ApiModule, InputDataModule {
 	
 	public SraMetaData() {
 		super();

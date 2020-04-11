@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Ivory Blakley
  *
  */
-public interface InputData {
+public interface InputDataModule {
 
 	// TODO: Eventually add this to include in the summary 
 //	/**

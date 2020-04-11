@@ -27,8 +27,8 @@ import biolockj.exception.ConfigPathException;
 import biolockj.exception.DockerVolCreationException;
 import biolockj.exception.MetadataException;
 import biolockj.Config;
-import biolockj.module.WritesOutsidePipeline;
-import biolockj.module.getData.InputData;
+import biolockj.module.OutsidePipelineWriter;
+import biolockj.module.getData.InputDataModule;
 import biolockj.util.BioLockJUtil;
 import biolockj.util.DockerUtil;
 import biolockj.util.MetaUtil;
@@ -37,7 +37,7 @@ import biolockj.Constants;
 import biolockj.Log;
 import biolockj.Properties;
 
-public class SraDownload extends SequenceReadArchive implements ApiModule, InputData, WritesOutsidePipeline {
+public class SraDownload extends SequenceReadArchive implements ApiModule, InputDataModule, OutsidePipelineWriter {
 
 	public SraDownload() {
 		super();

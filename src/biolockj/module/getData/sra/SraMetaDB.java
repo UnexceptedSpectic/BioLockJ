@@ -14,11 +14,11 @@ import biolockj.exception.ConfigFormatException;
 import biolockj.exception.ConfigPathException;
 import biolockj.exception.DockerVolCreationException;
 import biolockj.exception.SpecialPropertiesException;
-import biolockj.module.WritesOutsidePipeline;
+import biolockj.module.OutsidePipelineWriter;
 import biolockj.util.BioLockJUtil;
 import biolockj.util.DockerUtil;
 
-public class SraMetaDB extends SequenceReadArchive implements ApiModule, WritesOutsidePipeline {
+public class SraMetaDB extends SequenceReadArchive implements ApiModule, OutsidePipelineWriter {
 	
 	public SraMetaDB() {
 		super();

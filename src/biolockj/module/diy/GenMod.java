@@ -27,7 +27,7 @@ import biolockj.api.ApiModule;
 import biolockj.api.BuildDocs;
 import biolockj.exception.ConfigPathException;
 import biolockj.module.ScriptModuleImpl;
-import biolockj.module.getData.InputData;
+import biolockj.module.getData.InputDataModule;
 import biolockj.util.BioLockJUtil;
 
 /**
@@ -35,7 +35,7 @@ import biolockj.util.BioLockJUtil;
  * 
  * @blj.web_desc Allows User made scripts into the BLJ pipeline
  */
-public class GenMod extends ScriptModuleImpl implements ApiModule, InputData {
+public class GenMod extends ScriptModuleImpl implements ApiModule, InputDataModule {
 
 	public GenMod() {
 		super();
