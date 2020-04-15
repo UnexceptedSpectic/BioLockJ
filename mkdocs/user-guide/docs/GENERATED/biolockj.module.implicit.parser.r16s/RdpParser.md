@@ -42,5 +42,5 @@ Build OTU tables from [RDP](http://rdp.cme.msu.edu/classifier/classifier.jsp) re
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockj v1.2.10-dev
+BioLockJ v1.3.0
 

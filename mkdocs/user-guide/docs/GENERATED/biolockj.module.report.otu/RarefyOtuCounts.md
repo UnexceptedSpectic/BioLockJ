@@ -45,5 +45,5 @@ Applies a mean iterative post-OTU classification rarefication algorithm so that 
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockj v1.2.10-dev
+BioLockJ v1.3.0
 

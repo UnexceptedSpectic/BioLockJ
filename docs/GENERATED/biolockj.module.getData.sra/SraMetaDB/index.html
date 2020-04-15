@@ -230,12 +230,12 @@
 <td align="left"><em>executable</em> <br>Path for the "wget" executable; if not supplied, any script that needs the wget command will assume it is on the PATH.<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>sequenceReadArchive.metaDataDir</em></td>
-<td align="left"><em>file path</em> <br>path to the directory where the <em>SRAmetadb.sqlite</em> database is stored.<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>sra.forceDbUpdate</em></td>
+<td align="left"><em>boolean</em> <br>Y/N: download a newer verionsion if available.<br><em>default:</em>  N</td>
 </tr>
 <tr>
-<td align="left"><em>sraMetaData.forceUpdate</em></td>
-<td align="left"><em>boolean</em> <br>Y/N: download a newer verionsion if available.<br><em>default:</em>  N</td>
+<td align="left"><em>sra.metaDataDir</em></td>
+<td align="left"><em>file path</em> <br>path to the directory where the <em>SRAmetadb.sqlite</em> database is stored.<br><em>default:</em>  <em>null</em></td>
 </tr>
 </tbody>
 </table>
@@ -282,7 +282,7 @@
 </tr>
 <tr>
 <td align="left"><em>docker.saveContainerOnExit</em></td>
-<td align="left"><em>boolean</em> <br>if ture, docker run command will NOT include the --rm flag<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>boolean</em> <br>If Y, docker run command will NOT include the --rm flag<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
 <td align="left"><em>script.defaultHeader</em></td>
@@ -307,9 +307,9 @@
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link">#</a></h2>
-<p>If <em>sraMetaData.forceUpdate</em> is set to Y, then the zipped form of the database is downloaded, and kept and used to compare the local version to the server version; and the server version is downloaded if it is newer.</p>
+<p>If <em>sra.forceDbUpdate</em> is set to Y, then the zipped form of the database is downloaded, and kept and used to compare the local version to the server version; and the server version is downloaded if it is newer.</p>
 <p>Server version location: https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz</p>
-<p><em>sequenceReadArchive.metaDataDir</em> directory must exist.  If the database does not exist at that location, it will be downloaded.</p>
+<p><em>sra.metaDataDir</em> directory must exist.  If the database does not exist at that location, it will be downloaded.</p>
 <p>The download process is somewhat error-prone, especially in docker. The download is about 4GB and the unzipped database is up to 30GB.It is generally recommended to download and unzip the database manually:</p>
 <p>wget https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz;  <br>gunzip SRAmetadb.sqlite</p>
 <h2 id="adds-modules">Adds modules<a class="headerlink" href="#adds-modules" title="Permanent link">#</a></h2>
@@ -319,7 +319,7 @@
 <em>none found</em>                   </p>
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">#</a></h2>
 <p>Module developed by Malcolm Zapatas and Ivory Blakley                 <br />
-BioLockJ v1.2.9-dev</p>
+BioLockJ v1.3.0</p>
               
             </div>
           </div>

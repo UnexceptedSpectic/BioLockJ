@@ -44,5 +44,5 @@ This BioModule validates fasta/fastq file formats are valid and enforces min/max
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockj v1.2.10-dev
+BioLockJ v1.3.0
 

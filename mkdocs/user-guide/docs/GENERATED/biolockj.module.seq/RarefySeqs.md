@@ -44,5 +44,5 @@ Randomly sub-sample sequences to reduce all samples to the configured maximum `r
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockj v1.2.10-dev
+BioLockJ v1.3.0
 

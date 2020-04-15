@@ -11,11 +11,11 @@
 [Demultiplexer](biolockj.module.implicit/Demultiplexer.md) - *Demultiplex samples into separate files for each sample.*                   
 [Email](biolockj.module.report/Email.md) - *Send an email containing the pipeline summary when the pipeline either completes or fails.*                   
 [GenMod](biolockj.module.diy/GenMod.md) - *Allows user to add their own scripts into the BioLockJ pipeline.*                   
-[GenomeAssembly](biolockj.module.assembly/GenomeAssembly.md)                   
+[GenomeAssembly](biolockj.module.assembly/GenomeAssembly.md) - *Assemble WGS sequences with MetaSPAdes, bin contigs with Metabat2 and check quality with checkM.*                   
 [Gunzipper](biolockj.module.seq/Gunzipper.md) - *Decompress gzipped files.*                   
 [HUMAnN2](biolockj.module.classifier.wgs/Humann2Classifier.md) - *Profile the presence/absence and abundance of microbial pathways in a community from metagenomic or metatranscriptomic sequencing data.*                   
 [Humann2Parser](biolockj.module.implicit.parser.wgs/Humann2Parser.md) - *Build OTU tables from HumanN2 classifier module output.*                   
-[ImportMetadata](biolockj.module.implicit/ImportMetadata.md)                   
+[ImportMetadata](biolockj.module.implicit/ImportMetadata.md) - *Read existing metadata file, or create a default one.*                   
 [JsonReport](biolockj.module.report/JsonReport.md)                   
 [KneadData](biolockj.module.seq/KneadData.md) - *Run the Biobakery [KneadData](https://bitbucket.org/biobakery/kneaddata/wiki/Home) program to remove contaminated DNA.*                   
 [Kraken2Classifier](biolockj.module.classifier.wgs/Kraken2Classifier.md) - *Classify WGS samples with [KRAKEN 2](https://ccb.jhu.edu/software/kraken2/).*                   
@@ -27,7 +27,7 @@
 [Metaphlan2Classifier](biolockj.module.classifier.wgs/Metaphlan2Classifier.md) - *Classify WGS samples with [MetaPhlAn2](http://bitbucket.org/biobakery/metaphlan2).*                   
 [Metaphlan2Parser](biolockj.module.implicit.parser.wgs/Metaphlan2Parser.md)                   
 [Multiplexer](biolockj.module.seq/Multiplexer.md) - *Multiplex samples into a single file, or two files (one with forward reads, one with reverse reads) if multiplexing paired reads.*                   
-[NormalizeByReadsPerMillion](biolockj.module.report.taxa/NormalizeByReadsPerMillion.md)                   
+[NormalizeByReadsPerMillion](biolockj.module.report.taxa/NormalizeByReadsPerMillion.md) - *Represent each count value in the table as: counts / (total counts in sample / 1 million)*                   
 [NormalizeTaxaTables](biolockj.module.report.taxa/NormalizeTaxaTables.md)                   
 [PearMergeReads](biolockj.module.seq/PearMergeReads.md) - *Run pear, the Paired-End reAd mergeR*                   
 [QiimeClassifier](biolockj.module.implicit.qiime/QiimeClassifier.md)                   

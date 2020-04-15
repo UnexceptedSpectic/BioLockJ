@@ -74,5 +74,5 @@ With this, `script.py` will be run using python.  Then other modules will run. T
 *none found*                   
 
 ## Citation 
-BioLockJ v1.2.10-dev
+BioLockJ v1.3.0
 

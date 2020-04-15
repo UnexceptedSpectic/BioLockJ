@@ -54,6 +54,6 @@ Generate horizontal barplot representing effect size (Cohen's d, r<sup>2</sup>, 
 *none found*                   
 
 ## Citation 
-BioLockJ v1.2.10-dev                   
+BioLockJ v1.3.0                   
 Module developted by Ivory Blakley.
 

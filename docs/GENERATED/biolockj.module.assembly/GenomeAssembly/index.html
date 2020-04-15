@@ -208,14 +208,103 @@
                 <h1 id="genomeassembly">GenomeAssembly<a class="headerlink" href="#genomeassembly" title="Permanent link">#</a></h1>
 <p>Add to module run order:                  <br />
 <code>#BioModule biolockj.module.assembly.GenomeAssembly</code></p>
-<p><em>This page is a place holder.</em>                 <br />
-<em>This module does not have a properly generated user guide page because it does not implement the ApiModule interface.</em>                 <br />
-<em>There may be a manually created page elsewhere.</em></p>
+<h2 id="description">Description<a class="headerlink" href="#description" title="Permanent link">#</a></h2>
+<p>Assemble WGS sequences with MetaSPAdes, bin contigs with Metabat2 and check quality with checkM.</p>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">#</a></h2>
+<p><em>Properties are the <code>name=value</code> pairs in the <a href="../../../Configuration#properties">configuration</a> file.</em>                   </p>
+<h3 id="genomeassembly-properties">GenomeAssembly properties:<a class="headerlink" href="#genomeassembly-properties" title="Permanent link">#</a></h3>
+<p><em>none</em></p>
+<h3 id="general-properties-applicable-to-this-module">General properties applicable to this module:<a class="headerlink" href="#general-properties-applicable-to-this-module" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th align="left">Property</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><em>cluster.batchCommand</em></td>
+<td align="left"><em>string</em> <br>Terminal command used to submit jobs on the cluster<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>cluster.jobHeader</em></td>
+<td align="left"><em>string</em> <br>Header written at top of worker scripts<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>cluster.modules</em></td>
+<td align="left"><em>list</em> <br>List of cluster modules to load at start of worker scripts<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>cluster.prologue</em></td>
+<td align="left"><em>string</em> <br>To run at the start of every script after loading cluster modules (if any)<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>cluster.statusCommand</em></td>
+<td align="left"><em>string</em> <br>Terminal command used to check the status of jobs on the cluster<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>docker.imageName</em></td>
+<td align="left"><em>string</em> <br>The name of a docker image to override whatever a module says to use.<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>docker.imageTag</em></td>
+<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>docker.imgOwner</em></td>
+<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>docker.saveContainerOnExit</em></td>
+<td align="left"><em>boolean</em> <br>If Y, docker run command will NOT include the --rm flag<br><em>default:</em>  <em>null</em></td>
+</tr>
+<tr>
+<td align="left"><em>script.defaultHeader</em></td>
+<td align="left"><em>string</em> <br>Store default script header for MAIN script and locally run WORKER scripts.<br><em>default:</em>  #!/bin/bash</td>
+</tr>
+<tr>
+<td align="left"><em>script.numThreads</em></td>
+<td align="left"><em>integer</em> <br>Used to reserve cluster resources and passed to any external application call that accepts a numThreads parameter.<br><em>default:</em>  8</td>
+</tr>
+<tr>
+<td align="left"><em>script.numWorkers</em></td>
+<td align="left"><em>integer</em> <br>Set number of samples to process per script (if parallel processing)<br><em>default:</em>  1</td>
+</tr>
+<tr>
+<td align="left"><em>script.permissions</em></td>
+<td align="left"><em>string</em> <br>Used as chmod permission parameter (ex: 774)<br><em>default:</em>  770</td>
+</tr>
+<tr>
+<td align="left"><em>script.timeout</em></td>
+<td align="left"><em>integer</em> <br>Sets # of minutes before worker scripts times out.<br><em>default:</em>  <em>null</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link">#</a></h2>
+<p><em>none</em></p>
 <h2 id="adds-modules">Adds modules<a class="headerlink" href="#adds-modules" title="Permanent link">#</a></h2>
-<p><strong>pre-requisit modules</strong>                  <br />
+<p><strong>pre-requisite modules</strong>                  <br />
 <em>none found</em>                 <br />
-<strong>post-requisit modules</strong>                  <br />
+<strong>post-requisite modules</strong>                  <br />
 <em>none found</em>                   </p>
+<h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">#</a></h2>
+<p>checkM database                 <br />
+https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz                 <br />
+HMMER                 <br />
+http://eddylab.org/software/hmmer/hmmer.tar.gz                 <br />
+MASH                 <br />
+https://github.com/marbl/Mash/releases/download/v2.2/mash-Linux64-v2.2.tar                 <br />
+Metabat2                 <br />
+https://bitbucket.org/berkeleylab/metabat/downloads/metabat-static-binary-linux-x64_v2.12.1.tar.gz                 <br />
+MetaSPAdes                 <br />
+https://github.com/ablab/spades/releases/download/v3.13.0/SPAdes-3.13.0-Linux.tar.gz                 <br />
+PPLACER                 <br />
+https://github.com/matsen/pplacer/releases/download/v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip                 <br />
+PRODIGAL                 <br />
+https://github.com/hyattpd/Prodigal/releases/download/v2.6.3/prodigal.linux                   </p>
+<p>Module developed by Shan Sun                 <br />
+BioLockJ v1.3.0</p>
               
             </div>
           </div>

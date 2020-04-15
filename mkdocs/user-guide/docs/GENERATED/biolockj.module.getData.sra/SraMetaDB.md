@@ -53,5 +53,5 @@ wget https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz;  <br>gunzip S
 
 ## Citation 
 Module developed by Malcolm Zapatas and Ivory Blakley                   
-BioLockJ v1.2.10-dev
+BioLockJ v1.3.0
 

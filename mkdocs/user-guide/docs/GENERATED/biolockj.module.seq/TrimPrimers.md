@@ -43,5 +43,5 @@ Remove primers from reads, option to discard reads unless primers are attached t
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockj v1.2.10-dev
+BioLockJ v1.3.0
 

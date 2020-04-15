@@ -43,5 +43,5 @@ Build OTU tables from HumanN2 classifier module output.
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockJ v1.2.10-dev
+BioLockJ v1.3.0
 

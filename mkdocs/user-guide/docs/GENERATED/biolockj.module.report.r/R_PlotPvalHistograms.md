@@ -47,5 +47,5 @@ Generate p-value histograms for each reportable metadata field and each *report.
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockj v1.2.10-dev
+BioLockJ v1.3.0
 

@@ -44,5 +44,5 @@ biolockj.module.getData.sra.SraMetaDB
 
 ## Citation 
 Module developed by Malcolm Zapatas and Ivory Blakley                   
-BioLockJ v1.2.10-dev
+BioLockJ v1.3.0
 
