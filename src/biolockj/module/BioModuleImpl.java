@@ -414,7 +414,10 @@ public abstract class BioModuleImpl implements BioModule, Comparable<BioModule> 
 	}
 
 	public String getDockerImageTag() {
-		return BioLockJUtil.getVersion().substring( 0, BioLockJUtil.getVersion().indexOf( "-" ) );
+		if (BioLockJUtil.getVersion().contains( "-" )) {
+			return BioLockJUtil.getVersion().substring( 0, BioLockJUtil.getVersion().indexOf( "-" ) );
+		}
+		return BioLockJUtil.getVersion();
 	}
 
 	/**
