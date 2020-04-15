@@ -460,7 +460,7 @@ public class SeqFileValidator extends JavaModuleImpl implements SeqModule, ApiMo
 
 	@Override
 	public String getCitationString() {
-		return "Module developed by Mike Sioda" + System.lineSeparator() + "BioLockj " + BioLockJUtil.getVersion();
+		return "Module developed by Mike Sioda" + System.lineSeparator() + "BioLockJ " + BioLockJUtil.getVersion();
 	}
 	
 	/**

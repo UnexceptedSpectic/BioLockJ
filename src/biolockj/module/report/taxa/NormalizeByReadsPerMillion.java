@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import biolockj.Config;
 import biolockj.Constants;
 import biolockj.Log;
+import biolockj.api.ApiModule;
+import biolockj.util.BioLockJUtil;
 import biolockj.util.TaxaUtil;
 
 /**
@@ -14,7 +16,7 @@ import biolockj.util.TaxaUtil;
  * @author Ivory
  *
  */
-public class NormalizeByReadsPerMillion extends TransformTaxaTables {
+public class NormalizeByReadsPerMillion extends TransformTaxaTables implements ApiModule {
 	
 	private static final Double MILLION = new Double( 1000000 );
 
@@ -57,7 +59,7 @@ public class NormalizeByReadsPerMillion extends TransformTaxaTables {
 	
 	@Override
 	public String getSummary() throws Exception {
-		return super.getSummary() + summary;
+		return super.getSummary() + System.lineSeparator() + getDescription() + summary;
 	}
 	
 	@Override
@@ -84,5 +86,16 @@ public class NormalizeByReadsPerMillion extends TransformTaxaTables {
 	}
 	
 	private String summary = "";
+
+	@Override
+	public String getDescription() {
+		return "Represent each count value in the table as: counts / (total counts in sample / 1 million)";
+	}
+
+	@Override
+	public String getCitationString() {
+		return "Module developed by Ivory Blakley" + System.lineSeparator() 
+		+ "BioLockj " + BioLockJUtil.getVersion();
+	}
 
 }

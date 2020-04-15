@@ -14,6 +14,7 @@ package biolockj.module.implicit;
 import java.io.*;
 import java.util.*;
 import biolockj.*;
+import biolockj.api.ApiModule;
 import biolockj.exception.*;
 import biolockj.module.BioModule;
 import biolockj.module.BioModuleImpl;
@@ -26,7 +27,7 @@ import biolockj.util.*;
  * 
  * @blj.web_desc Import metadata
  */
-public class ImportMetadata extends BioModuleImpl {
+public class ImportMetadata extends BioModuleImpl implements ApiModule {
 
 	@Override
 	public void checkDependencies() throws Exception {
@@ -354,5 +355,23 @@ public class ImportMetadata extends BioModuleImpl {
 	private String quotedText = "";
 	private int rowNum = 0;
 	private static String inputDelim = null;
+	
+	@Override
+	public String getDescription() {
+		return "Read existing metadata file, or create a default one.";
+	}
+
+	@Override
+	public String getCitationString() {
+		return "Module developed by Mike Sioda" + System.lineSeparator() + "BioLockJ " + BioLockJUtil.getVersion();
+	}
+	
+	@Override
+	public String getDetails() {
+		return "*This module is automatically added to the beginning of every pipeline.*" + System.lineSeparator() +
+						"This module ensures that every pipeline has a metadata file, which is requried for modules that add columns to the metadata. " +
+						" If the configuration file does not specify a metadata file, this module will create an empty table with a row for each file in the input directory. " +
+						" This also ensures that any pre-existing metadata file has a suitable format." ;
+	}
 
 }

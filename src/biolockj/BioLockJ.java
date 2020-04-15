@@ -73,7 +73,7 @@ public class BioLockJ {
 	}
 
 	/**
-	 * {@link biolockj.BioLockJ} is the BioLockj.jar Main-Class, and is the first method executed.<br>
+	 * {@link biolockj.BioLockJ} is the BioLockJ.jar Main-Class, and is the first method executed.<br>
 	 * Execution summary:<br>
 	 * <ol>
 	 * <li>Call {@link #initBioLockJ(String[])} to assign pipeline root dir and log file
@@ -88,7 +88,7 @@ public class BioLockJ {
 	 */
 	public static void main( final String[] args ) {
 		BioLockJUtil.showInfo( args );
-		System.out.println( "Starting BioLockj...");
+		System.out.println( "Starting BioLockJ...");
 		try {
 			initBioLockJ( args );
 			checkDependencies();
