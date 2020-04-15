@@ -30,7 +30,7 @@ Pick OTUs using a closed reference database and construct an OTU table via the Q
 | *docker.imageName* | _string_ <br>The name of a docker image to override whatever a module says to use.<br>*default:*  *null* |
 | *docker.imageTag* | _string_ <br>indicate specific version of Docker images<br>*default:*  *null* |
 | *docker.imgOwner* | _string_ <br>name of the Docker Hub user that owns the docker containers<br>*default:*  *null* |
-| *docker.saveContainerOnExit* | _boolean_ <br>if ture, docker run command will NOT include the --rm flag<br>*default:*  *null* |
+| *docker.saveContainerOnExit* | _boolean_ <br>If Y, docker run command will NOT include the --rm flag<br>*default:*  *null* |
 | *exe.awk* | _executable_ <br>Path for the "awk" executable; if not supplied, any script that needs the awk command will assume it is on the PATH.<br>*default:*  *null* |
 | *pipeline.defaultFastaConverter* | _string_ <br>Java class name for default module used to convert files into fasta format<br>*default:*  biolockj.module.seq.AwkFastaConverter |
 | *pipeline.defaultSeqMerger* | _string_ <br>Java class name for default module used combined paired read files<br>*default:*  biolockj.module.seq.PearMergeReads |

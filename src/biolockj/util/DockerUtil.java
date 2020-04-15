@@ -126,8 +126,8 @@ public class DockerUtil {
 	}
 
 	private static boolean needsWritePermission(BioModule module, String key) throws DockerVolCreationException, ConfigPathException {
-		if (module instanceof WritesOutsidePipeline ) {
-			WritesOutsidePipeline wopMod = (WritesOutsidePipeline) module;
+		if (module instanceof OutsidePipelineWriter ) {
+			OutsidePipelineWriter wopMod = (OutsidePipelineWriter) module;
 			Set<String> wopDirs = wopMod.getWriteDirs();
 			if (wopDirs.contains( volumeMap.get( key ) )) {
 				Log.info(DockerUtil.class, "The module [" + ModuleUtil.displaySignature( module ) + "] is granted write access to the folder [" + key + "]");
@@ -462,7 +462,7 @@ public class DockerUtil {
 	 * {@value #SAVE_CONTAINER_ON_EXIT_DESC}
 	 */
 	static final String SAVE_CONTAINER_ON_EXIT = "docker.saveContainerOnExit";
-	private static final String SAVE_CONTAINER_ON_EXIT_DESC = "if ture, docker run command will NOT include the --rm flag";
+	private static final String SAVE_CONTAINER_ON_EXIT_DESC = "If Y, docker run command will NOT include the --rm flag";
 
 	/**
 	 * Name of the bash script function used to generate a new Docker container: {@value #SPAWN_DOCKER_CONTAINER}

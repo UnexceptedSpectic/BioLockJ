@@ -24,7 +24,7 @@ import biolockj.*;
 import biolockj.Properties;
 import biolockj.exception.*;
 import biolockj.module.BioModule;
-import biolockj.module.getData.InputData;
+import biolockj.module.getData.InputDataModule;
 import biolockj.module.report.r.R_CalculateStats;
 
 /**
@@ -409,14 +409,14 @@ public class BioLockJUtil {
 		setPipelineInputFileTypes();
 	}
 	
-	public static List<InputData> getInputModules() throws Exception {
-		List<InputData> inputModules = new ArrayList<>();
+	public static List<InputDataModule> getInputModules() throws Exception {
+		List<InputDataModule> inputModules = new ArrayList<>();
 		List<String> biomoduleLines = Properties.getListedModules( RuntimeParamUtil.getConfigFile() );
 		for (String moduleLine : biomoduleLines ) {
 			String[] parts = moduleLine.split(Constants.ASSIGN_ALIAS);
 			String className = parts[0].trim();
 			BioModule mod = ModuleUtil.createModuleInstance( className );
-			if ( mod instanceof InputData ) inputModules.add( ( InputData ) mod );
+			if ( mod instanceof InputDataModule ) inputModules.add( ( InputDataModule ) mod );
 		}
 		return inputModules;
 	}
@@ -708,7 +708,7 @@ public class BioLockJUtil {
 			else if( PathwayUtil.isPathwayFile( file ) ) fileTypes.add( PIPELINE_HUMANN2_COUNT_TABLE_INPUT_TYPE );
 		}
 		
-		for (InputData inMod : getInputModules() ) {
+		for (InputDataModule inMod : getInputModules() ) {
 			Set<String> filesFromMod = inMod.getInputDataTypes();
 			Log.info(BioLockJUtil.class, "The module [" + inMod.getClass().getSimpleName() + "] brings filetype(s): " + getCollectionAsString(filesFromMod) );
 			fileTypes.addAll( filesFromMod );

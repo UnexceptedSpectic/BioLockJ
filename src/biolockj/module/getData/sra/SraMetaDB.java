@@ -10,20 +10,20 @@ import biolockj.Constants;
 import biolockj.Log;
 import biolockj.Properties;
 import biolockj.api.ApiModule;
-import biolockj.exception.ConfigException;
 import biolockj.exception.ConfigFormatException;
 import biolockj.exception.ConfigPathException;
 import biolockj.exception.DockerVolCreationException;
 import biolockj.exception.SpecialPropertiesException;
-import biolockj.module.WritesOutsidePipeline;
+import biolockj.module.OutsidePipelineWriter;
 import biolockj.util.BioLockJUtil;
 import biolockj.util.DockerUtil;
 
-public class SraMetaDB extends SequenceReadArchive implements ApiModule, WritesOutsidePipeline {
+public class SraMetaDB extends SequenceReadArchive implements ApiModule, OutsidePipelineWriter {
 	
 	public SraMetaDB() {
 		super();
 		addNewProperty( DO_UPDATE, Properties.BOOLEAN_TYPE, DO_UPDATE_DESC, "N");
+		addNewProperty( DB_DIR, Properties.FILE_PATH, DB_DIR_DESC);
 		addGeneralProperty( EXE_GUNZIP );
 		addGeneralProperty( EXE_WGET );
 	}
@@ -48,17 +48,6 @@ public class SraMetaDB extends SequenceReadArchive implements ApiModule, WritesO
 	        	Config.getBoolean( this, DO_UPDATE );
 	            isValid = true;
 	            break;
-	        case DB_DIR:
-	        	File dbFolder = Config.requireExistingDir( this, DB_DIR );
-	    		File dbFile = new File(dbFolder, DB_NAME);
-	    		if ( dbFile.exists() && ! dbFile.canRead() ) {
-	    			throw new ConfigException(DB_DIR, "The database [" + dbFile.getAbsolutePath() + "] exists, but is not readable.");
-	    		}
-	    		if ( ! DockerUtil.inDockerEnv() && ! dbFile.exists() && ! dbFolder.canWrite() ) {
-	    			throw new ConfigException(DB_DIR, "The database [" + dbFile.getAbsolutePath() + "] does not exist, and this folder is not writable.");
-	    		}
-	        	isValid = true;
-	        	break;
 	    }
 	    return isValid;
 	}
@@ -153,7 +142,7 @@ public class SraMetaDB extends SequenceReadArchive implements ApiModule, WritesO
 	 * {@link biolockj.Config} property: {@value #DO_UPDATE}<br>
 	 * {@value #DO_UPDATE_DESC}
 	 */
-	private final String DO_UPDATE = "sraMetaData.forceUpdate";
+	private final String DO_UPDATE = "sra.forceDbUpdate";
 	private final String DO_UPDATE_DESC = "Y/N: download a newer verionsion if available.";
 	
 	private final String EXE_WGET = "exe.wget";

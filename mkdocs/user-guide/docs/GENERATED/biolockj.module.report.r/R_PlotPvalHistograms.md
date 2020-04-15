@@ -22,7 +22,7 @@ Generate p-value histograms for each reportable metadata field and each *report.
 | *docker.imageName* | _string_ <br>The name of a docker image to override whatever a module says to use.<br>*default:*  *null* |
 | *docker.imageTag* | _string_ <br>indicate specific version of Docker images<br>*default:*  *null* |
 | *docker.imgOwner* | _string_ <br>name of the Docker Hub user that owns the docker containers<br>*default:*  *null* |
-| *docker.saveContainerOnExit* | _boolean_ <br>if ture, docker run command will NOT include the --rm flag<br>*default:*  *null* |
+| *docker.saveContainerOnExit* | _boolean_ <br>If Y, docker run command will NOT include the --rm flag<br>*default:*  *null* |
 | *exe.Rscript* | _executable_ <br>Path for the "Rscript" executable; if not supplied, any script that needs the Rscript command will assume it is on the PATH.<br>*default:*  *null* |
 | *pipeline.defaultStatsModule* | _string_ <br>Java class name for default module used generate p-value and other stats<br>*default:*  biolockj.module.report.r.R_CalculateStats |
 | *r.colorFile* | _file path_ <br>path to a tab-delimited file giving the color to use for each value of each metadata field plotted.<br>*default:*  *null* |
@@ -47,5 +47,5 @@ Generate p-value histograms for each reportable metadata field and each *report.
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockj v1.2.9-dev
+BioLockj v1.2.10-dev
 

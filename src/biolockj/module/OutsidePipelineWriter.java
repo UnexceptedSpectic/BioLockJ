@@ -9,7 +9,7 @@ import biolockj.exception.DockerVolCreationException;
  * @author ieclabau
  *
  */
-public interface WritesOutsidePipeline extends BioModule {
+public interface OutsidePipelineWriter extends BioModule {
 	
 	public Set<String> getWriteDirs () throws DockerVolCreationException, ConfigPathException;
 	
