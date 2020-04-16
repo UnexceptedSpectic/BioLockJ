@@ -41,10 +41,11 @@ public class MetaUtil {
 	 * @param removeMissingIds if TRUE, sampleIds not include in the map arg will be removed from the metadata
 	 * @throws MetadataException if errors occur attemptingto get/put metadata into cache
 	 * @throws IOException if errors occur attempting to read metadata file
+	 * @throws DockerVolCreationException 
 	 * @throws FileNotFoundException if metadata file not found
 	 */
 	public static void addColumn( final String colName, final Map<String, String> map, final File fileDir,
-		final boolean removeMissingIds ) throws MetadataException, IOException {
+		final boolean removeMissingIds ) throws MetadataException, IOException, DockerVolCreationException {
 		final File newMeta = new File( fileDir.getAbsolutePath() + File.separator + getFileName() );
 		Log.info( MetaUtil.class, "Adding new field [" + colName + "] to metadata: " + newMeta.getAbsolutePath() );
 		Log.debug( MetaUtil.class, "Current metadata: " + getPath() );
@@ -184,9 +185,10 @@ public class MetaUtil {
 	 * @throws MetadataException if metadata file not found and cannot be assigned
 	 * @throws IOException If unable to modify the system file
 	 * @throws FileNotFoundException if metadata file path not found
+	 * @throws DockerVolCreationException 
 	 */
 	public static String getForcedColumnName( final String name )
-		throws MetadataException, FileNotFoundException, IOException {
+		throws MetadataException, FileNotFoundException, IOException, DockerVolCreationException {
 		String suffix = "";
 		while( getFieldNames().contains( name + suffix ) ) {
 			if( getFieldValues( name + suffix, true ).isEmpty() ) {
@@ -316,9 +318,10 @@ public class MetaUtil {
 	 * @throws MetadataException if metadata file not found and cannot be assigned
 	 * @throws IOException If unable to modify the system file
 	 * @throws FileNotFoundException if metadata file path not found
+	 * @throws DockerVolCreationException 
 	 */
 	public static String getSystemMetaCol( final BioModule module, final String col )
-		throws MetadataException, FileNotFoundException, IOException {
+		throws MetadataException, FileNotFoundException, IOException, DockerVolCreationException {
 		final File outputMeta = module.getMetadata();
 		if( ModuleUtil.isComplete( module ) || outputMeta.isFile() ) {
 			setFile( outputMeta );
@@ -414,9 +417,10 @@ public class MetaUtil {
 	 * @throws MetadataException if metadata file not found and cannot be assigned
 	 * @throws IOException If unable to modify the system file
 	 * @throws FileNotFoundException if metadata file path not found
+	 * @throws DockerVolCreationException 
 	 */
 	public static void removeColumn( final String colName, final File fileDir )
-		throws FileNotFoundException, IOException, MetadataException {
+		throws FileNotFoundException, IOException, MetadataException, DockerVolCreationException {
 		File myDir = fileDir;
 		if( fileDir == null ) {
 			myDir = new File( Config.pipelinePath() + File.separator + ".temp" );
@@ -458,8 +462,9 @@ public class MetaUtil {
 	 *
 	 * @param file New metadata file
 	 * @throws MetadataException if null parameter is passed
+	 * @throws DockerVolCreationException 
 	 */
-	public static void setFile( final File file ) throws MetadataException {
+	public static void setFile( final File file ) throws MetadataException, DockerVolCreationException {
 		if( file == null ) throw new MetadataException( "Cannot pass NULL to MetaUtil.setFile( file )" );
 		if( metadataFile != null && file.getAbsolutePath().equals( getPath() ) )
 			Log.debug( MetaUtil.class, "===> MetaUtil.setFile() not required, no changes to: " + getPath() );

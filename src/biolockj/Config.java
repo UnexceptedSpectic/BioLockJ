@@ -676,16 +676,20 @@ public class Config {
 	 *
 	 * @param name Property name
 	 * @param data Collection of data to store using the key = property
+	 * @throws DockerVolCreationException 
 	 */
-	public static void setConfigProperty( final String name, final Collection<?> data ) {
+	public static void setConfigProperty( final String name, final Collection<?> data ) throws DockerVolCreationException {
 		String origProp = usedProps.get( name );
 		origProp = origProp != null && origProp.isEmpty() ? null: origProp;
 
 		String val = null;
 		if( data != null && !data.isEmpty() && data.iterator().next() instanceof File ) {
 			final Collection<String> fileData = new ArrayList<>();
-			for( final Object obj: data )
-				fileData.add( ( (File) obj ).getAbsolutePath() );
+			for( final Object obj: data ) {
+				String path = ( (File) obj ).getAbsolutePath();
+				if (DockerUtil.inDockerEnv()) path = DockerUtil.deContainerizePath( path );
+				fileData.add( path );
+			}
 			val = BioLockJUtil.getCollectionAsString( fileData );
 		} else val = BioLockJUtil.getCollectionAsString( data );
 

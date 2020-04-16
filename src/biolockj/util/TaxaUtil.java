@@ -22,6 +22,7 @@ import biolockj.*;
 import biolockj.exception.BioLockJException;
 import biolockj.exception.ConfigFormatException;
 import biolockj.exception.ConfigNotFoundException;
+import biolockj.exception.DockerVolCreationException;
 import biolockj.module.report.taxa.TaxaLevelTable;
 
 /**
@@ -260,8 +261,9 @@ public class TaxaUtil {
 	 * @throws ConfigNotFoundException if {@value Constants#REPORT_TAXONOMY_LEVELS} is undefined
 	 * @throws ConfigFormatException if {@value Constants#REPORT_TAXONOMY_LEVELS} is defined, but does not contain any
 	 * valid taxonomy levels
+	 * @throws DockerVolCreationException 
 	 */
-	public static List<String> initTaxaLevels() throws ConfigNotFoundException, ConfigFormatException {
+	public static List<String> initTaxaLevels() throws ConfigNotFoundException, ConfigFormatException, DockerVolCreationException {
 		configLevels = new ArrayList<>();
 		final String errorMsg =
 			"Property only accepts valid taxonomy levels ==>  " + BioLockJUtil.getCollectionAsString( TAXA_LEVELS );

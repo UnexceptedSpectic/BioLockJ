@@ -383,8 +383,9 @@ public class BioLockJUtil {
 	 * Method used to add a file to the ignore file list property.
 	 * 
 	 * @param file File to ignore
+	 * @throws DockerVolCreationException 
 	 */
-	public static void ignoreFile( final File file ) {
+	public static void ignoreFile( final File file ) throws DockerVolCreationException {
 		final Set<String> ignoredFileNames = Config.getSet( null, Constants.INPUT_IGNORE_FILES );
 		ignoredFileNames.add( file.getName() );
 		Config.setConfigProperty( Constants.INPUT_IGNORE_FILES, ignoredFileNames );

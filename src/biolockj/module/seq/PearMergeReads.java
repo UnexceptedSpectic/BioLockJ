@@ -16,6 +16,7 @@ import java.util.*;
 import biolockj.*;
 import biolockj.Properties;
 import biolockj.api.ApiModule;
+import biolockj.exception.DockerVolCreationException;
 import biolockj.exception.MetadataException;
 import biolockj.module.ReadCounter;
 import biolockj.module.SeqModuleImpl;
@@ -148,7 +149,7 @@ public class PearMergeReads extends SeqModuleImpl implements ApiModule, ReadCoun
 		return lines;
 	}
 
-	private String getMetaColName() throws FileNotFoundException, MetadataException, IOException {
+	private String getMetaColName() throws FileNotFoundException, MetadataException, IOException, DockerVolCreationException {
 		if( this.otuColName == null ) this.otuColName = MetaUtil.getSystemMetaCol( this, NUM_MERGED_READS );
 		return this.otuColName;
 	}
