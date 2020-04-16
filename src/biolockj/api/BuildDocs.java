@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import biolockj.Constants;
 import biolockj.Properties;
+import biolockj.exception.ConfigPathException;
 import biolockj.module.BioModule;
+import biolockj.util.BioLockJUtil;
 import biolockj.util.ModuleUtil;
 
 /**
@@ -365,13 +367,13 @@ public class BuildDocs {
 		return sb.toString();
 	}
 	
-	private static void generateApiHelpPage() throws IOException, InterruptedException, API_Exception {
+	private static void generateApiHelpPage() throws IOException, InterruptedException, API_Exception, ConfigPathException {
 		File file = new File(baseDir, BIOLOCKJ_API_PAGE);
 		System.err.println("Creating file: " + file.getPath() );
 		file.createNewFile();
 		FileWriter writer = new FileWriter(file);
 
-		writer.write( copyFromFile(new File(pathToPartials + "BioLockJ-Api_header.md")) );
+		writer.write( copyFromFile(new File(getPartialsDir(), "BioLockJ-Api_header.md")) );
 		writer.write( "" + markDownReturn );
 		String cmd = "biolockj-api help";
 		writer.write( "`" + cmd + "`" + markDownReturn );
@@ -380,7 +382,7 @@ public class BuildDocs {
 		writeCommandOutputToFile(cmd, writer);
 		writer.write( "```" + markDownReturn );
 		
-		writer.write( copyFromFile(new File(pathToPartials + "BioLockJ-Api_footer.md")) );
+		writer.write( copyFromFile(new File(getPartialsDir(), "BioLockJ-Api_footer.md")) );
 
 		writer.close();
 		
@@ -431,7 +433,7 @@ public class BuildDocs {
 		file.createNewFile();
 		FileWriter writer = new FileWriter(file);
 		
-		writer.write( copyFromFile(new File(pathToPartials + header)) );
+		writer.write( copyFromFile(new File(getPartialsDir(), header)) );
 
 		List<String> allProps = BioLockJ_API.listProps();
 		List<String> props = new ArrayList<>();
@@ -440,10 +442,14 @@ public class BuildDocs {
 		}
 		writePropsTable(props, null, writer);
 		
-		writer.write( copyFromFile(new File(pathToPartials + footer)) );
+		writer.write( copyFromFile(new File(getPartialsDir(), footer)) );
 		
 		writer.close();
 		propGroupLink.put(prefix, output);
+	}
+	
+	private static File getPartialsDir() throws ConfigPathException {
+		return new File(BioLockJUtil.getBljDir().getAbsolutePath() + "/mkdocs/user-guide/partials");
 	}
 	
 	private static List<String> AllModules;
@@ -470,6 +476,5 @@ public class BuildDocs {
 			
 	private static File baseDir;
 	private static String basePackage = null;
-	private static String pathToPartials = "mkdocs/user-guide/partials/";
 
 }
