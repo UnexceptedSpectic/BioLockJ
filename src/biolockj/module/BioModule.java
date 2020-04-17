@@ -156,6 +156,13 @@ public interface BioModule {
 	 * @return File directory of files typically not useful long term
 	 */
 	public File getTempDir();
+	
+	/**
+	 * Retains records of the process of running the module.<br>
+	 * The files are intended to be small and stored long term with successful pipelines.<br>
+	 * @return
+	 */
+	public File getLogDir();
 
 	/**
 	 * Initialize a new module to generate a unique ID and module directory.
@@ -226,4 +233,9 @@ public interface BioModule {
 	 * Name of the temporary sub-directory: {@value #TEMP_DIR}
 	 */
 	public static final String TEMP_DIR = "temp";
+	
+	/**
+	 * Name of the temporary sub-directory: {@value #TEMP_DIR}
+	 */
+	public static final String LOG_DIR = "log";
 }

@@ -40,6 +40,7 @@ public class Pipeline {
 	 */
 	public static void executeModule() throws Exception {
 		ModuleUtil.markStarted( exeModule() );
+		Config.resetUsedProps();
 		refreshRCacheIfNeeded();
 		exeModule().executeTask();
 		final boolean isJava = exeModule() instanceof JavaModule;
@@ -53,6 +54,7 @@ public class Pipeline {
 		exeModule().cleanUp();
 		ValidationUtil.validateModule( exeModule() );
 		if( !runDetached ) SummaryUtil.reportSuccess( exeModule() );
+		Config.saveModuleProps( exeModule() );
 		ModuleUtil.markComplete( exeModule() );
 	}
 

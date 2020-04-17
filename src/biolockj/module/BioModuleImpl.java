@@ -206,6 +206,15 @@ public abstract class BioModuleImpl implements BioModule, Comparable<BioModule> 
 	public File getTempDir() {
 		return ModuleUtil.requireSubDir( this, TEMP_DIR );
 	}
+	
+	/**
+	 * Returns moduleDir/temp for intermediate files. If {@link biolockj.Constants#RM_TEMP_FILES} =
+	 * {@value biolockj.Constants#TRUE}, this directory is deleted after pipeline completes successfully.
+	 */
+	@Override
+	public File getLogDir() {
+		return ModuleUtil.requireSubDir( this, LOG_DIR );
+	}
 
 	@Override
 	public int hashCode() {

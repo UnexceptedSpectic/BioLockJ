@@ -11,7 +11,10 @@
  */
 package biolockj;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
@@ -353,7 +356,7 @@ public class Config {
 		if( val != null ) val = val.trim();
 		val = replaceEnvVar( val );
 		if( val != null && val.isEmpty() ) val = null;
-		usedProps.put( prop, val );
+		moduleUsedProps.put( prop, val );
 		return val;
 	}
 	public static String getString( final BioModule module, final String property ) {
@@ -380,7 +383,8 @@ public class Config {
 	 */
 	public static Map<String, String> getUsedProps() {
 		getString( null, Constants.PIPELINE_DEFAULT_PROPS );
-		return new HashMap<>( usedProps );
+		allUsedProps.putAll( moduleUsedProps );
+		return new HashMap<>( allUsedProps );
 	}
 
 	/**
@@ -443,16 +447,6 @@ public class Config {
 	public static String pipelinePath() {
 		if ( getPipelineDir() == null ) return null;
 		return getPipelineDir().getAbsolutePath();
-	}
-
-	/**
-	 * Remove a property (probably internal since these are the only that change mid-program).
-	 * 
-	 * @param property Property name
-	 */
-	public static void removeConfigProperty( final String property ) {
-		props.remove( property );
-		usedProps.remove( property );
 	}
 
 	/**
@@ -683,7 +677,8 @@ public class Config {
 	 * @throws DockerVolCreationException 
 	 */
 	public static void setConfigProperty( final String name, final Collection<?> data ) throws DockerVolCreationException {
-		String origProp = usedProps.get( name );
+		allUsedProps.putAll( moduleUsedProps );
+		String origProp = allUsedProps.get( name );
 		origProp = origProp != null && origProp.isEmpty() ? null: origProp;
 
 		String val = null;
@@ -703,7 +698,7 @@ public class Config {
 		if( origProp == null && hasVal || origProp != null && !hasVal ||
 			origProp != null && hasVal && !origProp.equals( val ) ) {
 			Log.info( Config.class, "Set Config property [ " + name + " ] = " + val );
-			usedProps.put( name, val );
+			moduleUsedProps.put( name, val );
 		}
 	}
 
@@ -719,14 +714,14 @@ public class Config {
 	 * @param val Value to assign to property
 	 */
 	public static void setConfigProperty( final String name, final String val ) {
-		String origProp = usedProps.get( name );
+		String origProp = allUsedProps.get( name );
 		origProp = origProp != null && origProp.isEmpty() ? null: origProp;
 		props.setProperty( name, val );
 		final boolean hasVal = val != null && !val.isEmpty();
 		if( origProp == null && hasVal || origProp != null && !hasVal ||
 			origProp != null && hasVal && !origProp.equals( val ) ) {
 			Log.info( Config.class, "Set Config property [ " + name + " ] = " + val );
-			usedProps.put( name, val );
+			allUsedProps.put( name, val );
 		}
 	}
 
@@ -894,6 +889,27 @@ public class Config {
 	public static boolean isInternalProperty( final String property ) {
 		return property.startsWith( Constants.INTERNAL_PREFIX );
 	}
+	
+	/**
+	 * Dump all of the properties stored for the current module into the allUsedProps set,
+	 * and clear out the module-used-props to start with a clean slate.
+	 */
+	public static void resetUsedProps() {
+		allUsedProps.putAll( moduleUsedProps );
+		moduleUsedProps.clear();
+	}
+	
+	public static void saveModuleProps( BioModule module ) throws IOException {
+		File modConfig = new File(module.getLogDir(), ModuleUtil.displayName( module ) + "_used.properties");
+		BufferedWriter writer = new BufferedWriter( new FileWriter( modConfig ) );
+		try {
+			writer.write( "# The following properties were used during the execution of module: " + ModuleUtil.displaySignature( module ) );
+			for( final String key: moduleUsedProps.keySet() )
+				writer.write( key + "=" + moduleUsedProps.get( key ) + Constants.RETURN );
+		}finally {
+			writer.close();
+		}
+	}
 
 	/**
 	 * Bash variable with path to BioLockJ directory: {@value #BLJ_BASH_VAR}
@@ -905,7 +921,8 @@ public class Config {
 	private static File pipelineDir = null;
 	private static Properties props = null;
 	private static Properties unmodifiedInputProps = new Properties();
-	private static final Map<String, String> usedProps = new HashMap<>();
+	private static final Map<String, String> allUsedProps = new HashMap<>();
+	private static final Map<String, String> moduleUsedProps = new HashMap<>();
 	
 }
 
