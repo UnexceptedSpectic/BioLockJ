@@ -900,12 +900,34 @@ public class Config {
 	}
 	
 	public static void saveModuleProps( BioModule module ) throws IOException {
-		File modConfig = new File(module.getLogDir(), ModuleUtil.displayName( module ) + "_used.properties");
+		File modConfig = new File(module.getLogDir(), ModuleUtil.displayName( module ) + USED_PROPS_SUFFIX);
 		BufferedWriter writer = new BufferedWriter( new FileWriter( modConfig ) );
 		try {
-			writer.write( "# The following properties were used during the execution of module: " + ModuleUtil.displaySignature( module ) );
+			writer.write( "# Properties used during the execution of module: " + ModuleUtil.displaySignature( module ) + Constants.RETURN);
 			for( final String key: moduleUsedProps.keySet() )
-				writer.write( key + "=" + moduleUsedProps.get( key ) + Constants.RETURN );
+				if (moduleUsedProps.get( key ) != null) {
+					writer.write( key + "=" + moduleUsedProps.get( key ) + Constants.RETURN );
+				}
+		}finally {
+			writer.close();
+		}
+	}
+	
+	public static void showUnusedProps() throws IOException {
+		allUsedProps.putAll( moduleUsedProps );
+		Map<String, String> primaryProps = convertToMap( Properties.readProps(configFile, null) );
+		primaryProps.keySet().removeAll( allUsedProps.keySet() );
+		BufferedWriter writer = new BufferedWriter( new FileWriter( new File( pipelineDir, UNVERIFIED_PROPS_FILE) ) );
+		try {
+			if ( !primaryProps.isEmpty() ) {
+				String msg = "Properties from the PRIMARY config file that were NOT USED during check-dependencies.";
+				Log.warn(Config.class, msg);
+				writer.write( "# " + msg + Constants.RETURN );
+				for( final String key: primaryProps.keySet() ) {
+					Log.warn(Config.class, "      " + key + "=" + primaryProps.get( key ));
+					writer.write( key + "=" + primaryProps.get( key ) + Constants.RETURN );
+				}
+			}
 		}finally {
 			writer.close();
 		}
@@ -923,6 +945,9 @@ public class Config {
 	private static Properties unmodifiedInputProps = new Properties();
 	private static final Map<String, String> allUsedProps = new HashMap<>();
 	private static final Map<String, String> moduleUsedProps = new HashMap<>();
+	private static final String USED_PROPS_SUFFIX = "_used.properties";
+	private static final String UNUSED_PROPS_FILE = "unused.properties";
+	private static final String UNVERIFIED_PROPS_FILE = "unverified.properties";
 	
 }
 

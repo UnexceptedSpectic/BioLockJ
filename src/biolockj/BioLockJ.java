@@ -240,10 +240,11 @@ public class BioLockJ {
 	}
 	
 	private static void checkDependencies() throws Exception{
-		Pipeline.checkModuleDependencies();
 		if( ! BioLockJUtil.isDirectMode() ) {
 			MasterConfigUtil.saveMasterConfig();
 		}
+		Pipeline.checkModuleDependencies();
+		Config.showUnusedProps();
 	}
 
 	/**
