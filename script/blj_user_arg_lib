@@ -229,6 +229,10 @@ print_pipeline_status_and_exit(){
 	local maxtime=$2
 	while [ $i -lt $maxtime ] || ifArgUsed $WAIT_ARG || ifArgUsed $PRECHECK ; do
 		i=$((i+1))
+		if [ -f ${pipeRootDir}/unverified.properties ] ; then
+			echo ""; echo ""
+			cat ${pipeRootDir}/unverified.properties
+		fi
 		if [ -f ${pipeRootDir}/biolockjFailed ] ; then 
 			echo ""; echo ""
 			echo "BioLockJ has stopped."
