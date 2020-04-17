@@ -52,5 +52,5 @@ Typically, BioLockJ will automatically determine modules to add to the pipeline 
 ## Citation 
 [sra-tools](https://github.com/ncbi/sra-tools)                   
 Module developed by Philip Badzuh                   
-BioLockJ v1.3.0
+BioLockJ v1.3.1
 

@@ -46,5 +46,5 @@ This sets the value of *sra.sraAccList* to the SraAccList.txt file in this modul
 
 ## Citation 
 Module developed by Malcolm Zapatas and Ivory Blakley                   
-BioLockJ v1.3.0
+BioLockJ v1.3.1
 

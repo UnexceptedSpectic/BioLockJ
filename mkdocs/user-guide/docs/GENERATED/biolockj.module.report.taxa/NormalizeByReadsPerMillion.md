@@ -41,5 +41,5 @@ biolockj.module.report.taxa.LogTransformTaxaTables
 
 ## Citation 
 Module developed by Ivory Blakley                   
-BioLockj v1.3.0
+BioLockj v1.3.1
 

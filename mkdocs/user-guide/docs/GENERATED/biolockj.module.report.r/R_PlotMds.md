@@ -55,5 +55,5 @@ Generate sets of multidimensional scaling plots showing 2 axes at a time (up to 
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockJ v1.3.0
+BioLockJ v1.3.1
 

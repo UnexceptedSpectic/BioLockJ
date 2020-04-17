@@ -54,5 +54,5 @@ Generate OTU-metadata box-plots and scatter-plots for each reportable metadata f
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockJ v1.3.0
+BioLockJ v1.3.1
 

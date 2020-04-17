@@ -48,6 +48,6 @@ Generate a summary statistics table with [adjusted and unadjusted] [parameteric 
 *none found*                   
 
 ## Citation 
-BioLockJ v1.3.0                   
+BioLockJ v1.3.1                   
 Module developted by Mike Sioda.
 

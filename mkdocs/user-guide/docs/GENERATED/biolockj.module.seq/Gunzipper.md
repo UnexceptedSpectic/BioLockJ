@@ -40,6 +40,6 @@ Decompress gzipped files.
 *none found*                   
 
 ## Citation 
-BioLockJ v1.3.0                   
+BioLockJ v1.3.1                   
 Module developed by Mike Sioda
 

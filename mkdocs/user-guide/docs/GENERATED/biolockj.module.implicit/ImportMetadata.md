@@ -26,5 +26,5 @@ This module ensures that every pipeline has a metadata file, which is requried f
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockJ v1.3.0
+BioLockJ v1.3.1
 

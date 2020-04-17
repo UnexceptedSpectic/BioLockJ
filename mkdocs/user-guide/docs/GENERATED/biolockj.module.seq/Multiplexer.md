@@ -44,5 +44,5 @@ Multiplex samples into a single file, or two files (one with forward reads, one 
 
 ## Citation 
 Module developed by Mike Sioda                   
-BioLockJ v1.3.0
+BioLockJ v1.3.1
 

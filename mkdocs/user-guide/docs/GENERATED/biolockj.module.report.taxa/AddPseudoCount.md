@@ -40,5 +40,5 @@ Add a pseudocount (+1) to each value in each taxa table.
 *none found*                   
 
 ## Citation 
-BioLockJ v1.3.0
+BioLockJ v1.3.1
 
