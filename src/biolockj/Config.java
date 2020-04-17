@@ -13,6 +13,8 @@ package biolockj;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -913,23 +915,35 @@ public class Config {
 		}
 	}
 	
-	public static void showUnusedProps() throws IOException {
+	public static void showUnusedProps() throws FileNotFoundException, IOException {
 		allUsedProps.putAll( moduleUsedProps );
-		Map<String, String> primaryProps = convertToMap( Properties.readProps(configFile, null) );
+		Properties props = new Properties();
+		Log.info(Config.class, "Path to configFile: " + configFile.getAbsolutePath());
+		props.load( new FileInputStream( configFile) );
+		Map<String, String> primaryProps = convertToMap( props );
 		primaryProps.keySet().removeAll( allUsedProps.keySet() );
-		BufferedWriter writer = new BufferedWriter( new FileWriter( new File( pipelineDir, UNVERIFIED_PROPS_FILE) ) );
-		try {
-			if ( !primaryProps.isEmpty() ) {
-				String msg = "Properties from the PRIMARY config file that were NOT USED during check-dependencies.";
-				Log.warn(Config.class, msg);
-				writer.write( "# " + msg + Constants.RETURN );
-				for( final String key: primaryProps.keySet() ) {
-					Log.warn(Config.class, "      " + key + "=" + primaryProps.get( key ));
-					writer.write( key + "=" + primaryProps.get( key ) + Constants.RETURN );
+		for ( String prop : primaryProps.keySet() ) {
+			if ( primaryProps.get( prop ) == null || primaryProps.get( prop ).isEmpty() ) primaryProps.remove( prop );
+		}
+		if( !primaryProps.isEmpty() ) {
+			BufferedWriter writer =
+				new BufferedWriter( new FileWriter( new File( pipelineDir, UNVERIFIED_PROPS_FILE ) ) );
+			try {
+				String msg = "Properties from the PRIMARY config file that were NOT USED during check-dependencies:";
+				Log.warn( Config.class, msg );
+				writer.write( "### " + msg + Constants.RETURN );
+				for( final String prop: primaryProps.keySet() ) {
+					if( Properties.isDeprecatedProp( prop ) ) {
+						Log.warn( Config.class, "      " + Properties.deprecatedPropMessage( prop ) );
+						writer.write( "# " + Properties.deprecatedPropMessage( prop ) + Constants.RETURN );
+					}
+					Log.warn( Config.class, "      " + prop + "=" + primaryProps.get( prop ) );
+					writer.write( prop + "=" + primaryProps.get( prop ) + Constants.RETURN );
+
 				}
+			} finally {
+				writer.close();
 			}
-		}finally {
-			writer.close();
 		}
 	}
 

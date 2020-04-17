@@ -224,6 +224,7 @@ print_action_options(){
 # param 2 - number of seconds to wait before timing out
 print_pipeline_status_and_exit(){
 	local pipeRootDir=$1
+	echo ""
 	printf "Fetching pipeline status "
 	local i=0
 	local maxtime=$2
@@ -250,6 +251,7 @@ print_pipeline_status_and_exit(){
 		elif [ -f ${pipeRootDir}/biolockjComplete ]; then
 			echo ""; echo ""
 			echo "Pipeline is complete."
+			echo ""
 			exit
 		elif [ -f ${pipeRootDir}/precheckComplete ]; then
 			echo ""; echo ""
@@ -259,6 +261,7 @@ print_pipeline_status_and_exit(){
 		elif [ -f ${pipeRootDir}/biolockjStarted ]; then
 			echo ""; echo ""
 			echo "Pipeline is running."
+			echo ""
 			exit
 		elif [ $i -eq $maxtime ]; then
 			if ifArgUsed $WAIT_ARG || ifArgUsed $PRECHECK ; then

@@ -46,12 +46,12 @@ public abstract class SequenceReadArchive extends ScriptModuleImpl {
 	
 	protected static final String DB_NAME = "SRAmetadb.sqlite";
 	
-	protected static final String DB_DIR = "sra.metaDataDir";
+	public static final String DB_DIR = "sra.metaDataDir";
 	protected static final String DB_DIR_DESC = "path to the directory where the *"+DB_NAME+"* database is stored.";
 	
-	protected static final String SRA_ACC_LIST = "sra.sraAccList";
+	public static final String SRA_ACC_LIST = "sra.sraAccList";
 	protected static final String SRA_ACC_LIST_DESC = "A file that has one SRA accession per line and nothing else.";
 	
-	protected static final String SRP = "sra.sraProjectId";
+	public static final String SRP = "sra.sraProjectId";
 	protected static final String SRP_DESC = "The project id(s) referencesing a project in the NCBI SRA. example: SRP009633, ERP016051";
 }
