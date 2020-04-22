@@ -931,7 +931,7 @@ public class Config {
 			try {
 				String msg = "Properties from the PRIMARY config file that were NOT USED during check-dependencies:";
 				Log.warn( Config.class, msg );
-				writer.write( "### " + msg + Constants.RETURN );
+				writer.write( "### " + msg + Constants.RETURN + "#" + Constants.RETURN );
 				for( final String prop: primaryProps.keySet() ) {
 					if( Properties.isDeprecatedProp( prop ) ) {
 						Log.warn( Config.class, "      " + Properties.deprecatedPropMessage( prop ) );
@@ -939,7 +939,6 @@ public class Config {
 					}
 					Log.warn( Config.class, "      " + prop + "=" + primaryProps.get( prop ) );
 					writer.write( prop + "=" + primaryProps.get( prop ) + Constants.RETURN );
-
 				}
 			} finally {
 				writer.close();

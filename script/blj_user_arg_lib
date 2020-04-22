@@ -232,6 +232,7 @@ print_pipeline_status_and_exit(){
 		i=$((i+1))
 		if [ -f ${pipeRootDir}/unverified.properties ] ; then
 			echo ""; echo ""
+			echo "Warning: see \"unverified.properties\""
 			cat ${pipeRootDir}/unverified.properties
 		fi
 		if [ -f ${pipeRootDir}/biolockjFailed ] ; then 
