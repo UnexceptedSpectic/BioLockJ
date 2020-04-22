@@ -441,6 +441,8 @@ public class Properties extends java.util.Properties {
 			deprecatedProps.put("sequenceReadArchive.metaDataDir", SequenceReadArchive.DB_DIR);
 			deprecatedProps.put("sraMetaData.forceUpdate", SraMetaDB.DO_UPDATE);
 			deprecatedProps.put("docker.imgOwner", DockerUtil.DOCKER_HUB_USER);
+			deprecatedProps.put("docker.imgVersion", DockerUtil.DOCKER_IMG_VERSION);
+			deprecatedProps.put("docker.user", DockerUtil.DOCKER_HUB_USER);
 		}
 		return deprecatedProps;
 	}
