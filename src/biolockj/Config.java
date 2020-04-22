@@ -922,7 +922,8 @@ public class Config {
 		props.load( new FileInputStream( configFile) );
 		Map<String, String> primaryProps = convertToMap( props );
 		primaryProps.keySet().removeAll( allUsedProps.keySet() );
-		for ( String prop : primaryProps.keySet() ) {
+		Set<String> keys = primaryProps.keySet();
+		for ( String prop : keys ) {
 			if ( primaryProps.get( prop ) == null || primaryProps.get( prop ).isEmpty() ) primaryProps.remove( prop );
 		}
 		if( !primaryProps.isEmpty() ) {

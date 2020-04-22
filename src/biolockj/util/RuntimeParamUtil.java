@@ -208,6 +208,10 @@ public class RuntimeParamUtil {
 	public static boolean isPrecheckMode() {
 		return params.get( PRECHECK_FLAG ) != null;
 	}
+	
+	public static boolean isPrecheckAllMode() {
+		return params.get( UNUSED_PROPS_FLAG ) != null;
+	}
 
 	/**
 	 * Return TRUE if runtime parameters indicate Logs should be written to system.out
@@ -426,8 +430,13 @@ public class RuntimeParamUtil {
 	 * Flag argument; if present, BioLockJ will stop after checkDependencies step. flag: {@value #SYSTEM_OUT_FLAG}
 	 */
 	protected static final String PRECHECK_FLAG = "-precheck";
+	
+	/**
+	 * Flag argument; if presetn, BioLockJ will run check dependencies for ALL modules to determine unused properties from the primary config.
+	 */
+	protected static final String UNUSED_PROPS_FLAG = "-unusedProps";
 
-	private static final List<String> ARG_FLAGS = Arrays.asList( AWS_FLAG, SYSTEM_OUT_FLAG, PRECHECK_FLAG );
+	private static final List<String> ARG_FLAGS = Arrays.asList( AWS_FLAG, SYSTEM_OUT_FLAG, PRECHECK_FLAG, UNUSED_PROPS_FLAG );
 	private static final List<String> DIR_ARGS = Arrays.asList( BLJ_PROJ_DIR, HOME_DIR, RESTART_DIR );
 	private static final List<String> extraParams = new ArrayList<>();
 	private static final List<String> NAMED_ARGS = Arrays.asList( CONFIG_FILE, DIRECT_MODE, HOSTNAME, PASSWORD );

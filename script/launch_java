@@ -42,6 +42,7 @@ check_env_vars(){
 check_basic_args(){
 	if ifArgUsed $RESTART_ARG ; then
 		ifArgUsed $PRECHECK && exit_with_message "Error [ launch_java ]: \"$PRECHECK\" can only be used with new pipelines; cannot be used in conjunction with \"$RESTART_ARG\". "
+		ifArgUsed $UNUSED_PROPS_ARG && exit_with_message "Error [ launch_java ]: \"$UNUSED_PROPS_ARG\" can only be used with new pipelines; cannot be used in conjunction with \"$RESTART_ARG\". "
 		[ ! -d $restartDir ] && exit_with_message "Error [ launch_java ]: $restartDir is not a directory on the filesystem."
 		ifArgUsed $CONFIG_ARG && [ ! -f "${configFile}" ] && exit_with_message "Error [ launch_java ]: Config file [ $configFile ] not found on filesystem."
 	else
@@ -75,6 +76,8 @@ assemble_args(){
 	ifArgUsed $PASSWORD_ARG && args="${args} -password $(get_arg_value $PASSWORD_ARG)" 
 	ifArgUsed $RESTART_ARG && args="${args} -restartDir ${restartDir}"
 	ifArgUsed $PRECHECK && args="${args} -precheck"
+	ifArgUsed $UNUSED_PROPS_ARG && ifArgUsed $PRECHECK && args="${args} -unusedProps"
+	ifArgUsed $UNUSED_PROPS_ARG && ! ifArgUsed $PRECHECK && args="${args} -precheck -unusedProps"
 	[ ${#configFile} -gt 0 ] && args="${args} -config ${configFile}"
 	echo $args
 }
