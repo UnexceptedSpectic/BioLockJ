@@ -440,6 +440,7 @@ public class Properties extends java.util.Properties {
 			deprecatedProps.put("sraDownload.metadataSraIdColumnName", SraDownload.METADATA_SRA_ID_COL_NAME);
 			deprecatedProps.put("sequenceReadArchive.metaDataDir", SequenceReadArchive.DB_DIR);
 			deprecatedProps.put("sraMetaData.forceUpdate", SraMetaDB.DO_UPDATE);
+			deprecatedProps.put("docker.imgOwner", DockerUtil.DOCKER_HUB_USER);
 		}
 		return deprecatedProps;
 	}

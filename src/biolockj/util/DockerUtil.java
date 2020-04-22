@@ -483,7 +483,8 @@ public class DockerUtil {
 	 * By default the "biolockj" user is used to pull the standard modules, but advanced users can deploy their own
 	 * versions of these modules and add new modules in their own Docker Hub account.
 	 */
-	public static final String DOCKER_HUB_USER = "docker.imgOwner";
+
+	public static final String DOCKER_HUB_USER = "docker.imageOwner";
 	private static final String DOCKER_HUB_USER_DESC = "name of the Docker Hub user that owns the docker containers";
 
 	private static final String DOCK_RM_FLAG = "--rm";
