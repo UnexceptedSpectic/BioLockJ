@@ -119,8 +119,8 @@ blj_options() {
 	ifArgUsed $PASSWORD_ARG && options="${options} -password $newPass"
 	ifArgUsed $AWS_ARG && options="${options} -aws"
 	ifArgUsed $PRECHECK && options="${options} -precheck"
-	ifArgUsed $UNUSED_PROPS_ARG && ifArgUsed $PRECHECK && args="${args} -unusedProps"
-	ifArgUsed $UNUSED_PROPS_ARG && !ifArgUsed $PRECHECK && args="${args} -precheck -unusedProps"
+	ifArgUsed $UNUSED_PROPS_ARG && ifArgUsed $PRECHECK && options="${options} -unusedProps"
+	ifArgUsed $UNUSED_PROPS_ARG && ! ifArgUsed $PRECHECK && options="${options} -precheck -unusedProps"
 	ifDefined $configFile && options="${options} -config $(to_abs_path ${configFile})"
 	echo "${options}"
 }

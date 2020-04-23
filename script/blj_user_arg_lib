@@ -231,7 +231,7 @@ print_pipeline_status_and_exit(){
 	local maxtime=$2
 	while [ $i -lt $maxtime ] || ifArgUsed $WAIT_ARG || ifArgUsed $PRECHECK ; do
 		i=$((i+1))
-		if [ -f ${pipeRootDir}/unverified.properties ] ; then
+		if [ -f ${pipeRootDir}/unverified.properties ] && [ ${#configFile} -gt 0 ]; then
 			echo ""; echo ""
 			echo "Warning: see \"unverified.properties\""
 			cat ${pipeRootDir}/unverified.properties
