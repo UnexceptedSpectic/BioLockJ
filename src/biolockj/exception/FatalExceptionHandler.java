@@ -221,6 +221,7 @@ public class FatalExceptionHandler {
 						final FileWriter writer = new FileWriter( failFlagPath );
 						writer.write( ERROR_TYPE + fetalEx.getClass().getSimpleName() + System.lineSeparator() );
 						writer.write( ERROR_MSG + fetalEx.getMessage() );
+						if ( ! fetalEx.getMessage().endsWith( System.lineSeparator() )) writer.write(System.lineSeparator());
 						writer.close();
 					}
 				}
