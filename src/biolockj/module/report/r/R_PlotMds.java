@@ -11,11 +11,13 @@
  */
 package biolockj.module.report.r;
 
+import java.util.List;
 import biolockj.Config;
 import biolockj.Constants;
 import biolockj.Properties;
 import biolockj.api.ApiModule;
 import biolockj.util.BioLockJUtil;
+import biolockj.util.MetaUtil;
 
 /**
  * This BioModule is used to build the R script used to generate MDS plots for each report field and each taxonomy level
@@ -48,6 +50,10 @@ public class R_PlotMds extends R_Module implements ApiModule {
 		Config.getString( this, Constants.R_COLOR_HIGHLIGHT );
 		Config.getString( this, Constants.R_COLOR_PALETTE );
 		Config.getString( this, Constants.R_PCH );
+		List<String> fields = Config.getList( this, R_MDS_REPORT_FIELDS );
+		if ( ! fields.isEmpty() ) {
+			for (String field : fields ) MetaUtil.getFieldValues( field, true );
+		}
 		if( Config.requirePositiveInteger( this, R_MDS_NUM_AXIS ) < 2 )
 			throw new Exception( "Config property [" + R_MDS_NUM_AXIS + "] must be > 2" );
 	}
