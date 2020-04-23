@@ -26,6 +26,13 @@ import biolockj.util.*;
  */
 public abstract class ParserModuleImpl extends JavaModuleImpl implements ParserModule {
 
+	public ParserModuleImpl() {
+		super();
+		addGeneralProperty( Constants.REPORT_NUM_HITS );
+		//biolockj.node.OtuNodeImpl
+		addGeneralProperty( Constants.REPORT_UNCLASSIFIED_TAXA );
+	}
+	
 	@Override
 	public void addOtuNode( final OtuNode node ) throws Exception {
 		if( isValid( node ) ) {
