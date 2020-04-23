@@ -49,8 +49,6 @@ public class DockerUtil {
 	 */
 	public static List<String> buildSpawnDockerContainerFunction( final BioModule module, final String startedFlag )
 		throws ConfigException, DockerVolCreationException {
-		String tempDir = module.getTempDir().getAbsolutePath();
-		Log.info( DockerUtil.class, "tempDir String: " + tempDir);
 		final List<String> lines = new ArrayList<>();
 		lines.add( "# Spawn Docker container" );
 		lines.add( "function " + SPAWN_DOCKER_CONTAINER + "() {" );

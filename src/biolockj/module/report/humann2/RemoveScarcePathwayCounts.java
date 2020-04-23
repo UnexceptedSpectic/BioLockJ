@@ -216,7 +216,7 @@ public class RemoveScarcePathwayCounts extends Humann2CountModule {
 	}
 
 	private File getScarcePathwayLogFile() {
-		return new File( getTempDir().getAbsolutePath() + File.separator + "scarcePathways" + TXT_EXT );
+		return new File( getLogDir().getAbsolutePath() + File.separator + "scarcePathways" + TXT_EXT );
 	}
 
 	private Set<String> getScarcePathways( final List<List<String>> table ) throws Exception {
@@ -269,7 +269,7 @@ public class RemoveScarcePathwayCounts extends Humann2CountModule {
 	}
 
 	private File getScarceSampleLogFile() {
-		return new File( getTempDir().getAbsolutePath() + File.separator + "scarceSamples" + TXT_EXT );
+		return new File( getLogDir().getAbsolutePath() + File.separator + "scarceSamples" + TXT_EXT );
 	}
 
 	private TreeMap<String, TreeSet<String>> removeScarceSamples( final File file, final Set<String> scarceIds )

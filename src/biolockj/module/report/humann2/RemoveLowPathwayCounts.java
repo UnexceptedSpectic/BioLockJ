@@ -203,7 +203,7 @@ public class RemoveLowPathwayCounts extends Humann2CountModule {
 	}
 
 	private File getLowCountPathwayLogFile() {
-		return new File( getTempDir().getAbsolutePath() + File.separator + "lowCountPathways" + TXT_EXT );
+		return new File( getLogDir().getAbsolutePath() + File.separator + "lowCountPathways" + TXT_EXT );
 	}
 
 	private String getMetaColName() throws Exception {

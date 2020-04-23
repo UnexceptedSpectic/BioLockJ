@@ -48,7 +48,7 @@ public class LogUtil {
 	}
 
 	private static File getModuleLog( final BioModule module ) {
-		return new File( module.getTempDir().getAbsolutePath() + File.separator + module.getClass().getSimpleName() +
+		return new File( module.getLogDir().getAbsolutePath() + File.separator + module.getClass().getSimpleName() +
 			Constants.LOG_EXT );
 	}
 

@@ -169,7 +169,7 @@ public class RemoveLowOtuCounts extends OtuCountModule {
 	}
 
 	private File getLowCountOtuLogFile() {
-		return new File( getTempDir().getAbsolutePath() + File.separator + "lowCountOtus" + TXT_EXT );
+		return new File( getLogDir().getAbsolutePath() + File.separator + "lowCountOtus" + TXT_EXT );
 	}
 
 	private String getMetaColName() throws Exception {

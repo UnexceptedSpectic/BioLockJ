@@ -121,9 +121,18 @@ getFactorGroups <- function( countMetaTable, metaCol, taxaCol ) {
 	return( vals )
 }
 
+# Get the temp dir for the current module, if it does not exist, create it.
+getLogDir <- function(){
+	path = file.path( file.path(getModuleDir(), "log") )
+	if ( !dir.exists(path)){
+		dir.create( path )
+	}
+	return( path )
+}
+
 # Return  name of the R module log file using the given name
 getLogFile <- function( name ) {
-	return( file.path( getTempDir(), paste0( moduleScriptName(), "_", name, ".log") ) )
+	return( file.path( getLogDir(), paste0( moduleScriptName(), "_", name, ".log") ) )
 }
 
 # Return the name of the BioLockJ MASTER Config file
