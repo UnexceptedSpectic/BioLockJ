@@ -924,7 +924,11 @@ public class Config {
 		primaryProps.keySet().removeAll( allUsedProps.keySet() );
 		Set<String> keys = new HashSet<>( primaryProps.keySet() );
 		for ( String prop : keys ) {
-			if ( primaryProps.get( prop ) == null || primaryProps.get( prop ).isEmpty() ) primaryProps.remove( prop );
+			if ( primaryProps.get( prop ) == null 
+							|| primaryProps.get( prop ).isEmpty() 
+							|| prop.equals( Constants.PIPELINE_DEFAULT_PROPS )) {
+				primaryProps.remove( prop );
+			}
 		}
 		if( !primaryProps.isEmpty() ) {
 			BufferedWriter writer =
