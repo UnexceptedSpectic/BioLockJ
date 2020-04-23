@@ -30,7 +30,7 @@ If running in docker, this module will run in a docker container from this image
 biolockjdevteam/biolockj_controller:v1.3.2
 ```
 This can be modified using the following properties:<br>
-`ImportMetadata.imgOwner`<br>
+`ImportMetadata.imageOwner`<br>
 `ImportMetadata.imageName`<br>
 `ImportMetadata.imageTag`<br>
 
