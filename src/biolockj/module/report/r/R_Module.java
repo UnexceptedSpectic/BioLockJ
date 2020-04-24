@@ -168,7 +168,7 @@ public abstract class R_Module extends ScriptModuleImpl {
 
 				if( Config.getBoolean( this, Constants.R_DEBUG ) ) {
 					final IOFileFilter ff = new WildcardFileFilter( "*" + LOG_EXT );
-					final Collection<File> debugLogs = FileUtils.listFiles( getTempDir(), ff, null );
+					final Collection<File> debugLogs = FileUtils.listFiles( getLogDir(), ff, null );
 					sb.append( "Generated " + debugLogs.size() + " log files" + RETURN );
 				}
 
@@ -242,8 +242,9 @@ public abstract class R_Module extends ScriptModuleImpl {
 	 * @throws Exception if unable to build the R script stub
 	 */
 	protected void writePrimaryScript() throws Exception {
-		getTempDir();
 		getOutputDir();
+		getTempDir();
+		getLogDir();
 		FileUtils.copyFile( getMainR(), getPrimaryScript() );
 		FileUtils.copyFileToDirectory( getFunctionLib(), getScriptDir() );
 		FileUtils.copyFileToDirectory( getModuleScript(), getScriptDir() );

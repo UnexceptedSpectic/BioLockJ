@@ -12,6 +12,7 @@
 package biolockj;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +41,7 @@ public class Pipeline {
 	 */
 	public static void executeModule() throws Exception {
 		ModuleUtil.markStarted( exeModule() );
+		Config.resetUsedProps();
 		refreshRCacheIfNeeded();
 		exeModule().executeTask();
 		final boolean isJava = exeModule() instanceof JavaModule;
@@ -53,6 +55,7 @@ public class Pipeline {
 		exeModule().cleanUp();
 		ValidationUtil.validateModule( exeModule() );
 		if( !runDetached ) SummaryUtil.reportSuccess( exeModule() );
+		Config.saveModuleProps( exeModule() );
 		ModuleUtil.markComplete( exeModule() );
 	}
 
@@ -212,31 +215,55 @@ public class Pipeline {
 	 * @return true if no errors are thrown
 	 */
 	protected static boolean checkModuleDependencies() throws Exception {
+		boolean allPass = true;
+		List<Exception> errors = new ArrayList<>();
 		for( final BioModule module: getModules() ) {
-			setExeModule( module );
-			if( ModuleUtil.isIncomplete( module ) && ( !BioLockJUtil.isDirectMode() || module instanceof Email ) ) {
-				final String path = module.getModuleDir().getAbsolutePath();
-				Log.info( Pipeline.class, "Reset incomplete module: " + path );
-				FileUtils.forceDelete( module.getModuleDir() );
-				new File( path ).mkdirs();
-			}
-			
-			if (RuntimeParamUtil.isPrecheckMode()) BioLockJUtil.markStatus( module, Constants.PRECHECK_STARTED );
-			info( "Check dependencies for: " + module.getClass().getName() );
-			module.checkDependencies();
-			ValidationUtil.checkDependencies( module );
-			DockerUtil.checkDependencies( module );
-
-			if( ModuleUtil.isComplete( module ) ) {
-				module.cleanUp();
-				if( !BioLockJUtil.isDirectMode() ) ValidationUtil.validateModule( module );
-				refreshRCacheIfNeeded();
-			}else {
-				BioLockJUtil.markStatus( module, Constants.PRECHECK_COMPLETE );
+			try {
+				checkOneModulesDependencies( module );
+			} catch( Exception ex ) {
+				if( RuntimeParamUtil.isPrecheckAllMode() ) {
+					allPass = false;
+					errors.add( ex );
+					ex.printStackTrace();
+					Log.error( Pipeline.class,
+						"Hit Exception [" + ex.getClass().getSimpleName() + "] in module " + ModuleUtil.displaySignature( module ) );
+					Log.error( Pipeline.class, ex.getMessage() );
+				} else {
+					throw ex;
+				}
 			}
 		}
+		
+		if ( errors.size() > 0 ) {
+			Config.showUnusedProps();
+			throw errors.get( 0 );
+		}
 
-		return true;
+		return allPass;
+	}
+	
+	protected static void checkOneModulesDependencies(BioModule module) throws Exception {
+		setExeModule( module );
+		if( ModuleUtil.isIncomplete( module ) && ( !BioLockJUtil.isDirectMode() || module instanceof Email ) ) {
+			final String path = module.getModuleDir().getAbsolutePath();
+			Log.info( Pipeline.class, "Reset incomplete module: " + path );
+			FileUtils.forceDelete( module.getModuleDir() );
+			new File( path ).mkdirs();
+		}
+
+		if( RuntimeParamUtil.isPrecheckMode() ) BioLockJUtil.markStatus( module, Constants.PRECHECK_STARTED );
+		info( "Check dependencies for: " + module.getClass().getName() );
+		module.checkDependencies();
+		ValidationUtil.checkDependencies( module );
+		DockerUtil.checkDependencies( module );
+
+		if( ModuleUtil.isComplete( module ) ) {
+			module.cleanUp();
+			if( !BioLockJUtil.isDirectMode() ) ValidationUtil.validateModule( module );
+			refreshRCacheIfNeeded();
+		} else {
+			BioLockJUtil.markStatus( module, Constants.PRECHECK_COMPLETE );
+		}
 	}
 
 	/**

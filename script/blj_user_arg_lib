@@ -35,13 +35,14 @@ set_arg_names(){
 	ENV_ARG="env-var"
 	WAIT_ARG="wait-for-start"
 	PRECHECK="precheck-only"
+	UNUSED_PROPS_ARG="unused-props"
 }
 
 init_defaults(){
 	# Order does not matter for $longArgName or $takeShortArg, but it is easier to read if they match
 	# Order MATTERS for $shortArgName and $parameters ---they must match whatever order is in $longArgName.
-	longArgName=( $GUI_ARG $CONFIG_ARG $RESTART_ARG $AWS_ARG $DOCKER_ARG $FG_ARG $ENV_ARG $WAIT_ARG $PRECHECK $PASSWORD_ARG $PROJ_ARG $EXT_MODS_ARG $BLJ_ARG )
-	takeShortArg=($GUI_ARG $CONFIG_ARG $RESTART_ARG $AWS_ARG $DOCKER_ARG $FG_ARG $ENV_ARG $WAIT_ARG $PRECHECK help version)
+	longArgName=( $GUI_ARG $CONFIG_ARG $RESTART_ARG $AWS_ARG $DOCKER_ARG $FG_ARG $ENV_ARG $WAIT_ARG $PRECHECK $UNUSED_PROPS_ARG $PASSWORD_ARG $PROJ_ARG $EXT_MODS_ARG $BLJ_ARG )
+	takeShortArg=($GUI_ARG $CONFIG_ARG $RESTART_ARG $AWS_ARG $DOCKER_ARG $FG_ARG $ENV_ARG $WAIT_ARG $PRECHECK $UNUSED_PROPS_ARG help version)
 	shortArgName=()
 	parameters=()
 	mustTakeValue=($PASSWORD_ARG $CONFIG_ARG $EXT_MODS_ARG $PROJ_ARG $ENV_ARG)
@@ -224,11 +225,17 @@ print_action_options(){
 # param 2 - number of seconds to wait before timing out
 print_pipeline_status_and_exit(){
 	local pipeRootDir=$1
+	echo ""
 	printf "Fetching pipeline status "
 	local i=0
 	local maxtime=$2
 	while [ $i -lt $maxtime ] || ifArgUsed $WAIT_ARG || ifArgUsed $PRECHECK ; do
 		i=$((i+1))
+		if [ -f ${pipeRootDir}/unverified.properties ] && [ ${#configFile} -gt 0 ]; then
+			echo ""; echo ""
+			echo "Warning: see \"unverified.properties\""
+			cat ${pipeRootDir}/unverified.properties
+		fi
 		if [ -f ${pipeRootDir}/biolockjFailed ] ; then 
 			echo ""; echo ""
 			echo "BioLockJ has stopped."
@@ -246,6 +253,7 @@ print_pipeline_status_and_exit(){
 		elif [ -f ${pipeRootDir}/biolockjComplete ]; then
 			echo ""; echo ""
 			echo "Pipeline is complete."
+			echo ""
 			exit
 		elif [ -f ${pipeRootDir}/precheckComplete ]; then
 			echo ""; echo ""
@@ -255,6 +263,7 @@ print_pipeline_status_and_exit(){
 		elif [ -f ${pipeRootDir}/biolockjStarted ]; then
 			echo ""; echo ""
 			echo "Pipeline is running."
+			echo ""
 			exit
 		elif [ $i -eq $maxtime ]; then
 			if ifArgUsed $WAIT_ARG || ifArgUsed $PRECHECK ; then
@@ -313,6 +322,8 @@ display_help() {
     addSpace "help"          "Show help menu"
     addSpace "$PRECHECK"     "Set up pipeline and check dependencies and then STOP;"
     continueDescription      "do not execute the pipeline. This is helpful when testing edits to config files."
+    addSpace "$UNUSED_PROPS_ARG" "Check dependencies for all modules and report unused properties. Implies -p."
+    continueDescription      "This helps remove unnecessary properties and highlights errors in property names."
     addSpace "$RESTART_ARG"  "Resume an existing pipeline"
     addSpace "$CONFIG_ARG <file>" "New config file (if restarting a pipeline)"
     addSpace "$PASSWORD_ARG <password>" "Encrypt password"

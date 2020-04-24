@@ -18,6 +18,9 @@ import biolockj.exception.BioLockJException;
 import biolockj.exception.ConfigException;
 import biolockj.exception.ConfigPathException;
 import biolockj.module.BioModule;
+import biolockj.module.getData.sra.SequenceReadArchive;
+import biolockj.module.getData.sra.SraDownload;
+import biolockj.module.getData.sra.SraMetaDB;
 import biolockj.module.report.r.R_Module;
 import biolockj.util.BashScriptBuilder;
 import biolockj.util.BioLockJUtil;
@@ -422,6 +425,50 @@ public class Properties extends java.util.Properties {
 	private static List<File> configRegister = new ArrayList<>();
 	private static int loadOrder = -1;
 	private static final long serialVersionUID = 2980376615128441545L;
+	
+	/**
+	 * Map of deprecated properties to their replacement properties.
+	 * If the property has been completely deprecated, then the value for that key is "null".
+	 */
+	private static HashMap<String, String> deprecatedProps = null;
+	private static HashMap<String, String> getDeprecatedProps(){
+		if (deprecatedProps == null) {
+			deprecatedProps = new HashMap<>();
+			deprecatedProps.put("sequenceReadArchive.sraAccList", SequenceReadArchive.SRA_ACC_LIST);
+			deprecatedProps.put("sequenceReadArchive.SraProjectId", SequenceReadArchive.SRP);
+			deprecatedProps.put("sraDownload.destinationDir", SraDownload.DEST_DIR);
+			deprecatedProps.put("sraDownload.metadataSraIdColumnName", SraDownload.METADATA_SRA_ID_COL_NAME);
+			deprecatedProps.put("sequenceReadArchive.metaDataDir", SequenceReadArchive.DB_DIR);
+			deprecatedProps.put("sraMetaData.forceUpdate", SraMetaDB.DO_UPDATE);
+			deprecatedProps.put("docker.imgOwner", DockerUtil.DOCKER_HUB_USER);
+			deprecatedProps.put("docker.imgVersion", DockerUtil.DOCKER_IMG_VERSION);
+			deprecatedProps.put("docker.user", DockerUtil.DOCKER_HUB_USER);
+		}
+		return deprecatedProps;
+	}
+	/**
+	 * Determines if the given prop is in the list of deprecated properties.
+	 * @param prop
+	 * @return
+	 */
+	public static boolean isDeprecatedProp(String prop) {
+		return getDeprecatedProps().keySet().contains( prop );
+	}
+	/**
+	 * Returns a message telling the user that the property is deprecated.
+	 * If there 
+	 * @param prop
+	 * @return
+	 */
+	public static String deprecatedPropMessage(String prop) {
+		if (!isDeprecatedProp( prop )) return "";
+		String newProp = getDeprecatedProps().get( prop );
+		String msg = "The property \"" + prop + "\" has been deprecated." ;
+		if (newProp != null) {
+			msg = msg + " Please use \"" + newProp + "\" instead.";
+		}
+		return msg;
+	}
 	
 	/**
 	 *  Prefix for property types whose values cannot be null.

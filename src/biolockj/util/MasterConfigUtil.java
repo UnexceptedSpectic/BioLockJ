@@ -78,7 +78,7 @@ public class MasterConfigUtil {
 
 		try {
 			Log.info( MasterConfigUtil.class,
-				"Sanitizing MASTER Config file so only properties accessed during pipeline execution are retained." );
+				"Distilling the MASTER Config into the FINAL Config file to show only properties accessed during pipeline execution." );
 
 			final Map<String, String> props = new HashMap<>();
 			final Map<String, String> usedProps = Config.getUsedProps();
@@ -257,4 +257,5 @@ public class MasterConfigUtil {
 	private static final String PROJ_CONFIG_FLAG = "# ----> Project Config: ";
 	private static final String RETURN = Constants.RETURN;
 	private static final String TEMP_PREFIX = ".TEMP_";
+	private static final String FINAL_PREFIX = "FINAL_";
 }

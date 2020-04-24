@@ -142,12 +142,12 @@ public class SraMetaDB extends SequenceReadArchive implements ApiModule, Outside
 	 * {@link biolockj.Config} property: {@value #DO_UPDATE}<br>
 	 * {@value #DO_UPDATE_DESC}
 	 */
-	private final String DO_UPDATE = "sra.forceDbUpdate";
-	private final String DO_UPDATE_DESC = "Y/N: download a newer verionsion if available.";
+	public static final String DO_UPDATE = "sra.forceDbUpdate";
+	private static final String DO_UPDATE_DESC = "Y/N: download a newer verionsion if available.";
 	
-	private final String EXE_WGET = "exe.wget";
-	private final String EXE_GUNZIP = "exe.gunzip";
+	private static final String EXE_WGET = "exe.wget";
+	private static final String EXE_GUNZIP = "exe.gunzip";
 	
-	private final String DB_URL = "https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz";
+	private static final String DB_URL = "https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz";
 
 }

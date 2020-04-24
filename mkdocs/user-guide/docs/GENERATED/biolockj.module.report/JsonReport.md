@@ -7,9 +7,9 @@ Add to module run order:
 *There may be a manually created page elsewhere.*
 
 ## Adds modules 
-**pre-requisit modules**                    
+**pre-requisite modules**                    
 biolockj.module.report.otu.CompileOtuCounts                   
-**post-requisit modules**                    
+**post-requisite modules**                    
 *none found*                   
 
 ## Docker 
@@ -18,7 +18,7 @@ If running in docker, this module will run in a docker container from this image
 biolockjdevteam/biolockj_controller:v1.3.2
 ```
 This can be modified using the following properties:<br>
-`JsonReport.imgOwner`<br>
+`JsonReport.imageOwner`<br>
 `JsonReport.imageName`<br>
 `JsonReport.imageTag`<br>
 

@@ -28,8 +28,8 @@ Pick OTUs using a closed reference database and construct an OTU table via the Q
 | *cluster.prologue* | _string_ <br>To run at the start of every script after loading cluster modules (if any)<br>*default:*  *null* |
 | *cluster.statusCommand* | _string_ <br>Terminal command used to check the status of jobs on the cluster<br>*default:*  *null* |
 | *docker.imageName* | _string_ <br>The name of a docker image to override whatever a module says to use.<br>*default:*  *null* |
+| *docker.imageOwner* | _string_ <br>name of the Docker Hub user that owns the docker containers<br>*default:*  *null* |
 | *docker.imageTag* | _string_ <br>indicate specific version of Docker images<br>*default:*  *null* |
-| *docker.imgOwner* | _string_ <br>name of the Docker Hub user that owns the docker containers<br>*default:*  *null* |
 | *docker.saveContainerOnExit* | _boolean_ <br>If Y, docker run command will NOT include the --rm flag<br>*default:*  *null* |
 | *exe.awk* | _executable_ <br>Path for the "awk" executable; if not supplied, any script that needs the awk command will assume it is on the PATH.<br>*default:*  *null* |
 | *pipeline.defaultFastaConverter* | _string_ <br>Java class name for default module used to convert files into fasta format<br>*default:*  biolockj.module.seq.AwkFastaConverter |
@@ -56,7 +56,7 @@ If running in docker, this module will run in a docker container from this image
 biolockjdevteam/qimme_classifier:v1.1
 ```
 This can be modified using the following properties:<br>
-`QiimeClosedRefClassifier.imgOwner`<br>
+`QiimeClosedRefClassifier.imageOwner`<br>
 `QiimeClosedRefClassifier.imageName`<br>
 `QiimeClosedRefClassifier.imageTag`<br>
 

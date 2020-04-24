@@ -37,7 +37,7 @@ If running in docker, this module will run in a docker container from this image
 biolockjdevteam/biolockj_controller:v1.3.2
 ```
 This can be modified using the following properties:<br>
-`Email.imgOwner`<br>
+`Email.imageOwner`<br>
 `Email.imageName`<br>
 `Email.imageTag`<br>
 

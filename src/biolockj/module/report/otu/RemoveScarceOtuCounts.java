@@ -220,7 +220,7 @@ public class RemoveScarceOtuCounts extends OtuCountModule {
 	}
 
 	private File getScareOtuLogFile() {
-		return new File( getTempDir().getAbsolutePath() + File.separator + "scarceOtus" + TXT_EXT );
+		return new File( getLogDir().getAbsolutePath() + File.separator + "scarceOtus" + TXT_EXT );
 	}
 
 	/**

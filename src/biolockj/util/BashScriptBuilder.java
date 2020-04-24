@@ -244,6 +244,7 @@ public class BashScriptBuilder {
 		lines.add( MOD_DIR + "=\"" + module.getModuleDir().getAbsolutePath() + "\"" );
 		lines.add( SCRIPT_DIR + "=\"" + module.getScriptDir().getAbsolutePath() + "\"" );
 		lines.add( TEMP_DIR + "=\"" + module.getTempDir().getAbsolutePath() + "\"" );
+		lines.add( LOG_DIR + "=\"" + module.getLogDir().getAbsolutePath() + "\"" );
 		lines.add( OUTPUT_DIR + "=\"" + module.getOutputDir().getAbsolutePath() + "\"" );
 		lines.add( "" );
 		return lines;
@@ -263,6 +264,8 @@ public class BashScriptBuilder {
 			String data = line;
 			if( !data.trim().startsWith( TEMP_DIR ) && data.contains( module.getTempDir().getAbsolutePath() ) ) 
 				data = data.replaceAll( module.getTempDir().getAbsolutePath(), Matcher.quoteReplacement( TEMP_DIR_VAR ) );
+			if( !data.trim().startsWith( LOG_DIR ) && data.contains( module.getLogDir().getAbsolutePath() ) ) 
+				data = data.replaceAll( module.getLogDir().getAbsolutePath(), Matcher.quoteReplacement( LOG_DIR_VAR ) );
 			if( !data.trim().startsWith( SCRIPT_DIR ) && data.contains( module.getScriptDir().getAbsolutePath() ) ) 
 				data = data.replaceAll( module.getScriptDir().getAbsolutePath(), Matcher.quoteReplacement( SCRIPT_DIR_VAR ) );
 			if( !data.trim().startsWith( OUTPUT_DIR ) && data.contains( module.getOutputDir().getAbsolutePath() ) ) 
@@ -290,7 +293,7 @@ public class BashScriptBuilder {
 	protected static List<String> initWorkerScript( final ScriptModule module, final String scriptPath )
 		throws Exception {
 		File script = new File(scriptPath);
-		File log = new File(module.getTempDir(), script.getName().replaceAll( Constants.SH_EXT + "$", Constants.LOG_EXT ));
+		File log = new File(module.getLogDir(), script.getName().replaceAll( Constants.SH_EXT + "$", Constants.LOG_EXT ));
 		final List<String> lines = new ArrayList<>();
 		final String header = Config.getString( module, SCRIPT_JOB_HEADER );
 		final String defaultHeader = Config.getString( module, Constants.SCRIPT_DEFAULT_HEADER );
@@ -498,6 +501,8 @@ public class BashScriptBuilder {
 	private static final String SCRIPT_DIR_VAR = "${" + SCRIPT_DIR + "}";
 	private static final String TEMP_DIR = "tempDir";
 	private static final String TEMP_DIR_VAR = "${" + TEMP_DIR + "}";
+	private static final String LOG_DIR = "logDir";
+	private static final String LOG_DIR_VAR = "${" + LOG_DIR + "}";
 	
 	private static final String RETURN = Constants.RETURN;
 	private static final List<File> workerScripts = new ArrayList<>();
