@@ -281,12 +281,12 @@
 <td align="left"><em>string</em> <br>The name of a docker image to override whatever a module says to use.<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imageTag</em></td>
-<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageOwner</em></td>
+<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imgOwner</em></td>
-<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageTag</em></td>
+<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
 <td align="left"><em>docker.saveContainerOnExit</em></td>
@@ -321,6 +321,15 @@
 <em>none found</em>                 <br />
 <strong>post-requisite modules</strong>                  <br />
 biolockj.module.implicit.parser.wgs.Humann2Parser                   </p>
+<h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">#</a></h2>
+<p>If running in docker, this module will run in a docker container from this image:<br></p>
+<pre><code>biolockjdevteam/humann2_classifier:v1.3.2
+</code></pre>
+
+<p>This can be modified using the following properties:<br>
+<code>Humann2Classifier.imageOwner</code><br>
+<code>Humann2Classifier.imageName</code><br>
+<code>Humann2Classifier.imageTag</code><br></p>
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">#</a></h2>
 <p>Franzosa EA<em>, McIver LJ</em>, Rahnavard G, Thompson LR, Schirmer M, Weingart G, Schwarzberg Lipson K, Knight R, Caporaso JG, Segata N, Huttenhower C.                  <br />
 Species-level functional profiling of metagenomes and metatranscriptomes. Nat Methods 15: 962-968 (2018).                 <br />

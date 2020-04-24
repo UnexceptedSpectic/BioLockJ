@@ -1,5 +1,6 @@
 biolockj
 biolockj.api
+biolockj.dataTypes
 biolockj.exception
 biolockj.module
 biolockj.module.assembly
@@ -19,6 +20,7 @@ biolockj.module.report.humann2
 biolockj.module.report.otu
 biolockj.module.report.r
 biolockj.module.report.taxa
+biolockj.module.rnaseq
 biolockj.module.seq
 biolockj.node
 biolockj.node.r16s

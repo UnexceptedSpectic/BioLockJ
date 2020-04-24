@@ -248,12 +248,12 @@
 <td align="left"><em>string</em> <br>The name of a docker image to override whatever a module says to use.<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imageTag</em></td>
-<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageOwner</em></td>
+<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imgOwner</em></td>
-<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageTag</em></td>
+<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
 <td align="left"><em>docker.saveContainerOnExit</em></td>
@@ -296,8 +296,17 @@
 <em>none found</em>                 <br />
 <strong>post-requisite modules</strong>                  <br />
 <em>none found</em>                   </p>
+<h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">#</a></h2>
+<p>If running in docker, this module will run in a docker container from this image:<br></p>
+<pre><code>biolockjdevteam/blj_basic:v1.3.2
+</code></pre>
+
+<p>This can be modified using the following properties:<br>
+<code>AwkFastaConverter.imageOwner</code><br>
+<code>AwkFastaConverter.imageName</code><br>
+<code>AwkFastaConverter.imageTag</code><br></p>
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">#</a></h2>
-<p>BioLockJ v1.3.1                 <br />
+<p>BioLockJ v1.3.2                 <br />
 Module developed by Mike Sioda</p>
               
             </div>

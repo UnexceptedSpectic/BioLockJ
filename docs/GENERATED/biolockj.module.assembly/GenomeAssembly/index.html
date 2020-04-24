@@ -248,12 +248,12 @@
 <td align="left"><em>string</em> <br>The name of a docker image to override whatever a module says to use.<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imageTag</em></td>
-<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageOwner</em></td>
+<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imgOwner</em></td>
-<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageTag</em></td>
+<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
 <td align="left"><em>docker.saveContainerOnExit</em></td>
@@ -288,6 +288,15 @@
 <em>none found</em>                 <br />
 <strong>post-requisite modules</strong>                  <br />
 <em>none found</em>                   </p>
+<h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">#</a></h2>
+<p>If running in docker, this module will run in a docker container from this image:<br></p>
+<pre><code>biolockjdevteam/genome_assembly:v1.2.0
+</code></pre>
+
+<p>This can be modified using the following properties:<br>
+<code>GenomeAssembly.imageOwner</code><br>
+<code>GenomeAssembly.imageName</code><br>
+<code>GenomeAssembly.imageTag</code><br></p>
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">#</a></h2>
 <p>checkM database                 <br />
 https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz                 <br />
@@ -304,7 +313,7 @@ https://github.com/matsen/pplacer/releases/download/v1.1.alpha19/pplacer-linux-v
 PRODIGAL                 <br />
 https://github.com/hyattpd/Prodigal/releases/download/v2.6.3/prodigal.linux                   </p>
 <p>Module developed by Shan Sun                 <br />
-BioLockJ v1.3.1</p>
+BioLockJ v1.3.2</p>
               
             </div>
           </div>

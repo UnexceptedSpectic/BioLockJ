@@ -285,12 +285,12 @@
 <td align="left"><em>string</em> <br>The name of a docker image to override whatever a module says to use.<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imageTag</em></td>
-<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageOwner</em></td>
+<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imgOwner</em></td>
-<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageTag</em></td>
+<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
 <td align="left"><em>docker.saveContainerOnExit</em></td>
@@ -334,6 +334,15 @@
 <strong>post-requisite modules</strong>                  <br />
 biolockj.module.implicit.qiime.QiimeClassifier                 <br />
 biolockj.module.implicit.parser.r16s.QiimeParser                   </p>
+<h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">#</a></h2>
+<p>If running in docker, this module will run in a docker container from this image:<br></p>
+<pre><code>biolockjdevteam/qimme_classifier:v1.1
+</code></pre>
+
+<p>This can be modified using the following properties:<br>
+<code>QiimeOpenRefClassifier.imageOwner</code><br>
+<code>QiimeOpenRefClassifier.imageName</code><br>
+<code>QiimeOpenRefClassifier.imageTag</code><br></p>
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">#</a></h2>
 <p>QIIME allows analysis of high-throughput community sequencing data                 <br />
 J Gregory Caporaso, Justin Kuczynski, Jesse Stombaugh, Kyle Bittinger, Frederic D Bushman, Elizabeth K Costello, Noah Fierer, Antonio Gonzalez Pena, Julia K Goodrich, Jeffrey I Gordon, Gavin A Huttley, Scott T Kelley, Dan Knights, Jeremy E Koenig, Ruth E Ley, Catherine A Lozupone, Daniel McDonald, Brian D Muegge, Meg Pirrung, Jens Reeder, Joel R Sevinsky, Peter J Turnbaugh, William A Walters, Jeremy Widmann, Tanya Yatsunenko, Jesse Zaneveld and Rob Knight; Nature Methods, 2010; doi:10.1038/nmeth.f.303                 <br />

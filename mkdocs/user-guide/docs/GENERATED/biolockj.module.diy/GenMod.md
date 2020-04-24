@@ -84,5 +84,5 @@ This can be modified using the following properties:<br>
 `GenMod.imageTag`<br>
 
 ## Citation 
-BioLockJ v1.3.2-dev
+BioLockJ v1.3.2
 

@@ -269,12 +269,12 @@
 <td align="left"><em>string</em> <br>The name of a docker image to override whatever a module says to use.<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imageTag</em></td>
-<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageOwner</em></td>
+<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
-<td align="left"><em>docker.imgOwner</em></td>
-<td align="left"><em>string</em> <br>name of the Docker Hub user that owns the docker containers<br><em>default:</em>  <em>null</em></td>
+<td align="left"><em>docker.imageTag</em></td>
+<td align="left"><em>string</em> <br>indicate specific version of Docker images<br><em>default:</em>  <em>null</em></td>
 </tr>
 <tr>
 <td align="left"><em>docker.saveContainerOnExit</em></td>
@@ -310,7 +310,7 @@
 <li>Any steps where an appropriate BioLockJ module does not exist                   </li>
 </ul>
 <p>Any step in your analysis process that might otherwise have to be done manually can be stored as a custom script so that the entire process is as reproducible as possible.                   </p>
-<p>It is SCRONGLY encouraged that users write scripts using common module conventions:                   </p>
+<p>It is STRONGLY encouraged that users write scripts using common module conventions:                   </p>
 <ul>
 <li>use relative file paths (starting with <code>.</code> or <code>..</code>)                   </li>
 <li>put all generated output in the modules <code>output</code> directory (<code>../output</code>)                   </li>
@@ -335,8 +335,17 @@ Part2.script=path/to/bash/script/doLast.sh
 <em>none found</em>                 <br />
 <strong>post-requisite modules</strong>                  <br />
 <em>none found</em>                   </p>
+<h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">#</a></h2>
+<p>If running in docker, this module will run in a docker container from this image:<br></p>
+<pre><code>biolockjdevteam/blj_basic:v1.3.2
+</code></pre>
+
+<p>This can be modified using the following properties:<br>
+<code>GenMod.imageOwner</code><br>
+<code>GenMod.imageName</code><br>
+<code>GenMod.imageTag</code><br></p>
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">#</a></h2>
-<p>BioLockJ v1.3.1</p>
+<p>BioLockJ v1.3.2</p>
               
             </div>
           </div>
